@@ -23,7 +23,7 @@ public class Reservation {
     @Enumerated(EnumType.STRING)
     private Statut statut = Statut.en_attente;
 
-    public enum Statut { en_attente, annulée, effectuée }
+    public enum Statut { en_attente, annulee, effectuee }
 
     public Reservation() {}
 

@@ -101,3 +101,19 @@ CREATE TABLE Prolongement_pret (
     nouvelle_date_retour DATE NOT NULL,
     FOREIGN KEY (id_pret) REFERENCES Pret(id)
 );
+
+CREATE OR REPLACE VIEW v_exemplaires_restants AS
+SELECT 
+    l.*,
+    e.id AS id_exemplaire,
+    SUM(e.nbExemplaire) AS nb_exemplaires_totaux,
+    IFNULL(SUM(p.nb_exemplaire), 0) AS nb_exemplaires_pretes,
+    SUM(e.nbExemplaire) - IFNULL(SUM(p.nb_exemplaire), 0) AS nb_exemplaires_restants
+FROM 
+    Livre l
+JOIN 
+    Exemplaire e ON l.id = e.id_livre
+LEFT JOIN 
+    Pret p ON e.id = p.id_exemplaire
+GROUP BY 
+    l.id, l.titre;

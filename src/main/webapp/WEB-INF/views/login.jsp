@@ -59,12 +59,20 @@
 <body>
     <form action="login" method="post">
         <h2>Log in</h2>
+        <% 
+            String error = request.getParameter("error"); 
+            if (error != null) { 
+        %>
+            <div style="color:red;"><%= error %></div>
+        <% 
+            } 
+        %>
+        <br>
+        <label for="nom">Nom :</label>
+        <input type="text" name="nom" id="nom" required>
 
-        <label for="name">Nom :</label>
-        <input type="text" name="name" id="name" value="ITU" required>
-
-        <label for="pwd">Mot de passe :</label>
-        <input type="password" name="pwd" id="pwd" value="123" required>
+        <label for="pwd">Prenom :</label>
+        <input type="text" name="prenom" id="prenom" required>
 
         <input type="submit" value="Valider">
     </form>

@@ -34,4 +34,8 @@ public class AdherantService {
     public void delete(int id) {
         adherantRepository.deleteById(id);
     }
+
+    public Adherant findAdherant( String nom, String prenom) {
+        return adherantRepository.findAdherant(nom, prenom);
+    }
 }

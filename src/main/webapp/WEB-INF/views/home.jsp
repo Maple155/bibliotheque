@@ -1,146 +1,210 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="repo.models.*" %>
-
+<%
+    List<V_exemplairesRestants> liste = (List<V_exemplairesRestants>) request.getAttribute("liste_livre");
+    Adherant adherant = (Adherant) request.getAttribute("adherant"); 
+    List<TypePret> typesPret = (List<TypePret>) request.getAttribute("typesPret");
+%>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Liste des Films</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/liste.css">
+    <title>Liste des Livres</title>
+    <meta charset="UTF-8">
+    <%-- <link rel="stylesheet" href="liste_livres.css"> --%>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            padding: 20px;
-            color: #333;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f4f6fb;
+            margin: 0;
+            padding: 0;
         }
-
-        h2 {
-            color: #2c3e50;
+        .main-content {
+            margin-left: 240px;
+            padding: 40px 30px;
+        }
+        h1 {
+            color: #233554;
             margin-bottom: 30px;
         }
-
+        .filter-bar {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .filter-bar input, .filter-bar select {
+            padding: 6px 10px;
+            border: 1px solid #cfd8dc;
+            border-radius: 4px;
+            background: #fff;
+            font-size: 1em;
+        }
         table {
-            width: 100%;
+            background: #fff;
             border-collapse: collapse;
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
         }
-
-        thead {
-            background-color: #3498db;
-            color: white;
-        }
-
         th, td {
-            padding: 12px 16px;
+            padding: 10px 14px;
             text-align: left;
-            border-bottom: 1px solid #ddd;
-            vertical-align: top;
         }
-
-        tr:hover {
-            background-color: #f1f1f1;
+        thead {
+            background: #233554;
+            color: #fff;
         }
-
-        ul {
-            padding-left: 18px;
+        tbody tr:nth-child(odd) {
+            background: #f7faff;
+        }
+        tbody tr:hover {
+            background: #e3e9f6;
+        }
+        form {
             margin: 0;
         }
-
-        a {
-            color: #3498db;
-            text-decoration: none;
-            font-weight: bold;
+        .btn-submit {
+            background: #233554;
+            color: #fff;
+            border: none;
+            padding: 7px 13px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn-submit:hover {
+            background: #304a74;
         }
 
-        a:hover {
-            text-decoration: underline;
+                /* Ajoutez ceci pour mieux gérer l'espacement et la largeur */
+        .main-content {
+            margin-left: 240px;
+            padding: 40px 30px;
+            width: calc(100% - 300px); /* Ajustez selon besoin */
         }
 
-        p {
+        /* Améliorez les filtres */
+        .filter-bar input, .filter-bar select {
+            padding: 8px 12px;
+            border: 1px solid #cfd8dc;
+            border-radius: 4px;
+            background: #fff;
+            font-size: 1em;
+            min-width: 150px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        /* Améliorez la table */
+        table {
+            background: #fff;
+            border-collapse: collapse;
+            width: 100%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
             margin-top: 20px;
-            text-align: center;
         }
 
-        p a {
-            padding: 10px 16px;
-            background-color: #2ecc71;
-            color: white;
-            border-radius: 5px;
-            transition: background-color 0.3s;
+        /* Ajoutez un style pour les cellules vides */
+        td:empty::before {
+            content: "-";
+            color: #999;
         }
-
-        p a:hover {
-            background-color: #27ae60;
-        }
-
     </style>
 </head>
 <body>
-<h2 style="text-align: center;">Liste des Films avec leurs Catégories</h2>
+    <!-- Sidebar include -->
+    <jsp:include page="sideBar.jsp" />
 
-<table>
-    <thead>
-        <tr>
-            <th> ID </th>
-            <th> Titre </th>
-            <th> Catégories </th>
-            <th>Type</th>
-            <th>Date de sortie</th>
-            <th> Modifier </th>
-            <th> Supprimer </th>
-        </tr>
-    </thead>
-    <tbody>
-        <%
-            List<Film> films = (List<Film>) request.getAttribute("allFilms");
-            if (films != null) {
-                for (Film film : films) {
-        %>
-        <tr>
-            <td><%= film.getId() %></td>
-            <td><%= film.getName() %></td>
-            <td>
-                <ul>
-                    <%
-                        List<Categorie> categories = film.getCategories();
-                        if (categories != null) {
-                            for (Categorie cat : categories) {
-                    %>
-                        <li><%= cat.getName() %></li>
-                    <%
-                            }
-                        }
-                    %>
-                </ul>
-            </td>
-            <td>
+    <div class="main-content">
+        <h1>Liste des Livres disponibles</h1>
+
+        <div class="filter-bar">
+            <input type="text" id="filter-titre" placeholder="Filtrer par titre" onkeyup="filterTable()">
+            <input type="text" id="filter-nbPages" placeholder="Filtrer par nb pages" onkeyup="filterTable()">
+            <input type="text" id="filter-auteur" placeholder="Filtrer par auteur" onkeyup="filterTable()">
+            <input type="text" id="filter-datePub" placeholder="Filtrer par date publication" onkeyup="filterTable()">
+            <input type="text" id="filter-genre" placeholder="Filtrer par genre" onkeyup="filterTable()">
+            <input type="text" id="filter-restants" placeholder="Filtrer par restants" onkeyup="filterTable()">
+        </div>
+        <br>
+        <table id="livres-table" border="1">
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Nb Pages</th>
+                    <th>Auteur</th>
+                    <th>Date Publication</th>
+                    <th>Genre</th>
+                    <th>Restants</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
                 <%
-                    List<Type> allType = (List<Type>) request.getAttribute("allTypes");
-                    if (allType != null) {
-                        for (Type tp : allType) {
-                            if (tp.getId() == film.getType().getId()) {
-                %>      
-                <%= tp.getName()%>
-                <% break; } } }%>
-                <%-- <%= film.getType().getName() %> --%>
-            </td>
-            <td><%= film.getDateSortie() %></td>
-            <td> <a href="modifFilm?id=<%= film.getId() %>"> Modifier </a> </td>
-            <td> <a href="supprimerFilm?id=<%= film.getId() %>"> Supprimer </a> </td>
-        </tr>
-        <% } } else {
-        %>
-        <tr><td colspan="3">Aucun film trouvé.</td></tr>
-        <%
-            }
-        %>
-    </tbody>
-</table>
+                    if (liste != null) {
+                        for (V_exemplairesRestants livre : liste) {
+                %>
+                    <tr>
+                        <td><%= livre.getTitre() %></td>
+                        <td><%= livre.getNbPage() %></td>
+                        <td><%= livre.getAuteur() %></td>
+                        <td><%= livre.getDatePublication() %></td>
+                        <td><%= livre.getGenre() %></td>
+                        <td><%= livre.getNbExemplairesRestants() %></td>
+                        <td>
+                            <form action="preterLivre" method="post">
+                                <input type="hidden" name="id_adherant" value="<%= adherant.getId() %>">
+                                <input type="hidden" name="id_exemplaire" value="<%= livre.getId_exemplaire()%>">
+                                <select name="type_pret" id="type_pret">
+                                    <option value="#">Selectionez</option>
+                                    <%  
+                                        if (typesPret != null) {
+                                            for(TypePret typePret : typesPret ) { 
+                                    %>
+                                        <option value="<%= typePret.getId() %>"><%= typePret.getType() %></option>
+                                    <%
+                                            }  
+                                        } 
+                                    %>
+                                </select>
+                                <input type="submit" value="Faire un pret" class="btn-submit">
+                            </form>
+                        </td>
+                    </tr>
+                <%
+                        }
+                    } else {
+                %>
+                    <tr><td colspan="7">Aucun livre à afficher</td></tr>
+                <%
+                    }
+                %>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        function filterTable() {
+            const filters = {
+                titre: document.getElementById('filter-titre').value.toLowerCase(),
+                nbPages: document.getElementById('filter-nbPages').value.toLowerCase(),
+                auteur: document.getElementById('filter-auteur').value.toLowerCase(),
+                datePub: document.getElementById('filter-datePub').value.toLowerCase(),
+                genre: document.getElementById('filter-genre').value.toLowerCase(),
+                restants: document.getElementById('filter-restants').value.toLowerCase()
+            };
 
-<p> <a href="ajoutFilm"> Ajouter un film </a> </p>
-
+            const rows = document.querySelectorAll('#livres-table tbody tr');
+            rows.forEach(row => {
+                const cells = row.children;
+                const show = 
+                    (filters.titre === '' || cells[0].textContent.toLowerCase().includes(filters.titre)) &&
+                    (filters.nbPages === '' || cells[1].textContent.toLowerCase().includes(filters.nbPages)) &&
+                    (filters.auteur === '' || cells[2].textContent.toLowerCase().includes(filters.auteur)) &&
+                    (filters.datePub === '' || cells[3].textContent.toLowerCase().includes(filters.datePub)) &&
+                    (filters.genre === '' || cells[4].textContent.toLowerCase().includes(filters.genre)) &&
+                    (filters.restants === '' || cells[5].textContent.toLowerCase().includes(filters.restants));
+                
+                row.style.display = show ? '' : 'none';
+            });
+        }
+    </script>
 </body>
 </html>

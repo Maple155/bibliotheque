@@ -36,6 +36,9 @@ public class PretController {
     @Autowired
     private PretService pretService;
 
+    @Autowired
+    private VPretsAvecDateRetourService vPretsAvecDateRetourService;
+
     @PostMapping("/preterLivre")
     public String preterLivre (
         @RequestParam("id_adherant") String adherant,
@@ -95,6 +98,25 @@ public class PretController {
         HttpSession session,
         Model model) {
 
+        Adherant adherant = (Adherant) session.getAttribute("adherant");
+        List<V_pretsAvecDateRetour> allPrets = vPretsAvecDateRetourService.readByAdherant(adherant.getId());
+
+        model.addAttribute("allPrets", allPrets);
         return "mesPrets";
+    }
+
+    @GetMapping("/allPrets")
+    public String getAll(
+        HttpSession session,
+        Model model) {
+        
+        if (session.getAttribute("admin") == null) {
+            return "redirect:/admin";
+        }
+        
+        List<V_pretsAvecDateRetour> allPrets = vPretsAvecDateRetourService.read();
+
+        model.addAttribute("allPrets", allPrets);
+        return "allPrets";
     }
 }

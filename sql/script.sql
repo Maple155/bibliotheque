@@ -112,11 +112,19 @@ CREATE TABLE Prolongement_pret (
 
 CREATE OR REPLACE VIEW v_exemplaires_restants AS
 SELECT 
-    l.*,
+    l.id,
+    l.titre,
+    l.nbPage,
+    l.auteur,
+    l.datePublication,
+    l.nbChapitre,
+    l.langue,
+    l.editeur,
+    l.genre,
     e.id AS id_exemplaire,
-    SUM(e.nbExemplaire) AS nb_exemplaires_totaux,
+    e.nbExemplaire AS nb_exemplaires_totaux,
     IFNULL(SUM(p.nb_exemplaire), 0) AS nb_exemplaires_pretes,
-    SUM(e.nbExemplaire) - IFNULL(SUM(p.nb_exemplaire), 0) AS nb_exemplaires_restants
+    e.nbExemplaire - IFNULL(SUM(p.nb_exemplaire), 0) AS nb_exemplaires_restants
 FROM 
     Livre l
 JOIN 
@@ -124,4 +132,19 @@ JOIN
 LEFT JOIN 
     Pret p ON e.id = p.id_exemplaire
 GROUP BY 
-    l.id, l.titre;
+    e.id;
+
+CREATE OR REPLACE VIEW v_prets_avec_date_retour AS
+SELECT
+    p.id AS id_pret,
+    p.id_adherant,
+    p.id_exemplaire,
+    p.nb_exemplaire,
+    p.type_pret,
+    p.date_debut,
+    c.duree_max,
+    DATE_ADD(p.date_debut, INTERVAL c.duree_max DAY) AS date_retour_prevue
+FROM
+    Pret p
+    JOIN Adherant a ON p.id_adherant = a.id
+    JOIN Condition_pret c ON c.id_type_adherant = a.id_type_adherant AND c.id_type_pret = p.type_pret;

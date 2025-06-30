@@ -56,4 +56,35 @@ public class LoginController {
         return "redirect:/?error=utilisateur introuvable";
     }
 
+    @GetMapping("/admin")
+    public String loginAdmin ()
+    {
+        return "loginAdmin";
+    }
+
+    @PostMapping("/checkLogin") 
+    public String checkLoginAdmin (
+        @RequestParam("nom") String nom,
+        @RequestParam("prenom") String prenom,
+        HttpSession session,
+        Model model) {
+            
+        if (nom.equals("ranto") && prenom.equals("ranto")) {
+            List<V_exemplairesRestants> exemplairesRestants = exemplairesRestantsService.read();
+            List<TypePret> typePrets= typePretService.getAll();
+            Adherant adherant = (Adherant) session.getAttribute("adherant");
+
+            session.setAttribute("admin", "1");
+
+            model.addAttribute("liste_livre", exemplairesRestants);
+            model.addAttribute("adherant", adherant);
+            model.addAttribute("typesPret", typePrets);
+            model.addAttribute("success", "connecter en tant qu' admin reussi");
+            return "home";            
+        }
+
+        model.addAttribute("error", "Admin introuvable");
+        return "redirect:/admin";
+    }
+
 }

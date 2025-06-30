@@ -1,11 +1,6 @@
 package repo.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "BlacklistLivres")
@@ -15,33 +10,33 @@ public class BlacklistLivres {
     @Column(name = "id")
     Integer id;
 
-    @Column(name = "id_adherant", nullable = false)
-    Integer idAdherant;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_type_adherant", nullable = false)
+    private TypeAdherant typeAdherant;
 
-    @Column(name = "id_livre", nullable = false)
-    Integer idLivre;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_livre", nullable = false)
+    private Livre livre;
 
+    // Getters & Setters
     public Integer getId() {
         return id;
     }
-
     public void setId(Integer obj) {
         id = obj;
     }
 
-    public Integer getIdAdherant() {
-        return idAdherant;
+    public TypeAdherant getTypeAdherant() {
+        return typeAdherant;
+    }
+    public void setTypeAdherant(TypeAdherant obj) {
+        typeAdherant = obj;
     }
 
-    public void setIdAdherant(Integer obj) {
-        idAdherant = obj;
+    public Livre getLivre() {
+        return livre;
     }
-
-    public Integer getIdLivre() {
-        return idLivre;
-    }
-
-    public void setIdLivre(Integer obj) {
-        idLivre = obj;
+    public void setLivre(Livre obj) {
+        livre = obj;
     }
 }

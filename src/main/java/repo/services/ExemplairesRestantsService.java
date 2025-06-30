@@ -58,4 +58,8 @@ public class ExemplairesRestantsService {
     public void delete(int id) {
         repo.deleteById(id);
     }
+
+    public V_exemplairesRestants findByExemplaire(int id_exemplaire) {
+        return repo.findByExemplaire(id_exemplaire);
+    }
 }

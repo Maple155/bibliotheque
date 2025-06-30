@@ -153,7 +153,7 @@
                             <form action="preterLivre" method="post">
                                 <input type="hidden" name="id_adherant" value="<%= adherant.getId() %>">
                                 <input type="hidden" name="id_exemplaire" value="<%= livre.getId_exemplaire()%>">
-                                <select name="typePret" id="typePret">
+                                <select name="type_pret" id="type_pret" required>
                                     <option value="#">Selectionez</option>
                                     <%  
                                         if (typesPret != null) {
@@ -165,7 +165,15 @@
                                         } 
                                     %>
                                 </select>
+                                <br><br>
+                                <label for="date_pret">Debut du pret :</label>
+                                <input type="date" name="date_pret" id="date_pret" required>
+                                <br><br>
+                                <label for="nombre">Nombre :</label>
+                                <input type="number" name="nombre" id="nombre" required>
+                                <br><br>
                                 <input type="submit" value="Faire un pret" class="btn-submit">
+                                <br>
                             </form>
                         </td>
                     </tr>

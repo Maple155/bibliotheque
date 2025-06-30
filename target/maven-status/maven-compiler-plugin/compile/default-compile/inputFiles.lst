@@ -1,14 +1,17 @@
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\models\Penalite.java
+D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\models\BlacklistLivres.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\models\Pret.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\services\PenaliteService.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\services\TypePretService.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\models\ProlongementPret.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\models\ConditionPret.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\models\Adherant.java
+D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\repositories\BlacklistLivresRepository.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\repositories\ExemplaireRepository.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\models\TypePret.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\services\ProlongementPretService.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\repositories\TypePretRepository.java
+D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\services\BlacklistLivresService.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\repositories\AdherantRepository.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\repositories\PretRepository.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\services\ExemplaireService.java
@@ -31,6 +34,7 @@ D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\services\ConditionPretService.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\models\TypeAdherant.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\repositories\ProlongementPretRepository.java
+D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\controller\PretController.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\models\Exemplaire.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\repositories\ReservationRepository.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\services\ExemplairesRestantsService.java

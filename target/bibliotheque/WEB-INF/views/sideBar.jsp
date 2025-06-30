@@ -47,9 +47,10 @@
         <h2>Menu</h2>
         <ul>
             <li class="active"><a href="#">Livres disponibles</a></li>
-            <li><a href="#">Réinscription</a></li>
-            <li><a href="#">Réservation</a></li>
-            <li><a href="#">Liste des prêts</a></li>
+            <li><a href="#">Reinscription</a></li>
+            <li><a href="#">Reservation</a></li>
+            <li><a href="#">Liste des prets</a></li>
+            <li><a href="#">Mes prets</a></li>
         </ul>
     </nav>
 </body>

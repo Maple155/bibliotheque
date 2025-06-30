@@ -37,8 +37,8 @@ public class BlacklistLivresService {
             Optional<BlacklistLivres> optional = repo.findById(id);
             if (optional.isPresent()) {
                 BlacklistLivres existing = optional.get();
-                existing.setIdAdherant(object.getIdAdherant());
-                existing.setIdLivre(object.getIdLivre());
+                existing.setTypeAdherant(object.getTypeAdherant());
+                existing.setLivre(object.getLivre());
                 return repo.save(existing);
             }
             return null;

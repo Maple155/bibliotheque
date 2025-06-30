@@ -18,12 +18,14 @@ public class Pret {
     @JoinColumn(name = "id_exemplaire", nullable = false)
     private Exemplaire exemplaire;
 
+    @Column(name = "nb_exemplaire")
     private Integer nbExemplaire;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_pret", nullable = false)
     private TypePret typePret;
 
+    @Column(name = "date_debut")
     private Date dateDebut;
 
     public Pret() {}

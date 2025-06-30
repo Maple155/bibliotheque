@@ -50,7 +50,7 @@
             <li><a href="#">Reinscription</a></li>
             <li><a href="#">Reservation</a></li>
             <li><a href="#">Liste des prets</a></li>
-            <li><a href="#">Mes prets</a></li>
+            <li><a href="mesPrets">Mes prets</a></li>
         </ul>
     </nav>
 </body>

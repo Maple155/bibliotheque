@@ -37,6 +37,14 @@ CREATE TABLE Adherant (
     FOREIGN KEY (id_type_adherant) REFERENCES Type_adherant(id)
 );
 
+CREATE TABLE BlacklistLivres (
+    id SERIAL PRIMARY KEY,
+    id_type_adherant INT NOT NULL,
+    id_livre INT NOT NULL,
+    FOREIGN KEY (id_type_adherant) REFERENCES Type_adherant(id),
+    FOREIGN KEY (id_livre) REFERENCES Livre(id)
+);
+
 CREATE TABLE Inscription (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_adherant INT NOT NULL,

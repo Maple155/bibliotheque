@@ -1,41 +1,50 @@
 package repo.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import repo.models.Adherant;
 import repo.repositories.AdherantRepository;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class AdherantService {
+    private final AdherantRepository repo;
 
-    private final AdherantRepository adherantRepository;
-
-    public AdherantService(AdherantRepository adherantRepository) {
-        this.adherantRepository = adherantRepository;
+    @Autowired
+    public AdherantService(AdherantRepository repo) {
+        this.repo = repo;
     }
 
-    public Adherant save(Adherant adherant) {
-        return adherantRepository.save(adherant);
+    public Adherant create(Adherant object) {
+        return repo.save(object);
     }
 
-    @Transactional(readOnly = true)
-    public List<Adherant> getAll() {
-        return adherantRepository.findAll();
+    public List<Adherant> read() {
+        return repo.findAll();
     }
 
-    @Transactional(readOnly = true)
-    public Optional<Adherant> getAdherantById(int id) {
-        return adherantRepository.findById(id);
+    public Optional<Adherant> readById(int id) {
+        return repo.findById(id);
+    }
+
+    public Adherant update(int id, Adherant object) {
+        Optional<Adherant> optional = repo.findById(id);
+        if (optional.isPresent()) {
+            Adherant existing = optional.get();
+            existing.setTypeAdherant(object.getTypeAdherant());
+            existing.setNom(object.getNom());
+            existing.setPrenom(object.getPrenom());
+            return repo.save(existing);
+        }
+        return null;
     }
 
     public void delete(int id) {
-        adherantRepository.deleteById(id);
+        repo.deleteById(id);
     }
 
-    public Adherant findAdherant( String nom, String prenom) {
-        return adherantRepository.findAdherant(nom, prenom);
+    public Adherant findAdherant(String nom, String prenom) {
+        return repo.findAdherant(nom, prenom);
     }
 }

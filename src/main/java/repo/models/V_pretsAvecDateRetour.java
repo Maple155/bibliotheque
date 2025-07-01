@@ -1,21 +1,18 @@
 package repo.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import java.sql.Date;
+import java.util.Date;
 
-import org.hibernate.annotations.Immutable;
+import jakarta.persistence.*;
 
 @Entity
-@Immutable
 @Table(name = "v_prets_avec_date_retour")
 public class V_pretsAvecDateRetour {
-
     @Id
     @Column(name = "id_pret")
     private Integer idPret;
+
+    @Column(name = "date_debut")
+    private Date dateDebut;
 
     @Column(name = "id_adherant")
     private Integer idAdherant;
@@ -44,22 +41,34 @@ public class V_pretsAvecDateRetour {
     @Column(name = "livre_titre")
     private String livreTitre;
 
+    @Column(name = "id_type_pret")
+    private Integer idTypePret;
+
     @Column(name = "type_pret")
     private String typePret;
+
+    @Column(name = "exemplaire_max")
+    private Integer exemplaireMax;
 
     @Column(name = "duree_max")
     private Integer dureeMax;
 
-    @Column(name = "date_debut")
-    private Date dateDebut;
-
     @Column(name = "date_retour_prevue")
     private Date dateRetourPrevue;
 
-    // Getters and Setters
+    @Column(name = "id_status_courant")
+    private Integer idStatusCourant;
+
+    @Column(name = "status_courant")
+    private String statusCourant;
+
+    // Getters & Setters
 
     public Integer getIdPret() { return idPret; }
     public void setIdPret(Integer idPret) { this.idPret = idPret; }
+
+    public Date getDateDebut() { return dateDebut; }
+    public void setDateDebut(Date dateDebut) { this.dateDebut = dateDebut; }
 
     public Integer getIdAdherant() { return idAdherant; }
     public void setIdAdherant(Integer idAdherant) { this.idAdherant = idAdherant; }
@@ -88,15 +97,24 @@ public class V_pretsAvecDateRetour {
     public String getLivreTitre() { return livreTitre; }
     public void setLivreTitre(String livreTitre) { this.livreTitre = livreTitre; }
 
+    public Integer getIdTypePret() { return idTypePret; }
+    public void setIdTypePret(Integer idTypePret) { this.idTypePret = idTypePret; }
+
     public String getTypePret() { return typePret; }
     public void setTypePret(String typePret) { this.typePret = typePret; }
+
+    public Integer getExemplaireMax() { return exemplaireMax; }
+    public void setExemplaireMax(Integer exemplaireMax) { this.exemplaireMax = exemplaireMax; }
 
     public Integer getDureeMax() { return dureeMax; }
     public void setDureeMax(Integer dureeMax) { this.dureeMax = dureeMax; }
 
-    public Date getDateDebut() { return dateDebut; }
-    public void setDateDebut(Date dateDebut) { this.dateDebut = dateDebut; }
-
     public Date getDateRetourPrevue() { return dateRetourPrevue; }
     public void setDateRetourPrevue(Date dateRetourPrevue) { this.dateRetourPrevue = dateRetourPrevue; }
+
+    public Integer getIdStatusCourant() { return idStatusCourant; }
+    public void setIdStatusCourant(Integer idStatusCourant) { this.idStatusCourant = idStatusCourant; }
+
+    public String getStatusCourant() { return statusCourant; }
+    public void setStatusCourant(String statusCourant) { this.statusCourant = statusCourant; }
 }

@@ -1,5 +1,7 @@
 package repo.models;
 
+import java.sql.Date;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -15,16 +17,9 @@ public class Adherant {
 
     private String nom;
     private String prenom;
+    private Date naissance;
 
     public Adherant() {}
-
-    public Adherant(TypeAdherant typeAdherant, String nom, String prenom) {
-        this.typeAdherant = typeAdherant;
-        this.nom = nom;
-        this.prenom = prenom;
-    }
-
-    // Getters and setters...
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -37,4 +32,7 @@ public class Adherant {
 
     public String getPrenom() { return prenom; }
     public void setPrenom(String prenom) { this.prenom = prenom; }
+
+    public Date getNaissance() { return naissance; }
+    public void setNaissance(Date naissance) { this.naissance = naissance; }
 }

@@ -1,37 +1,46 @@
 package repo.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import repo.models.Reservation;
 import repo.repositories.ReservationRepository;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ReservationService {
+    private final ReservationRepository repo;
 
-    private final ReservationRepository reservationRepository;
-
-    public ReservationService(ReservationRepository reservationRepository) {
-        this.reservationRepository = reservationRepository;
+    @Autowired
+    public ReservationService(ReservationRepository repo) {
+        this.repo = repo;
     }
 
-    public Reservation save(Reservation reservation) {
-        return reservationRepository.save(reservation);
+    public Reservation create(Reservation object) {
+        return repo.save(object);
     }
 
-    @Transactional(readOnly = true)
-    public List<Reservation> getAll() {
-        return reservationRepository.findAll();
+    public List<Reservation> read() {
+        return repo.findAll();
     }
 
-    @Transactional(readOnly = true)
-    public Optional<Reservation> getReservationById(int id) {
-        return reservationRepository.findById(id);
+    public Optional<Reservation> readById(int id) {
+        return repo.findById(id);
+    }
+
+    public Reservation update(int id, Reservation object) {
+        Optional<Reservation> optional = repo.findById(id);
+        if (optional.isPresent()) {
+            Reservation existing = optional.get();
+            existing.setAdherant(object.getAdherant());
+            existing.setExemplaire(object.getExemplaire());
+            existing.setDateReservation(object.getDateReservation());
+            return repo.save(existing);
+        }
+        return null;
     }
 
     public void delete(int id) {
-        reservationRepository.deleteById(id);
+        repo.deleteById(id);
     }
 }

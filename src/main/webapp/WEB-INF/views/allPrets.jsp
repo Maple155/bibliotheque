@@ -10,7 +10,6 @@
     <title>Liste de tous les prêts</title>
     <meta charset="UTF-8">
     <style>
-        /* mêmes styles que précédemment */
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
             background: #f4f6fb;
@@ -75,28 +74,33 @@
         <h1>Liste de tous les prêts</h1>
 
         <div class="filter-bar">
+            <input type="text" id="filter-dateDebut" placeholder="Filtrer par date début" onkeyup="filterTable()">
             <input type="text" id="filter-adherantNom" placeholder="Filtrer par nom adhérant" onkeyup="filterTable()">
             <input type="text" id="filter-adherantPrenom" placeholder="Filtrer par prénom adhérant" onkeyup="filterTable()">
             <input type="text" id="filter-typeAdherant" placeholder="Filtrer par type adhérant" onkeyup="filterTable()">
-            <input type="text" id="filter-livreTitre" placeholder="Filtrer par titre livre" onkeyup="filterTable()">
             <input type="text" id="filter-numeroExemplaire" placeholder="Filtrer par numéro exemplaire" onkeyup="filterTable()">
+            <input type="text" id="filter-livreTitre" placeholder="Filtrer par titre livre" onkeyup="filterTable()">
             <input type="text" id="filter-typePret" placeholder="Filtrer par type prêt" onkeyup="filterTable()">
-            <input type="text" id="filter-dateDebut" placeholder="Filtrer par date début" onkeyup="filterTable()">
-            <input type="text" id="filter-dateRetour" placeholder="Filtrer par date retour prévue" onkeyup="filterTable()">
+            <input type="text" id="filter-exemplaireMax" placeholder="Filtrer par exemplaire max" onkeyup="filterTable()">
+            <input type="text" id="filter-dureeMax" placeholder="Filtrer par durée max" onkeyup="filterTable()">
+            <input type="text" id="filter-dateRetourPrevue" placeholder="Filtrer par date retour prévue" onkeyup="filterTable()">
+            <input type="text" id="filter-statusCourant" placeholder="Filtrer par statut courant" onkeyup="filterTable()">
         </div>
 
         <table id="prets-table" border="1">
             <thead>
                 <tr>
+                    <th>Date Début</th>
                     <th>Nom Adhérant</th>
                     <th>Prénom Adhérant</th>
                     <th>Type Adhérant</th>
-                    <th>Titre Livre</th>
                     <th>Numéro Exemplaire</th>
+                    <th>Titre Livre</th>
                     <th>Type Prêt</th>
-                    <th>Date Début</th>
+                    <th>Exemplaire Max</th>
                     <th>Durée Max (jours)</th>
                     <th>Date Retour Prévue</th>
+                    <th>Statut</th>
                 </tr>
             </thead>
             <tbody>
@@ -105,21 +109,23 @@
                         for (V_pretsAvecDateRetour pret : allPrets) {
                 %>
                 <tr>
+                    <td><%= pret.getDateDebut() != null ? pret.getDateDebut() : "-" %></td>
                     <td><%= pret.getAdherantNom() != null ? pret.getAdherantNom() : "-" %></td>
                     <td><%= pret.getAdherantPrenom() != null ? pret.getAdherantPrenom() : "-" %></td>
                     <td><%= pret.getTypeAdherant() != null ? pret.getTypeAdherant() : "-" %></td>
-                    <td><%= pret.getLivreTitre() != null ? pret.getLivreTitre() : "-" %></td>
                     <td><%= pret.getNumeroExemplaire() != null ? pret.getNumeroExemplaire() : "-" %></td>
+                    <td><%= pret.getLivreTitre() != null ? pret.getLivreTitre() : "-" %></td>
                     <td><%= pret.getTypePret() != null ? pret.getTypePret() : "-" %></td>
-                    <td><%= pret.getDateDebut() != null ? pret.getDateDebut() : "-" %></td>
+                    <td><%= pret.getExemplaireMax() != null ? pret.getExemplaireMax() : "-" %></td>
                     <td><%= pret.getDureeMax() != null ? pret.getDureeMax() : "-" %></td>
                     <td><%= pret.getDateRetourPrevue() != null ? pret.getDateRetourPrevue() : "-" %></td>
+                    <td><%= pret.getStatusCourant() != null ? pret.getStatusCourant() : "-" %></td>
                 </tr>
                 <%
                         }
                     } else {
                 %>
-                <tr><td colspan="9">Aucun prêt enregistré</td></tr>
+                <tr><td colspan="11">Aucun prêt enregistré</td></tr>
                 <%
                     }
                 %>
@@ -130,28 +136,34 @@
     <script>
         function filterTable() {
             const filters = {
+                dateDebut: document.getElementById('filter-dateDebut').value.toLowerCase(),
                 adherantNom: document.getElementById('filter-adherantNom').value.toLowerCase(),
                 adherantPrenom: document.getElementById('filter-adherantPrenom').value.toLowerCase(),
                 typeAdherant: document.getElementById('filter-typeAdherant').value.toLowerCase(),
-                livreTitre: document.getElementById('filter-livreTitre').value.toLowerCase(),
                 numeroExemplaire: document.getElementById('filter-numeroExemplaire').value.toLowerCase(),
+                livreTitre: document.getElementById('filter-livreTitre').value.toLowerCase(),
                 typePret: document.getElementById('filter-typePret').value.toLowerCase(),
-                dateDebut: document.getElementById('filter-dateDebut').value.toLowerCase(),
-                dateRetour: document.getElementById('filter-dateRetour').value.toLowerCase()
+                exemplaireMax: document.getElementById('filter-exemplaireMax').value.toLowerCase(),
+                dureeMax: document.getElementById('filter-dureeMax').value.toLowerCase(),
+                dateRetourPrevue: document.getElementById('filter-dateRetourPrevue').value.toLowerCase(),
+                statusCourant: document.getElementById('filter-statusCourant').value.toLowerCase()
             };
 
             const rows = document.querySelectorAll('#prets-table tbody tr');
             rows.forEach(row => {
                 const cells = row.children;
                 const show =
-                    (filters.adherantNom === '' || cells[0].textContent.toLowerCase().includes(filters.adherantNom)) &&
-                    (filters.adherantPrenom === '' || cells[1].textContent.toLowerCase().includes(filters.adherantPrenom)) &&
-                    (filters.typeAdherant === '' || cells[2].textContent.toLowerCase().includes(filters.typeAdherant)) &&
-                    (filters.livreTitre === '' || cells[3].textContent.toLowerCase().includes(filters.livreTitre)) &&
+                    (filters.dateDebut === '' || cells[0].textContent.toLowerCase().includes(filters.dateDebut)) &&
+                    (filters.adherantNom === '' || cells[1].textContent.toLowerCase().includes(filters.adherantNom)) &&
+                    (filters.adherantPrenom === '' || cells[2].textContent.toLowerCase().includes(filters.adherantPrenom)) &&
+                    (filters.typeAdherant === '' || cells[3].textContent.toLowerCase().includes(filters.typeAdherant)) &&
                     (filters.numeroExemplaire === '' || cells[4].textContent.toLowerCase().includes(filters.numeroExemplaire)) &&
-                    (filters.typePret === '' || cells[5].textContent.toLowerCase().includes(filters.typePret)) &&
-                    (filters.dateDebut === '' || cells[6].textContent.toLowerCase().includes(filters.dateDebut)) &&
-                    (filters.dateRetour === '' || cells[8].textContent.toLowerCase().includes(filters.dateRetour));
+                    (filters.livreTitre === '' || cells[5].textContent.toLowerCase().includes(filters.livreTitre)) &&
+                    (filters.typePret === '' || cells[6].textContent.toLowerCase().includes(filters.typePret)) &&
+                    (filters.exemplaireMax === '' || cells[7].textContent.toLowerCase().includes(filters.exemplaireMax)) &&
+                    (filters.dureeMax === '' || cells[8].textContent.toLowerCase().includes(filters.dureeMax)) &&
+                    (filters.dateRetourPrevue === '' || cells[9].textContent.toLowerCase().includes(filters.dateRetourPrevue)) &&
+                    (filters.statusCourant === '' || cells[10].textContent.toLowerCase().includes(filters.statusCourant));
 
                 row.style.display = show ? '' : 'none';
             });

@@ -14,6 +14,13 @@ DROP TABLE IF EXISTS Type_pret;
 
 -- Étape 2 : Recréer les tables
 
+-- Rarete des livres
+CREATE TABLE Rarete (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    type VARCHAR(100)
+);
+
+-- Livres
 CREATE TABLE Livre (
     id INT AUTO_INCREMENT PRIMARY KEY,
     titre VARCHAR(255) NOT NULL,
@@ -23,28 +30,33 @@ CREATE TABLE Livre (
     nbChapitre INT,
     langue VARCHAR(50),
     editeur VARCHAR(100),
-    genre VARCHAR(100)
+    genre VARCHAR(100),
+    id_rarete INT,
+    FOREIGN KEY (id_rarete) REFERENCES Rarete(id)
 );
 
+-- Exemplaires
 CREATE TABLE Exemplaire (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_livre INT NOT NULL,
     numero_exemplaire INT,
     FOREIGN KEY (id_livre) REFERENCES Livre(id)
-)
+);
 
+-- Type d'adhérant
 CREATE TABLE Type_adherant (
     id INT AUTO_INCREMENT PRIMARY KEY,
     type VARCHAR(100) NOT NULL
 );
 /*
-Type adherant 
+Exemples :
     Etudiant
     Professionnel 
     Professeur
     Anonyme
 */
 
+-- Adhérants
 CREATE TABLE Adherant (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_type_adherant INT NOT NULL,
@@ -53,39 +65,58 @@ CREATE TABLE Adherant (
     FOREIGN KEY (id_type_adherant) REFERENCES Type_adherant(id)
 );
 
+-- Blacklist pour certains types d'adhérants
 CREATE TABLE BlacklistLivres (
-    id SERIAL PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     id_type_adherant INT NOT NULL,
     id_livre INT NOT NULL,
     FOREIGN KEY (id_type_adherant) REFERENCES Type_adherant(id),
     FOREIGN KEY (id_livre) REFERENCES Livre(id)
 );
 
+-- Inscription
 CREATE TABLE Inscription (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_adherant INT NOT NULL,
     date_inscription DATE,
-    status ENUM('actif', 'inactif') DEFAULT 'actif',
     FOREIGN KEY (id_adherant) REFERENCES Adherant(id)
 );
 
-CREATE TABLE duree_inscripiton(
+-- Type de statut pour inscription
+CREATE TABLE type_status_inscription (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    type VARCHAR(55)
+);
+
+-- Statut d'inscription
+CREATE TABLE status_inscription (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_status INT, 
+    id_inscription INT,
+    FOREIGN KEY (id_status) REFERENCES type_status_inscription(id),
+    FOREIGN KEY (id_inscription) REFERENCES Inscription(id)
+);
+
+-- Durée de l'inscription par type d'adhérant
+CREATE TABLE duree_inscription (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_type_adherant INT,
     duree INT,
     FOREIGN KEY (id_type_adherant) REFERENCES Type_adherant(id)
+);
 
-)
-
+-- Type de prêt
 CREATE TABLE Type_pret (
     id INT AUTO_INCREMENT PRIMARY KEY,
     type VARCHAR(100) NOT NULL
 );
 /*
-Type pret 
+Exemples :
     a domicile
     sur place
 */
+
+-- Condition de prêt par type d'adhérant et type de prêt
 CREATE TABLE Condition_pret (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_type_adherant INT NOT NULL,
@@ -96,6 +127,7 @@ CREATE TABLE Condition_pret (
     FOREIGN KEY (id_type_pret) REFERENCES Type_pret(id)
 );
 
+-- Prêt
 CREATE TABLE Pret (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_adherant INT NOT NULL,
@@ -107,31 +139,79 @@ CREATE TABLE Pret (
     FOREIGN KEY (type_pret) REFERENCES Type_pret(id)
 );
 
+-- Type de statut de prêt
+CREATE TABLE type_status_pret (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    type VARCHAR(50)
+);
+/*
+    en attente
+    en cours
+    terminé
+    refusé
+*/
+
+-- Statut du prêt
+CREATE TABLE status_pret (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_pret INT,
+    id_status INT,
+    FOREIGN KEY (id_pret) REFERENCES Pret(id),
+    FOREIGN KEY (id_status) REFERENCES type_status_pret(id)
+);
+
+-- Retour du prêt
+CREATE TABLE retour_pret (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_pret INT,
+    date_retour DATE,
+    FOREIGN KEY (id_pret) REFERENCES Pret(id)
+);
+
+-- Pénalité
 CREATE TABLE Penalite (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_pret INT NOT NULL,
-    -- montant DECIMAL(10,2),
     date DATE,
     FOREIGN KEY (id_pret) REFERENCES Pret(id)
 );
 
+-- Réservation
 CREATE TABLE Reservation (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_adherant INT NOT NULL,
     id_exemplaire INT NOT NULL,
     date_reservation DATE NOT NULL,
-    statut ENUM('en attente', 'annulée', 'effectuée') DEFAULT 'en attente',
     FOREIGN KEY (id_adherant) REFERENCES Adherant(id),
     FOREIGN KEY (id_exemplaire) REFERENCES Exemplaire(id)
 );
 
+-- Statut de réservation
+CREATE TABLE status_reservation (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_reservation INT,
+    id_status INT,
+    FOREIGN KEY (id_reservation) REFERENCES Reservation(id),
+    FOREIGN KEY (id_status) REFERENCES type_status_pret(id)
+);
+
+-- Prolongement de prêt
 CREATE TABLE Prolongement_pret (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_pret INT NOT NULL,
     date_prolongement DATE NOT NULL,
-    nouvelle_date_retour DATE NOT NULL,
     FOREIGN KEY (id_pret) REFERENCES Pret(id)
 );
+
+-- Statut de prolongement
+CREATE TABLE status_prolongement (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_prolongement INT,
+    id_status INT,
+    FOREIGN KEY (id_prolongement) REFERENCES Prolongement_pret(id),
+    FOREIGN KEY (id_status) REFERENCES type_status_pret(id)
+);
+
 
 CREATE OR REPLACE VIEW v_exemplaires_restants AS
 SELECT 

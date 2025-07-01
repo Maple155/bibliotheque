@@ -1,37 +1,47 @@
 package repo.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import repo.models.ConditionPret;
 import repo.repositories.ConditionPretRepository;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ConditionPretService {
+    private final ConditionPretRepository repo;
 
-    private final ConditionPretRepository conditionPretRepository;
-
-    public ConditionPretService(ConditionPretRepository conditionPretRepository) {
-        this.conditionPretRepository = conditionPretRepository;
+    @Autowired
+    public ConditionPretService(ConditionPretRepository repo) {
+        this.repo = repo;
     }
 
-    public ConditionPret save(ConditionPret conditionPret) {
-        return conditionPretRepository.save(conditionPret);
+    public ConditionPret create(ConditionPret object) {
+        return repo.save(object);
     }
 
-    @Transactional(readOnly = true)
-    public List<ConditionPret> getAll() {
-        return conditionPretRepository.findAll();
+    public List<ConditionPret> read() {
+        return repo.findAll();
     }
 
-    @Transactional(readOnly = true)
-    public Optional<ConditionPret> getConditionPretById(int id) {
-        return conditionPretRepository.findById(id);
+    public Optional<ConditionPret> readById(int id) {
+        return repo.findById(id);
+    }
+
+    public ConditionPret update(int id, ConditionPret object) {
+        Optional<ConditionPret> optional = repo.findById(id);
+        if (optional.isPresent()) {
+            ConditionPret existing = optional.get();
+            existing.setTypeAdherant(object.getTypeAdherant());
+            existing.setTypePret(object.getTypePret());
+            existing.setExemplaireMax(object.getExemplaireMax());
+            existing.setDureeMax(object.getDureeMax());
+            return repo.save(existing);
+        }
+        return null;
     }
 
     public void delete(int id) {
-        conditionPretRepository.deleteById(id);
+        repo.deleteById(id);
     }
 }

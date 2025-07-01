@@ -1,7 +1,7 @@
 package repo.models;
 
-import java.util.*;
 import jakarta.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "Pret")
@@ -22,7 +22,7 @@ public class Pret {
     @JoinColumn(name = "type_pret", nullable = false)
     private TypePret typePret;
 
-    @Column(name = "date_debut")
+    @Temporal(TemporalType.DATE)
     private Date dateDebut;
 
     public Pret() {}
@@ -33,9 +33,7 @@ public class Pret {
         this.typePret = typePret;
         this.dateDebut = dateDebut;
     }
-
-    // Getters and setters...
-
+    
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 

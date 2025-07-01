@@ -1,37 +1,45 @@
 package repo.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import repo.models.Exemplaire;
 import repo.repositories.ExemplaireRepository;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ExemplaireService {
+    private final ExemplaireRepository repo;
 
-    private final ExemplaireRepository exemplaireRepository;
-
-    public ExemplaireService(ExemplaireRepository exemplaireRepository) {
-        this.exemplaireRepository = exemplaireRepository;
+    @Autowired
+    public ExemplaireService(ExemplaireRepository repo) {
+        this.repo = repo;
     }
 
-    public Exemplaire save(Exemplaire exemplaire) {
-        return exemplaireRepository.save(exemplaire);
+    public Exemplaire create(Exemplaire object) {
+        return repo.save(object);
     }
 
-    @Transactional(readOnly = true)
-    public List<Exemplaire> getAll() {
-        return exemplaireRepository.findAll();
+    public List<Exemplaire> read() {
+        return repo.findAll();
     }
 
-    @Transactional(readOnly = true)
-    public Optional<Exemplaire> getExemplaireById(int id) {
-        return exemplaireRepository.findById(id);
+    public Optional<Exemplaire> readById(int id) {
+        return repo.findById(id);
+    }
+
+    public Exemplaire update(int id, Exemplaire object) {
+        Optional<Exemplaire> optional = repo.findById(id);
+        if (optional.isPresent()) {
+            Exemplaire existing = optional.get();
+            existing.setLivre(object.getLivre());
+            existing.setNumeroExemplaire(object.getNumeroExemplaire());
+            return repo.save(existing);
+        }
+        return null;
     }
 
     public void delete(int id) {
-        exemplaireRepository.deleteById(id);
+        repo.deleteById(id);
     }
 }

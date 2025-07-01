@@ -1,7 +1,7 @@
 package repo.models;
 
-import java.util.*;
 import jakarta.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "Penalite")
@@ -14,16 +14,10 @@ public class Penalite {
     @JoinColumn(name = "id_pret", nullable = false)
     private Pret pret;
 
+    @Temporal(TemporalType.DATE)
     private Date date;
 
     public Penalite() {}
-
-    public Penalite(Pret pret, Date date) {
-        this.pret = pret;
-        this.date = date;
-    }
-
-    // Getters and setters...
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }

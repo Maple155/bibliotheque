@@ -44,7 +44,7 @@ public class LoginController {
             session.setAttribute("adherant", adherant);
 
             List<V_exemplairesRestants> exemplairesRestants = exemplairesRestantsService.read();
-            List<TypePret> typePrets= typePretService.getAll();
+            List<TypePret> typePrets= typePretService.read();
 
             model.addAttribute("liste_livre", exemplairesRestants);
             model.addAttribute("adherant", adherant);
@@ -64,7 +64,7 @@ public class LoginController {
         Adherant adherant = (Adherant) session.getAttribute("adherant");
 
         List<V_exemplairesRestants> exemplairesRestants = exemplairesRestantsService.read();
-        List<TypePret> typePrets= typePretService.getAll();
+        List<TypePret> typePrets= typePretService.read();
 
         model.addAttribute("liste_livre", exemplairesRestants);
         model.addAttribute("adherant", adherant);
@@ -89,7 +89,7 @@ public class LoginController {
             
         if (nom.equals("ranto") && prenom.equals("ranto")) {
             List<V_exemplairesRestants> exemplairesRestants = exemplairesRestantsService.read();
-            List<TypePret> typePrets= typePretService.getAll();
+            List<TypePret> typePrets= typePretService.read();
             Adherant adherant = (Adherant) session.getAttribute("adherant");
 
             session.setAttribute("admin", "1");

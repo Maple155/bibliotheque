@@ -55,12 +55,12 @@ public class PretController {
         Date date_pret = Date.valueOf(date);
         int nombre = Integer.parseInt(str_nombre);
 
-        Adherant currAdherant = adherantService.getAdherantById(id_adherant).orElse(null);
-        Exemplaire currExemplaire = exemplaireService.getExemplaireById(id_exemplaire).orElse(null);
-        TypePret currPret = typePretService.getTypePretById(id_type_pret).orElse(null);
+        Adherant currAdherant = adherantService.readById(id_adherant).orElse(null);
+        Exemplaire currExemplaire = exemplaireService.readById(id_exemplaire).orElse(null);
+        TypePret currPret = typePretService.readById(id_type_pret).orElse(null);
         
         List<V_exemplairesRestants> exemplairesRestants = exemplairesRestantsService.read();
-        List<TypePret> typePrets= typePretService.getAll();
+        List<TypePret> typePrets= typePretService.read();
 
         List<BlacklistLivres> blacklistLivres = blacklistLivresService.read();
         V_exemplairesRestants exemplaireRestants = exemplairesRestantsService.findByExemplaire(id_exemplaire);
@@ -81,7 +81,7 @@ public class PretController {
         }
 
         Pret pret = new Pret(currAdherant, currExemplaire, currPret, date_pret);
-        pretService.save(pret);
+        pret = pretService.create(pret);
 
         model.addAttribute("success", "Emprunter avec succes");
         return "home";

@@ -13,16 +13,9 @@ public class Exemplaire {
     @JoinColumn(name = "id_livre", nullable = false)
     private Livre livre;
 
-    private Integer nbExemplaire;
+    private Integer numeroExemplaire;
 
     public Exemplaire() {}
-
-    public Exemplaire(Livre livre, Integer nbExemplaire) {
-        this.livre = livre;
-        this.nbExemplaire = nbExemplaire;
-    }
-
-    // Getters and setters...
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -30,6 +23,6 @@ public class Exemplaire {
     public Livre getLivre() { return livre; }
     public void setLivre(Livre livre) { this.livre = livre; }
 
-    public Integer getNbExemplaire() { return nbExemplaire; }
-    public void setNbExemplaire(Integer nbExemplaire) { this.nbExemplaire = nbExemplaire; }
+    public Integer getNumeroExemplaire() { return numeroExemplaire; }
+    public void setNumeroExemplaire(Integer numeroExemplaire) { this.numeroExemplaire = numeroExemplaire; }
 }

@@ -14,11 +14,13 @@ D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\services\VPretsAvecDateRetourService.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\repositories\BlacklistLivresRepository.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\repositories\TypeStatusPretRepository.java
+D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\models\V_pretsAvecStatusActuel.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\repositories\StatusProlongementRepository.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\repositories\ExemplaireRepository.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\services\StatusPretService.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\repositories\StatusReservationRepository.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\services\DureeInscriptionService.java
+D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\repositories\V_pretsAvecStatusActuelRepository.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\repositories\TypePretRepository.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\repositories\AdherantRepository.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\services\ExemplaireService.java
@@ -72,6 +74,7 @@ D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\services\BibliothecaireService.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\services\LivreService.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\repositories\StatusPretRepository.java
+D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\services\V_pretsAvecStatusActuelService.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\repositories\RareteRepository.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\services\ConditionPretService.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\models\Exemplaire.java

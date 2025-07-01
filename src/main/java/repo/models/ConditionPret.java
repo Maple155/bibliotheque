@@ -17,7 +17,10 @@ public class ConditionPret {
     @JoinColumn(name = "id_type_pret", nullable = false)
     private TypePret typePret;
 
+    @Column(name = "exemplaire_max")
     private Integer exemplaireMax;
+
+    @Column(name = "duree_max")
     private Integer dureeMax;
 
     public ConditionPret() {}

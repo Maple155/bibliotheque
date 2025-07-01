@@ -294,3 +294,27 @@ FROM
            WHERE sp2.id_pret = p.id
        )
     LEFT JOIN type_status_pret ts ON sp_courant.id_status = ts.id
+
+----------------------------------------------------------------
+
+CREATE OR REPLACE VIEW v_prets_avec_status_actuel AS
+SELECT
+    p.id AS id_pret,
+    p.id_adherant,
+    p.id_exemplaire,
+    p.type_pret,
+    p.date_debut,
+    tsp.type AS statut_actuel
+FROM
+    Pret p
+    JOIN status_pret sp ON sp.id_pret = p.id
+    JOIN type_status_pret tsp ON tsp.id = sp.id_status
+    JOIN (
+        SELECT
+            id_pret,
+            MAX(id) AS id_status_pret
+        FROM
+            status_pret
+        GROUP BY
+            id_pret
+    ) dernier_status ON dernier_status.id_pret = sp.id_pret AND dernier_status.id_status_pret = sp.id;

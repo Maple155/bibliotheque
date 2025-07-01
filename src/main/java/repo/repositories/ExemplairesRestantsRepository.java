@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 @Repository
 public interface ExemplairesRestantsRepository extends JpaRepository<V_exemplairesRestants, Integer> {
 
-    @Query("SELECT v FROM V_exemplairesRestants v WHERE v.id_exemplaire = :id_exemplaire")
-    V_exemplairesRestants findByExemplaire(@Param("id_exemplaire") Integer id_exemplaire);
+    @Query("SELECT v FROM V_exemplairesRestants v WHERE v.idExemplaire = :idExemplaire")
+    V_exemplairesRestants findByExemplaire(@Param("idExemplaire") Integer idExemplaire);    
 
 }

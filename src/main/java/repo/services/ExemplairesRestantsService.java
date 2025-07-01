@@ -42,10 +42,6 @@ public class ExemplairesRestantsService {
                 existing.setLangue(object.getLangue());
                 existing.setEditeur(object.getEditeur());
                 existing.setGenre(object.getGenre());
-                existing.setNbExemplairesTotaux(object.getNbExemplairesTotaux());
-                existing.setNbExemplairesPretes(object.getNbExemplairesPretes());
-                existing.setNbExemplairesRestants(object.getNbExemplairesRestants());
-                existing.setId_exemplaire(object.getId_exemplaire());
                 return repo.save(existing);
             }
             return null;

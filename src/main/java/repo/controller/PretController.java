@@ -80,13 +80,7 @@ public class PretController {
             }
         }
 
-        if (exemplaireRestants.getNbExemplairesRestants() == 0) {
-            model.addAttribute("error", "Exemplaires insuffisantes");
-                    
-            return "home";
-        }
-
-        Pret pret = new Pret(currAdherant, currExemplaire, nombre, currPret, date_pret);
+        Pret pret = new Pret(currAdherant, currExemplaire, currPret, date_pret);
         pretService.save(pret);
 
         model.addAttribute("success", "Emprunter avec succes");

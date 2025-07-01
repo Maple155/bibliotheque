@@ -15,52 +15,88 @@ public class V_pretsAvecDateRetour {
 
     @Id
     @Column(name = "id_pret")
-    Integer idPret;
+    private Integer idPret;
 
     @Column(name = "id_adherant")
-    Integer idAdherant;
+    private Integer idAdherant;
+
+    @Column(name = "adherant_nom")
+    private String adherantNom;
+
+    @Column(name = "adherant_prenom")
+    private String adherantPrenom;
+
+    @Column(name = "id_type_adherant")
+    private Integer idTypeAdherant;
+
+    @Column(name = "type_adherant")
+    private String typeAdherant;
 
     @Column(name = "id_exemplaire")
-    Integer idExemplaire;
+    private Integer idExemplaire;
 
-    @Column(name = "nb_exemplaire")
-    Integer nbExemplaire;
+    @Column(name = "numero_exemplaire")
+    private Integer numeroExemplaire;
+
+    @Column(name = "id_livre")
+    private Integer idLivre;
+
+    @Column(name = "livre_titre")
+    private String livreTitre;
 
     @Column(name = "type_pret")
-    Integer typePret;
-
-    @Column(name = "date_debut")
-    Date dateDebut;
+    private String typePret;
 
     @Column(name = "duree_max")
-    Integer dureeMax;
+    private Integer dureeMax;
+
+    @Column(name = "date_debut")
+    private Date dateDebut;
 
     @Column(name = "date_retour_prevue")
-    Date dateRetourPrevue;
+    private Date dateRetourPrevue;
 
     // Getters and Setters
 
     public Integer getIdPret() { return idPret; }
-    public void setIdPret(Integer obj) { idPret = obj; }
+    public void setIdPret(Integer idPret) { this.idPret = idPret; }
 
     public Integer getIdAdherant() { return idAdherant; }
-    public void setIdAdherant(Integer obj) { idAdherant = obj; }
+    public void setIdAdherant(Integer idAdherant) { this.idAdherant = idAdherant; }
+
+    public String getAdherantNom() { return adherantNom; }
+    public void setAdherantNom(String adherantNom) { this.adherantNom = adherantNom; }
+
+    public String getAdherantPrenom() { return adherantPrenom; }
+    public void setAdherantPrenom(String adherantPrenom) { this.adherantPrenom = adherantPrenom; }
+
+    public Integer getIdTypeAdherant() { return idTypeAdherant; }
+    public void setIdTypeAdherant(Integer idTypeAdherant) { this.idTypeAdherant = idTypeAdherant; }
+
+    public String getTypeAdherant() { return typeAdherant; }
+    public void setTypeAdherant(String typeAdherant) { this.typeAdherant = typeAdherant; }
 
     public Integer getIdExemplaire() { return idExemplaire; }
-    public void setIdExemplaire(Integer obj) { idExemplaire = obj; }
+    public void setIdExemplaire(Integer idExemplaire) { this.idExemplaire = idExemplaire; }
 
-    public Integer getNbExemplaire() { return nbExemplaire; }
-    public void setNbExemplaire(Integer obj) { nbExemplaire = obj; }
+    public Integer getNumeroExemplaire() { return numeroExemplaire; }
+    public void setNumeroExemplaire(Integer numeroExemplaire) { this.numeroExemplaire = numeroExemplaire; }
 
-    public Integer getTypePret() { return typePret; }
-    public void setTypePret(Integer obj) { typePret = obj; }
+    public Integer getIdLivre() { return idLivre; }
+    public void setIdLivre(Integer idLivre) { this.idLivre = idLivre; }
 
-    public Date getDateDebut() { return dateDebut; }
-    public void setDateDebut(Date obj) { dateDebut = obj; }
+    public String getLivreTitre() { return livreTitre; }
+    public void setLivreTitre(String livreTitre) { this.livreTitre = livreTitre; }
+
+    public String getTypePret() { return typePret; }
+    public void setTypePret(String typePret) { this.typePret = typePret; }
 
     public Integer getDureeMax() { return dureeMax; }
-    public void setDureeMax(Integer obj) { dureeMax = obj; }
+    public void setDureeMax(Integer dureeMax) { this.dureeMax = dureeMax; }
+
+    public Date getDateDebut() { return dateDebut; }
+    public void setDateDebut(Date dateDebut) { this.dateDebut = dateDebut; }
 
     public Date getDateRetourPrevue() { return dateRetourPrevue; }
-    public void setDateRetourPrevue(Date obj) { dateRetourPrevue = obj; }
+    public void setDateRetourPrevue(Date dateRetourPrevue) { this.dateRetourPrevue = dateRetourPrevue; }
 }

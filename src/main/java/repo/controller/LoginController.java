@@ -56,13 +56,31 @@ public class LoginController {
         return "redirect:/?error=utilisateur introuvable";
     }
 
+    @GetMapping("/home")
+    public String home(
+            HttpSession session,
+            Model model) {
+
+        Adherant adherant = (Adherant) session.getAttribute("adherant");
+
+        List<V_exemplairesRestants> exemplairesRestants = exemplairesRestantsService.read();
+        List<TypePret> typePrets= typePretService.getAll();
+
+        model.addAttribute("liste_livre", exemplairesRestants);
+        model.addAttribute("adherant", adherant);
+        model.addAttribute("typesPret", typePrets);
+
+        return "home";
+    
+    }
+
     @GetMapping("/admin")
     public String loginAdmin ()
     {
         return "loginAdmin";
     }
 
-    @PostMapping("/checkLogin") 
+    @PostMapping("/checkAdmin") 
     public String checkLoginAdmin (
         @RequestParam("nom") String nom,
         @RequestParam("prenom") String prenom,

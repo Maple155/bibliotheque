@@ -11,83 +11,73 @@ import org.hibernate.annotations.Immutable;
 @Immutable
 @Table(name = "v_exemplaires_restants")
 public class V_exemplairesRestants {
-    @Id
-    @Column(name = "id")
-    Integer id;
 
-    @Column(name = "id_exemplaire")
-    Integer id_exemplaire;
+    @Id
+    @Column(name = "id_exemplaire") // chaque exemplaire est unique
+    private Integer idExemplaire;
+
+    @Column(name = "id_livre")
+    private Integer idLivre;
+
+    @Column(name = "numero_exemplaire")
+    private Integer numeroExemplaire;
 
     @Column(name = "titre")
-    String titre;
+    private String titre;
 
     @Column(name = "nbPage")
-    Integer nbPage;
+    private Integer nbPage;
 
     @Column(name = "auteur")
-    String auteur;
+    private String auteur;
 
     @Column(name = "datePublication")
-    Date datePublication;
+    private Date datePublication;
 
     @Column(name = "nbChapitre")
-    Integer nbChapitre;
+    private Integer nbChapitre;
 
     @Column(name = "langue")
-    String langue;
+    private String langue;
 
     @Column(name = "editeur")
-    String editeur;
+    private String editeur;
 
     @Column(name = "genre")
-    String genre;
+    private String genre;
 
-    @Column(name = "nb_exemplaires_totaux")
-    Integer nbExemplairesTotaux;
+    // Getters & Setters
 
-    @Column(name = "nb_exemplaires_pretes")
-    Integer nbExemplairesPretes;
+    public Integer getIdExemplaire() { return idExemplaire; }
+    public void setIdExemplaire(Integer idExemplaire) { this.idExemplaire = idExemplaire; }
 
-    @Column(name = "nb_exemplaires_restants")
-    Integer nbExemplairesRestants;
+    public Integer getIdLivre() { return idLivre; }
+    public void setIdLivre(Integer idLivre) { this.idLivre = idLivre; }
 
-    // Getters and Setters
-    public Integer getId() { return id; }
-    public void setId(Integer obj) { id = obj; }
+    public Integer getNumeroExemplaire() { return numeroExemplaire; }
+    public void setNumeroExemplaire(Integer numeroExemplaire) { this.numeroExemplaire = numeroExemplaire; }
 
     public String getTitre() { return titre; }
-    public void setTitre(String obj) { titre = obj; }
+    public void setTitre(String titre) { this.titre = titre; }
 
     public Integer getNbPage() { return nbPage; }
-    public void setNbPage(Integer obj) { nbPage = obj; }
+    public void setNbPage(Integer nbPage) { this.nbPage = nbPage; }
 
     public String getAuteur() { return auteur; }
-    public void setAuteur(String obj) { auteur = obj; }
+    public void setAuteur(String auteur) { this.auteur = auteur; }
 
     public Date getDatePublication() { return datePublication; }
-    public void setDatePublication(Date obj) { datePublication = obj; }
+    public void setDatePublication(Date datePublication) { this.datePublication = datePublication; }
 
     public Integer getNbChapitre() { return nbChapitre; }
-    public void setNbChapitre(Integer obj) { nbChapitre = obj; }
+    public void setNbChapitre(Integer nbChapitre) { this.nbChapitre = nbChapitre; }
 
     public String getLangue() { return langue; }
-    public void setLangue(String obj) { langue = obj; }
+    public void setLangue(String langue) { this.langue = langue; }
 
     public String getEditeur() { return editeur; }
-    public void setEditeur(String obj) { editeur = obj; }
+    public void setEditeur(String editeur) { this.editeur = editeur; }
 
     public String getGenre() { return genre; }
-    public void setGenre(String obj) { genre = obj; }
-
-    public Integer getNbExemplairesTotaux() { return nbExemplairesTotaux; }
-    public void setNbExemplairesTotaux(Integer obj) { nbExemplairesTotaux = obj; }
-
-    public Integer getNbExemplairesPretes() { return nbExemplairesPretes; }
-    public void setNbExemplairesPretes(Integer obj) { nbExemplairesPretes = obj; }
-
-    public Integer getNbExemplairesRestants() { return nbExemplairesRestants; }
-    public void setNbExemplairesRestants(Integer obj) { nbExemplairesRestants = obj; }
-
-    public Integer getId_exemplaire() { return id_exemplaire; }
-    public void setId_exemplaire(Integer id_exemplaire) { this.id_exemplaire = id_exemplaire; }
+    public void setGenre(String genre) { this.genre = genre; }
 }

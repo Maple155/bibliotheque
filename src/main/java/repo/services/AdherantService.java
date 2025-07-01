@@ -4,6 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repo.models.Adherant;
 import repo.repositories.AdherantRepository;
+
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,5 +50,20 @@ public class AdherantService {
 
     public Adherant findAdherant(String nom, String prenom) {
         return repo.findAdherant(nom, prenom);
+    }
+
+    public static int calculerAge(Date dateNaissance) {
+        if (dateNaissance == null) {
+            throw new IllegalArgumentException("La date de naissance ne peut pas être nulle.");
+        }
+
+        LocalDate naissance = dateNaissance.toLocalDate();
+        LocalDate aujourdHui = LocalDate.now();
+
+        if (naissance.isAfter(aujourdHui)) {
+            throw new IllegalArgumentException("La date de naissance ne peut pas être dans le futur.");
+        }
+
+        return Period.between(naissance, aujourdHui).getYears();
     }
 }

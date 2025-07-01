@@ -3,6 +3,7 @@ repo\services\ExemplairesRestantsService.class
 repo\repositories\BibliothecaireRepository.class
 repo\services\BlacklistAgeService.class
 repo\controller\PretController.class
+repo\models\V_pretsAvecStatusActuel.class
 repo\repositories\StatusReservationRepository.class
 repo\models\ConditionPret.class
 repo\models\StatusReservation.class
@@ -29,6 +30,7 @@ repo\services\StatusInscriptionService.class
 repo\repositories\ReservationRepository.class
 repo\models\BlacklistAge.class
 repo\models\DureeInscription.class
+repo\repositories\V_pretsAvecStatusActuelRepository.class
 repo\repositories\DureeInscriptionRepository.class
 repo\services\ProlongementPretService.class
 repo\services\ConditionPretService.class
@@ -49,6 +51,7 @@ repo\services\InscriptionService.class
 repo\services\TypeAdherantService.class
 repo\repositories\StatusProlongementRepository.class
 repo\repositories\PretRepository.class
+repo\services\V_pretsAvecStatusActuelService.class
 repo\models\TypePret.class
 repo\services\PretService.class
 repo\services\PenaliteService.class

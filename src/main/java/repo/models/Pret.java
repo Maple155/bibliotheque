@@ -22,7 +22,7 @@ public class Pret {
     @JoinColumn(name = "type_pret", nullable = false)
     private TypePret typePret;
 
-    @Temporal(TemporalType.DATE)
+    @Column(name = "date_debut")
     private Date dateDebut;
 
     public Pret() {}

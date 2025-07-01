@@ -13,6 +13,7 @@ public class Exemplaire {
     @JoinColumn(name = "id_livre", nullable = false)
     private Livre livre;
 
+    @Column(name = "numero_exemplaire")
     private Integer numeroExemplaire;
 
     public Exemplaire() {}

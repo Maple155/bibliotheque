@@ -20,24 +20,28 @@ import jakarta.servlet.http.HttpSession;
 public class PretController {
     @Autowired
     private AdherantService adherantService;
-
     @Autowired
     private ExemplairesRestantsService exemplairesRestantsService;
-
     @Autowired
     private TypePretService typePretService;
-
     @Autowired
     private BlacklistLivresService blacklistLivresService;
-
+    @Autowired
+    private BlacklistAgeService blacklistAgeService;
     @Autowired
     private ExemplaireService exemplaireService;
-
     @Autowired
     private PretService pretService;
-
     @Autowired
     private VPretsAvecDateRetourService vPretsAvecDateRetourService;
+    @Autowired
+    private StatusPretService statusPretService;
+    @Autowired
+    private TypeStatusPretService typeStatusPretService;
+    @Autowired
+    private V_pretsAvecStatusActuelService v_pretsAvecStatusActuelService;
+    @Autowired
+    private ConditionPretService conditionPretService;
 
     @PostMapping("/preterLivre")
     public String preterLivre (
@@ -45,7 +49,6 @@ public class PretController {
         @RequestParam("id_exemplaire") String exemplaire,
         @RequestParam("type_pret") String type_pret,
         @RequestParam("date_pret") String date,
-        @RequestParam("nombre") String str_nombre,
         HttpSession session,
         Model model) {
 
@@ -53,7 +56,6 @@ public class PretController {
         int id_exemplaire = Integer.parseInt(exemplaire);
         int id_type_pret = Integer.parseInt(type_pret);
         Date date_pret = Date.valueOf(date);
-        int nombre = Integer.parseInt(str_nombre);
 
         Adherant currAdherant = adherantService.readById(id_adherant).orElse(null);
         Exemplaire currExemplaire = exemplaireService.readById(id_exemplaire).orElse(null);
@@ -63,25 +65,61 @@ public class PretController {
         List<TypePret> typePrets= typePretService.read();
 
         List<BlacklistLivres> blacklistLivres = blacklistLivresService.read();
-        V_exemplairesRestants exemplaireRestants = exemplairesRestantsService.findByExemplaire(id_exemplaire);
 
         model.addAttribute("liste_livre", exemplairesRestants);
         model.addAttribute("adherant", currAdherant);
         model.addAttribute("typesPret", typePrets);
 
-        if (!blacklistLivres.isEmpty()) {    
-            for (int i = 0; i < blacklistLivres.size(); i++) {
-                if (blacklistLivres.get(i).getLivre().getId() == currExemplaire.getLivre().getId() && 
-                blacklistLivres.get(i).getTypeAdherant().getId() == currAdherant.getTypeAdherant().getId()) {
-                    model.addAttribute("error", "Les " + blacklistLivres.get(i).getTypeAdherant().getType() + " ne peuventpas emprunter ce livre");
+        // if (!blacklistLivres.isEmpty()) {    
+        //     for (int i = 0; i < blacklistLivres.size(); i++) {
+        //         if (blacklistLivres.get(i).getLivre().getId() == currExemplaire.getLivre().getId() && 
+        //         blacklistLivres.get(i).getTypeAdherant().getId() == currAdherant.getTypeAdherant().getId()) {
+        //             model.addAttribute("error", "Les " + blacklistLivres.get(i).getTypeAdherant().getType() + " ne peuventpas emprunter ce livre");
                     
-                    return "home";
+        //             return "home";
+        //         }
+        //     }
+        // }
+        List<BlacklistAge> blacklistAges = blacklistAgeService.read();
+        int age_adherant = AdherantService.calculerAge(currAdherant.getNaissance());
+            
+        List<V_pretsAvecStatusActuel> prets = v_pretsAvecStatusActuelService.readByAdherant(id_adherant, "en cours");
+        List<ConditionPret> conditionPrets = conditionPretService.read();
+
+        if (!conditionPrets.isEmpty()) {
+            for (int i = 0; i < conditionPrets.size(); i++) {
+                if (conditionPrets.get(i).getTypeAdherant() == currAdherant.getTypeAdherant()) {
+                    if (conditionPrets.get(i).getTypePret() == currPret && !currPret.getType().equals("sur place")) {
+                        if (prets.size() >= conditionPrets.get(i).getExemplaireMax()) {
+                            model.addAttribute("error", "Vous n'avez pas atteint le nombre maximum de pret que vous pouvez faire");                    
+                            return "home";
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!blacklistAges.isEmpty()) {
+            for (int i = 0; i < blacklistAges.size(); i++) {
+                if (blacklistAges.get(i).getLivre().getId() == currExemplaire.getLivre().getId()) {
+                    if (blacklistAges.get(i).getAgeMin() > age_adherant) {
+                        model.addAttribute("error", "Vous n'avez pas l'age requis pour ce livre");                    
+                        return "home";
+                    }
                 }
             }
         }
 
         Pret pret = new Pret(currAdherant, currExemplaire, currPret, date_pret);
         pret = pretService.create(pret);
+
+        TypeStatusPret type_StatusPret = typeStatusPretService.readById(1).orElse(null);
+        
+        StatusPret status = new StatusPret();
+        status.setPret(pret);
+        status.setTypeStatusPret(type_StatusPret); 
+        status = statusPretService.create(status);
+
 
         model.addAttribute("success", "Emprunter avec succes");
         return "home";

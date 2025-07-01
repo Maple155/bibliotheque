@@ -1,37 +1,45 @@
 package repo.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import repo.models.ProlongementPret;
 import repo.repositories.ProlongementPretRepository;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ProlongementPretService {
+    private final ProlongementPretRepository repo;
 
-    private final ProlongementPretRepository prolongementPretRepository;
-
-    public ProlongementPretService(ProlongementPretRepository prolongementPretRepository) {
-        this.prolongementPretRepository = prolongementPretRepository;
+    @Autowired
+    public ProlongementPretService(ProlongementPretRepository repo) {
+        this.repo = repo;
     }
 
-    public ProlongementPret save(ProlongementPret prolongementPret) {
-        return prolongementPretRepository.save(prolongementPret);
+    public ProlongementPret create(ProlongementPret object) {
+        return repo.save(object);
     }
 
-    @Transactional(readOnly = true)
-    public List<ProlongementPret> getAll() {
-        return prolongementPretRepository.findAll();
+    public List<ProlongementPret> read() {
+        return repo.findAll();
     }
 
-    @Transactional(readOnly = true)
-    public Optional<ProlongementPret> getProlongementPretById(int id) {
-        return prolongementPretRepository.findById(id);
+    public Optional<ProlongementPret> readById(int id) {
+        return repo.findById(id);
+    }
+
+    public ProlongementPret update(int id, ProlongementPret object) {
+        Optional<ProlongementPret> optional = repo.findById(id);
+        if (optional.isPresent()) {
+            ProlongementPret existing = optional.get();
+            existing.setPret(object.getPret());
+            existing.setDateProlongement(object.getDateProlongement());
+            return repo.save(existing);
+        }
+        return null;
     }
 
     public void delete(int id) {
-        prolongementPretRepository.deleteById(id);
+        repo.deleteById(id);
     }
 }

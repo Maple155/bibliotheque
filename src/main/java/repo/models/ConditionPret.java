@@ -22,15 +22,6 @@ public class ConditionPret {
 
     public ConditionPret() {}
 
-    public ConditionPret(TypeAdherant typeAdherant, TypePret typePret, Integer exemplaireMax, Integer dureeMax) {
-        this.typeAdherant = typeAdherant;
-        this.typePret = typePret;
-        this.exemplaireMax = exemplaireMax;
-        this.dureeMax = dureeMax;
-    }
-
-    // Getters and setters...
-
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 

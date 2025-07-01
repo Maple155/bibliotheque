@@ -1,7 +1,7 @@
 package repo.models;
 
-import java.util.*;
 import jakarta.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "Livre")
@@ -10,32 +10,23 @@ public class Livre {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
     private String titre;
-
     private Integer nbPage;
     private String auteur;
+
+    @Temporal(TemporalType.DATE)
     private Date datePublication;
+
     private Integer nbChapitre;
     private String langue;
     private String editeur;
     private String genre;
 
-    @OneToMany(mappedBy = "livre", fetch = FetchType.LAZY)
-    private List<Exemplaire> exemplaires = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_rarete")
+    private Rarete rarete;
 
     public Livre() {}
-
-    public Livre(String titre) {
-        this.titre = titre;
-    }
-
-    public Livre(int id, String titre) {
-        this.id = id;
-        this.titre = titre;
-    }
-
-    // Getters and setters...
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -64,6 +55,6 @@ public class Livre {
     public String getGenre() { return genre; }
     public void setGenre(String genre) { this.genre = genre; }
 
-    public List<Exemplaire> getExemplaires() { return exemplaires; }
-    public void setExemplaires(List<Exemplaire> exemplaires) { this.exemplaires = exemplaires; }
+    public Rarete getRarete() { return rarete; }
+    public void setRarete(Rarete rarete) { this.rarete = rarete; }
 }

@@ -1,37 +1,44 @@
 package repo.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import repo.models.TypePret;
 import repo.repositories.TypePretRepository;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class TypePretService {
+    private final TypePretRepository repo;
 
-    private final TypePretRepository typePretRepository;
-
-    public TypePretService(TypePretRepository typePretRepository) {
-        this.typePretRepository = typePretRepository;
+    @Autowired
+    public TypePretService(TypePretRepository repo) {
+        this.repo = repo;
     }
 
-    public TypePret save(TypePret typePret) {
-        return typePretRepository.save(typePret);
+    public TypePret create(TypePret object) {
+        return repo.save(object);
     }
 
-    @Transactional(readOnly = true)
-    public List<TypePret> getAll() {
-        return typePretRepository.findAll();
+    public List<TypePret> read() {
+        return repo.findAll();
     }
 
-    @Transactional(readOnly = true)
-    public Optional<TypePret> getTypePretById(int id) {
-        return typePretRepository.findById(id);
+    public Optional<TypePret> readById(int id) {
+        return repo.findById(id);
+    }
+
+    public TypePret update(int id, TypePret object) {
+        Optional<TypePret> optional = repo.findById(id);
+        if (optional.isPresent()) {
+            TypePret existing = optional.get();
+            existing.setType(object.getType());
+            return repo.save(existing);
+        }
+        return null;
     }
 
     public void delete(int id) {
-        typePretRepository.deleteById(id);
+        repo.deleteById(id);
     }
 }

@@ -1,37 +1,45 @@
 package repo.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import repo.models.Penalite;
 import repo.repositories.PenaliteRepository;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class PenaliteService {
+    private final PenaliteRepository repo;
 
-    private final PenaliteRepository penaliteRepository;
-
-    public PenaliteService(PenaliteRepository penaliteRepository) {
-        this.penaliteRepository = penaliteRepository;
+    @Autowired
+    public PenaliteService(PenaliteRepository repo) {
+        this.repo = repo;
     }
 
-    public Penalite save(Penalite penalite) {
-        return penaliteRepository.save(penalite);
+    public Penalite create(Penalite object) {
+        return repo.save(object);
     }
 
-    @Transactional(readOnly = true)
-    public List<Penalite> getAll() {
-        return penaliteRepository.findAll();
+    public List<Penalite> read() {
+        return repo.findAll();
     }
 
-    @Transactional(readOnly = true)
-    public Optional<Penalite> getPenaliteById(int id) {
-        return penaliteRepository.findById(id);
+    public Optional<Penalite> readById(int id) {
+        return repo.findById(id);
+    }
+
+    public Penalite update(int id, Penalite object) {
+        Optional<Penalite> optional = repo.findById(id);
+        if (optional.isPresent()) {
+            Penalite existing = optional.get();
+            existing.setPret(object.getPret());
+            existing.setDate(object.getDate());
+            return repo.save(existing);
+        }
+        return null;
     }
 
     public void delete(int id) {
-        penaliteRepository.deleteById(id);
+        repo.deleteById(id);
     }
 }

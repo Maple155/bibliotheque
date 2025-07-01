@@ -1,0 +1,24 @@
+
+--------------------------------------------
+-- CREATE OR REPLACE VIEW v_exemplaires_restants AS
+-- SELECT 
+--     l.id AS id_livre,
+--     l.titre,
+--     l.nbPage,
+--     l.auteur,
+--     l.datePublication,
+--     l.nbChapitre,
+--     l.langue,
+--     l.editeur,
+--     l.genre,
+--     COUNT(e.id) AS nb_exemplaires_totaux,
+--     IFNULL(SUM(CASE WHEN p.id IS NOT NULL THEN 1 ELSE 0 END), 0) AS nb_exemplaires_pretes,
+--     COUNT(e.id) - IFNULL(SUM(CASE WHEN p.id IS NOT NULL THEN 1 ELSE 0 END), 0) AS nb_exemplaires_restants
+-- FROM 
+--     Livre l
+-- LEFT JOIN 
+--     Exemplaire e ON l.id = e.id_livre
+-- LEFT JOIN 
+--     Pret p ON e.id = p.id_exemplaire
+-- GROUP BY 
+--     l.id, l.titre, l.nbPage, l.auteur, l.datePublication, l.nbChapitre, l.langue, l.editeur, l.genre;

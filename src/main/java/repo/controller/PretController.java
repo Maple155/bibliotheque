@@ -36,6 +36,9 @@ public class PretController {
     @Autowired
     private PretService pretService;
 
+    @Autowired
+    private VPretsAvecDateRetourService vPretsAvecDateRetourService;
+
     @PostMapping("/preterLivre")
     public String preterLivre (
         @RequestParam("id_adherant") String adherant,
@@ -52,12 +55,12 @@ public class PretController {
         Date date_pret = Date.valueOf(date);
         int nombre = Integer.parseInt(str_nombre);
 
-        Adherant currAdherant = adherantService.getAdherantById(id_adherant).orElse(null);
-        Exemplaire currExemplaire = exemplaireService.getExemplaireById(id_exemplaire).orElse(null);
-        TypePret currPret = typePretService.getTypePretById(id_type_pret).orElse(null);
+        Adherant currAdherant = adherantService.readById(id_adherant).orElse(null);
+        Exemplaire currExemplaire = exemplaireService.readById(id_exemplaire).orElse(null);
+        TypePret currPret = typePretService.readById(id_type_pret).orElse(null);
         
         List<V_exemplairesRestants> exemplairesRestants = exemplairesRestantsService.read();
-        List<TypePret> typePrets= typePretService.getAll();
+        List<TypePret> typePrets= typePretService.read();
 
         List<BlacklistLivres> blacklistLivres = blacklistLivresService.read();
         V_exemplairesRestants exemplaireRestants = exemplairesRestantsService.findByExemplaire(id_exemplaire);
@@ -77,14 +80,8 @@ public class PretController {
             }
         }
 
-        if (exemplaireRestants.getNbExemplairesRestants() == 0) {
-            model.addAttribute("error", "Exemplaires insuffisantes");
-                    
-            return "home";
-        }
-
-        Pret pret = new Pret(currAdherant, currExemplaire, nombre, currPret, date_pret);
-        pretService.save(pret);
+        Pret pret = new Pret(currAdherant, currExemplaire, currPret, date_pret);
+        pret = pretService.create(pret);
 
         model.addAttribute("success", "Emprunter avec succes");
         return "home";
@@ -95,6 +92,25 @@ public class PretController {
         HttpSession session,
         Model model) {
 
+        Adherant adherant = (Adherant) session.getAttribute("adherant");
+        List<V_pretsAvecDateRetour> allPrets = vPretsAvecDateRetourService.readByAdherant(adherant.getId());
+
+        model.addAttribute("allPrets", allPrets);
         return "mesPrets";
+    }
+
+    @GetMapping("/allPrets")
+    public String getAll(
+        HttpSession session,
+        Model model) {
+        
+        if (session.getAttribute("admin") == null) {
+            return "redirect:/admin";
+        }
+        
+        List<V_pretsAvecDateRetour> allPrets = vPretsAvecDateRetourService.read();
+
+        model.addAttribute("allPrets", allPrets);
+        return "allPrets";
     }
 }

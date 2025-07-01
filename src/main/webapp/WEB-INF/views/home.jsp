@@ -5,13 +5,14 @@
     List<V_exemplairesRestants> liste = (List<V_exemplairesRestants>) request.getAttribute("liste_livre");
     Adherant adherant = (Adherant) request.getAttribute("adherant"); 
     List<TypePret> typesPret = (List<TypePret>) request.getAttribute("typesPret");
+    String error = request.getParameter("error"); 
+    String success = request.getParameter("success");
 %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Liste des Livres</title>
+    <title>Liste des Livres Disponibles</title>
     <meta charset="UTF-8">
-    <%-- <link rel="stylesheet" href="liste_livres.css"> --%>
     <style>
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -22,6 +23,7 @@
         .main-content {
             margin-left: 240px;
             padding: 40px 30px;
+            width: calc(100% - 300px);
         }
         h1 {
             color: #233554;
@@ -34,17 +36,20 @@
             flex-wrap: wrap;
         }
         .filter-bar input, .filter-bar select {
-            padding: 6px 10px;
+            padding: 8px 12px;
             border: 1px solid #cfd8dc;
             border-radius: 4px;
             background: #fff;
             font-size: 1em;
+            min-width: 150px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         table {
             background: #fff;
             border-collapse: collapse;
             width: 100%;
             box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            margin-top: 20px;
         }
         th, td {
             padding: 10px 14px;
@@ -60,6 +65,10 @@
         tbody tr:hover {
             background: #e3e9f6;
         }
+        td:empty::before {
+            content: "-";
+            color: #999;
+        }
         form {
             margin: 0;
         }
@@ -74,39 +83,6 @@
         .btn-submit:hover {
             background: #304a74;
         }
-
-                /* Ajoutez ceci pour mieux gérer l'espacement et la largeur */
-        .main-content {
-            margin-left: 240px;
-            padding: 40px 30px;
-            width: calc(100% - 300px); /* Ajustez selon besoin */
-        }
-
-        /* Améliorez les filtres */
-        .filter-bar input, .filter-bar select {
-            padding: 8px 12px;
-            border: 1px solid #cfd8dc;
-            border-radius: 4px;
-            background: #fff;
-            font-size: 1em;
-            min-width: 150px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        /* Améliorez la table */
-        table {
-            background: #fff;
-            border-collapse: collapse;
-            width: 100%;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-            margin-top: 20px;
-        }
-
-        /* Ajoutez un style pour les cellules vides */
-        td:empty::before {
-            content: "-";
-            color: #999;
-        }
     </style>
 </head>
 <body>
@@ -114,7 +90,7 @@
     <jsp:include page="sideBar.jsp" />
 
     <div class="main-content">
-        <h1>Liste des Livres disponibles</h1>
+        <h1>Liste des Exemplaires Disponibles</h1>
 
         <div class="filter-bar">
             <input type="text" id="filter-titre" placeholder="Filtrer par titre" onkeyup="filterTable()">
@@ -122,8 +98,21 @@
             <input type="text" id="filter-auteur" placeholder="Filtrer par auteur" onkeyup="filterTable()">
             <input type="text" id="filter-datePub" placeholder="Filtrer par date publication" onkeyup="filterTable()">
             <input type="text" id="filter-genre" placeholder="Filtrer par genre" onkeyup="filterTable()">
-            <input type="text" id="filter-restants" placeholder="Filtrer par restants" onkeyup="filterTable()">
+            <input type="text" id="filter-numero" placeholder="Filtrer par numéro exemplaire" onkeyup="filterTable()">
         </div>
+        <br>
+        <%  
+            if (error != null) { 
+        %>
+            <div style="color:red;"><%= error %></div>
+        <% 
+            } else if (success != null){
+
+        %>
+            <div style="color:green;"><%= success %></div>
+        <% 
+            }
+        %>
         <br>
         <table id="livres-table" border="1">
             <thead>
@@ -133,13 +122,13 @@
                     <th>Auteur</th>
                     <th>Date Publication</th>
                     <th>Genre</th>
-                    <th>Restants</th>
+                    <th>Numéro exemplaire</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <%
-                    if (liste != null) {
+                    if (liste != null && !liste.isEmpty()) {
                         for (V_exemplairesRestants livre : liste) {
                 %>
                     <tr>
@@ -148,13 +137,14 @@
                         <td><%= livre.getAuteur() %></td>
                         <td><%= livre.getDatePublication() %></td>
                         <td><%= livre.getGenre() %></td>
-                        <td><%= livre.getNbExemplairesRestants() %></td>
+                        <td><%= livre.getNumeroExemplaire() %></td>
                         <td>
                             <form action="preterLivre" method="post">
                                 <input type="hidden" name="id_adherant" value="<%= adherant.getId() %>">
-                                <input type="hidden" name="id_exemplaire" value="<%= livre.getId_exemplaire()%>">
-                                <select name="type_pret" id="type_pret" required>
-                                    <option value="#">Selectionez</option>
+                                <input type="hidden" name="id_exemplaire" value="<%= livre.getIdExemplaire() %>">
+
+                                <select name="type_pret" required>
+                                    <option value="#">Sélectionnez</option>
                                     <%  
                                         if (typesPret != null) {
                                             for(TypePret typePret : typesPret ) { 
@@ -166,14 +156,10 @@
                                     %>
                                 </select>
                                 <br><br>
-                                <label for="date_pret">Debut du pret :</label>
-                                <input type="date" name="date_pret" id="date_pret" required>
+                                <label for="date_pret">Date du prêt :</label>
+                                <input type="date" name="date_pret" required>
                                 <br><br>
-                                <label for="nombre">Nombre :</label>
-                                <input type="number" name="nombre" id="nombre" required>
-                                <br><br>
-                                <input type="submit" value="Faire un pret" class="btn-submit">
-                                <br>
+                                <input type="submit" value="Faire un prêt" class="btn-submit">
                             </form>
                         </td>
                     </tr>
@@ -181,7 +167,7 @@
                         }
                     } else {
                 %>
-                    <tr><td colspan="7">Aucun livre à afficher</td></tr>
+                    <tr><td colspan="7">Aucun exemplaire disponible</td></tr>
                 <%
                     }
                 %>
@@ -196,7 +182,7 @@
                 auteur: document.getElementById('filter-auteur').value.toLowerCase(),
                 datePub: document.getElementById('filter-datePub').value.toLowerCase(),
                 genre: document.getElementById('filter-genre').value.toLowerCase(),
-                restants: document.getElementById('filter-restants').value.toLowerCase()
+                numero: document.getElementById('filter-numero').value.toLowerCase()
             };
 
             const rows = document.querySelectorAll('#livres-table tbody tr');
@@ -208,7 +194,7 @@
                     (filters.auteur === '' || cells[2].textContent.toLowerCase().includes(filters.auteur)) &&
                     (filters.datePub === '' || cells[3].textContent.toLowerCase().includes(filters.datePub)) &&
                     (filters.genre === '' || cells[4].textContent.toLowerCase().includes(filters.genre)) &&
-                    (filters.restants === '' || cells[5].textContent.toLowerCase().includes(filters.restants));
+                    (filters.numero === '' || cells[5].textContent.toLowerCase().includes(filters.numero));
                 
                 row.style.display = show ? '' : 'none';
             });

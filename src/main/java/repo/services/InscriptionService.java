@@ -1,37 +1,45 @@
 package repo.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import repo.models.Inscription;
 import repo.repositories.InscriptionRepository;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class InscriptionService {
+    private final InscriptionRepository repo;
 
-    private final InscriptionRepository inscriptionRepository;
-
-    public InscriptionService(InscriptionRepository inscriptionRepository) {
-        this.inscriptionRepository = inscriptionRepository;
+    @Autowired
+    public InscriptionService(InscriptionRepository repo) {
+        this.repo = repo;
     }
 
-    public Inscription save(Inscription inscription) {
-        return inscriptionRepository.save(inscription);
+    public Inscription create(Inscription object) {
+        return repo.save(object);
     }
 
-    @Transactional(readOnly = true)
-    public List<Inscription> getAll() {
-        return inscriptionRepository.findAll();
+    public List<Inscription> read() {
+        return repo.findAll();
     }
 
-    @Transactional(readOnly = true)
-    public Optional<Inscription> getInscriptionById(int id) {
-        return inscriptionRepository.findById(id);
+    public Optional<Inscription> readById(int id) {
+        return repo.findById(id);
+    }
+
+    public Inscription update(int id, Inscription object) {
+        Optional<Inscription> optional = repo.findById(id);
+        if (optional.isPresent()) {
+            Inscription existing = optional.get();
+            existing.setAdherant(object.getAdherant());
+            existing.setDateInscription(object.getDateInscription());
+            return repo.save(existing);
+        }
+        return null;
     }
 
     public void delete(int id) {
-        inscriptionRepository.deleteById(id);
+        repo.deleteById(id);
     }
 }

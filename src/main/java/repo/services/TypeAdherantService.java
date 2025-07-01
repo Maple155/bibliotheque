@@ -1,37 +1,44 @@
 package repo.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import repo.models.TypeAdherant;
 import repo.repositories.TypeAdherantRepository;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class TypeAdherantService {
+    private final TypeAdherantRepository repo;
 
-    private final TypeAdherantRepository typeAdherantRepository;
-
-    public TypeAdherantService(TypeAdherantRepository typeAdherantRepository) {
-        this.typeAdherantRepository = typeAdherantRepository;
+    @Autowired
+    public TypeAdherantService(TypeAdherantRepository repo) {
+        this.repo = repo;
     }
 
-    public TypeAdherant save(TypeAdherant typeAdherant) {
-        return typeAdherantRepository.save(typeAdherant);
+    public TypeAdherant create(TypeAdherant object) {
+        return repo.save(object);
     }
 
-    @Transactional(readOnly = true)
-    public List<TypeAdherant> getAll() {
-        return typeAdherantRepository.findAll();
+    public List<TypeAdherant> read() {
+        return repo.findAll();
     }
 
-    @Transactional(readOnly = true)
-    public Optional<TypeAdherant> getTypeAdherantById(int id) {
-        return typeAdherantRepository.findById(id);
+    public Optional<TypeAdherant> readById(int id) {
+        return repo.findById(id);
+    }
+
+    public TypeAdherant update(int id, TypeAdherant object) {
+        Optional<TypeAdherant> optional = repo.findById(id);
+        if (optional.isPresent()) {
+            TypeAdherant existing = optional.get();
+            existing.setType(object.getType());
+            return repo.save(existing);
+        }
+        return null;
     }
 
     public void delete(int id) {
-        typeAdherantRepository.deleteById(id);
+        repo.deleteById(id);
     }
 }

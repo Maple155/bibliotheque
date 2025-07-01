@@ -44,7 +44,7 @@ public class LoginController {
             session.setAttribute("adherant", adherant);
 
             List<V_exemplairesRestants> exemplairesRestants = exemplairesRestantsService.read();
-            List<TypePret> typePrets= typePretService.getAll();
+            List<TypePret> typePrets= typePretService.read();
 
             model.addAttribute("liste_livre", exemplairesRestants);
             model.addAttribute("adherant", adherant);
@@ -54,6 +54,55 @@ public class LoginController {
         }
 
         return "redirect:/?error=utilisateur introuvable";
+    }
+
+    @GetMapping("/home")
+    public String home(
+            HttpSession session,
+            Model model) {
+
+        Adherant adherant = (Adherant) session.getAttribute("adherant");
+
+        List<V_exemplairesRestants> exemplairesRestants = exemplairesRestantsService.read();
+        List<TypePret> typePrets= typePretService.read();
+
+        model.addAttribute("liste_livre", exemplairesRestants);
+        model.addAttribute("adherant", adherant);
+        model.addAttribute("typesPret", typePrets);
+
+        return "home";
+    
+    }
+
+    @GetMapping("/admin")
+    public String loginAdmin ()
+    {
+        return "loginAdmin";
+    }
+
+    @PostMapping("/checkAdmin") 
+    public String checkLoginAdmin (
+        @RequestParam("nom") String nom,
+        @RequestParam("prenom") String prenom,
+        HttpSession session,
+        Model model) {
+            
+        if (nom.equals("ranto") && prenom.equals("ranto")) {
+            List<V_exemplairesRestants> exemplairesRestants = exemplairesRestantsService.read();
+            List<TypePret> typePrets= typePretService.read();
+            Adherant adherant = (Adherant) session.getAttribute("adherant");
+
+            session.setAttribute("admin", "1");
+
+            model.addAttribute("liste_livre", exemplairesRestants);
+            model.addAttribute("adherant", adherant);
+            model.addAttribute("typesPret", typePrets);
+            model.addAttribute("success", "connecter en tant qu' admin reussi");
+            return "home";            
+        }
+
+        model.addAttribute("error", "Admin introuvable");
+        return "redirect:/admin";
     }
 
 }

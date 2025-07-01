@@ -1,7 +1,7 @@
 package repo.models;
 
-import java.util.*;
 import jakarta.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "Inscription")
@@ -14,23 +14,10 @@ public class Inscription {
     @JoinColumn(name = "id_adherant", nullable = false)
     private Adherant adherant;
 
+    @Temporal(TemporalType.DATE)
     private Date dateInscription;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Status status = Status.actif;
-
-    public enum Status { actif, inactif }
-
     public Inscription() {}
-
-    public Inscription(Adherant adherant, Date dateInscription, Status status) {
-        this.adherant = adherant;
-        this.dateInscription = dateInscription;
-        this.status = status;
-    }
-
-    // Getters and setters...
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -40,7 +27,4 @@ public class Inscription {
 
     public Date getDateInscription() { return dateInscription; }
     public void setDateInscription(Date dateInscription) { this.dateInscription = dateInscription; }
-
-    public Status getStatus() { return status; }
-    public void setStatus(Status status) { this.status = status; }
 }

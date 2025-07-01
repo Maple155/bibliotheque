@@ -7,8 +7,7 @@ import jakarta.persistence.*;
 public class BlacklistLivres {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    Integer id;
+    private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_type_adherant", nullable = false)
@@ -18,25 +17,14 @@ public class BlacklistLivres {
     @JoinColumn(name = "id_livre", nullable = false)
     private Livre livre;
 
-    // Getters & Setters
-    public Integer getId() {
-        return id;
-    }
-    public void setId(Integer obj) {
-        id = obj;
-    }
+    public BlacklistLivres() {}
 
-    public TypeAdherant getTypeAdherant() {
-        return typeAdherant;
-    }
-    public void setTypeAdherant(TypeAdherant obj) {
-        typeAdherant = obj;
-    }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    public Livre getLivre() {
-        return livre;
-    }
-    public void setLivre(Livre obj) {
-        livre = obj;
-    }
+    public TypeAdherant getTypeAdherant() { return typeAdherant; }
+    public void setTypeAdherant(TypeAdherant typeAdherant) { this.typeAdherant = typeAdherant; }
+
+    public Livre getLivre() { return livre; }
+    public void setLivre(Livre livre) { this.livre = livre; }
 }

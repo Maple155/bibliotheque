@@ -69,10 +69,10 @@
         %>
         <br>
         <label for="nom">Nom :</label>
-        <input type="text" name="nom" id="nom" required>
+        <input type="text" name="nom" id="nom" value="Dupont" required>
 
         <label for="pwd">Prenom :</label>
-        <input type="text" name="prenom" id="prenom" required>
+        <input type="text" name="prenom" id="prenom" value="Alice" required>
 
         <input type="submit" value="Valider">
     </form>

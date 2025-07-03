@@ -14,7 +14,7 @@ public class RetourPret {
     @JoinColumn(name = "id_pret")
     private Pret pret;
 
-    @Temporal(TemporalType.DATE)
+    @Column(name = "date_retour")
     private Date dateRetour;
 
     public RetourPret() {}

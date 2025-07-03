@@ -3,8 +3,8 @@
 <%@ page import="repo.models.V_pretsAvecDateRetour" %>
 <%
     List<V_pretsAvecDateRetour> allPrets = (List<V_pretsAvecDateRetour>) request.getAttribute("allPrets");
-    String error = request.getParameter("error"); 
-    String success = request.getParameter("success");
+    String error = (String) request.getAttribute("error"); 
+    String success = (String) request.getAttribute("success");
 %>
 <!DOCTYPE html>
 <html>
@@ -130,14 +130,16 @@
                     <td><%= pret.getDureeMax() != null ? pret.getDureeMax() : "-" %></td>
                     <td><%= pret.getDateRetourPrevue() != null ? pret.getDateRetourPrevue() : "-" %></td>
                     <td>
-                        <from method="post" action="">
-                            <input type="hidden" name="id_pret" value="<%= pret.getIdPret() %>">
-                            <br>
-                            <label for="date_retour">Date retour :</label>
-                            <input type="date" name="date_retour" required>
-                            <br><br>
-                            <input type="submit" value="rendre">
-                        </form>
+                        <% if (pret.getStatusCourant() == "en cours") { %>
+                            <form action="rendreExemplaire" method="post">
+                                <input type="hidden" name="id_pret" value="<%= pret.getIdPret() %>">
+                                <br>
+                                <label for="date_retour">Date retour :</label>
+                                <input type="date" name="date_retour" required>
+                                <br><br>
+                                <input type="submit" value="Rendre" class="btn-submit">
+                            </form>
+                        <% } %>
                     </td>
                 </tr>
                 <%

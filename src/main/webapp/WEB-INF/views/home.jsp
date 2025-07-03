@@ -5,8 +5,8 @@
     List<V_exemplairesRestants> liste = (List<V_exemplairesRestants>) request.getAttribute("liste_livre");
     Adherant adherant = (Adherant) request.getAttribute("adherant"); 
     List<TypePret> typesPret = (List<TypePret>) request.getAttribute("typesPret");
-    String error = request.getAttribute("error"); 
-    String success = request.getAttribute("success");
+    String error = (String) request.getAttribute("error"); 
+    String success = (String) request.getAttribute("success");
 %>
 <!DOCTYPE html>
 <html>

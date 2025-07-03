@@ -14,7 +14,7 @@ public class Penalite {
     @JoinColumn(name = "id_pret", nullable = false)
     private Pret pret;
 
-    @Temporal(TemporalType.DATE)
+    @Column(name = "date")
     private Date date;
 
     public Penalite() {}

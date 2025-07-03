@@ -293,7 +293,7 @@ FROM
            FROM status_pret sp2
            WHERE sp2.id_pret = p.id
        )
-    LEFT JOIN type_status_pret ts ON sp_courant.id_status = ts.id
+    LEFT JOIN type_status_pret ts ON sp_courant.id_status = ts.id;
 
 ----------------------------------------------------------------
 

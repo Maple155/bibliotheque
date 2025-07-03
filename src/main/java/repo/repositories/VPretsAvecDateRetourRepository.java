@@ -13,4 +13,6 @@ public interface VPretsAvecDateRetourRepository extends JpaRepository<V_pretsAve
    @Query("SELECT v FROM V_pretsAvecDateRetour v WHERE v.idAdherant = :idAdherant")
    List<V_pretsAvecDateRetour> findByAdherant(@Param("idAdherant") Integer idAdherant);
    
+   @Query("SELECT v FROM V_pretsAvecDateRetour v WHERE v.idPret = :idPret")
+   V_pretsAvecDateRetour findByPret(@Param("idPret") Integer idPret);
 }

@@ -9,6 +9,7 @@ public class TypeStatusPret {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "type")
     private String type;
 
     public TypeStatusPret() {}

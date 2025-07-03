@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repo.models.V_pretsAvecDateRetour;
 import repo.repositories.VPretsAvecDateRetourRepository;
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,5 +27,13 @@ public class VPretsAvecDateRetourService {
 
     public List<V_pretsAvecDateRetour> readByAdherant(int id_adherant) {
         return repo.findByAdherant(id_adherant);
+    }
+
+    public V_pretsAvecDateRetour readByPret(int id_pret) {
+        return repo.findByPret(id_pret);
+    }
+
+    public int comparerDates(Date d1, Date d2) {
+        return d1.compareTo(d2);
     }
 }

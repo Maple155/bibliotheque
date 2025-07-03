@@ -33,7 +33,8 @@ public class InscriptionService {
         if (optional.isPresent()) {
             Inscription existing = optional.get();
             existing.setAdherant(object.getAdherant());
-            existing.setDateInscription(object.getDateInscription());
+            existing.setDateDebut(object.getDateDebut());
+            existing.setDatefin(object.getDatefin());
             return repo.save(existing);
         }
         return null;
@@ -41,5 +42,9 @@ public class InscriptionService {
 
     public void delete(int id) {
         repo.deleteById(id);
+    }
+
+    public Inscription getCurrentInscription (int idAdherant) {
+        return repo.getCurrentInscription(idAdherant);
     }
 }

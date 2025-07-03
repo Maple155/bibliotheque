@@ -44,11 +44,11 @@
 </head>
 <body>
     <nav class="sidebar">
-        <h2>Menu</h2>
+        <h2>Log in</h2>
         <ul>
-            <li class="active"><a href="/">Log in Adherant</a></li>
-            <li><a href="bibliothecaire">Log in Bibliothecaire</a></li>
-            <li><a href="admin">Log in Administrateur</a></li>
+            <li class="active"><a href="${pageContext.request.contextPath}">Adherant</a></li>
+            <li><a href="bibliothecaire">Bibliothecaire</a></li>
+            <li><a href="admin">Administrateur</a></li>
         </ul>
     </nav>
 </body>

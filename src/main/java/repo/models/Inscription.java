@@ -14,8 +14,11 @@ public class Inscription {
     @JoinColumn(name = "id_adherant", nullable = false)
     private Adherant adherant;
 
-    @Temporal(TemporalType.DATE)
-    private Date dateInscription;
+    @Column(name = "date_debut")
+    private Date datedebut;
+
+    @Column(name = "date_fin")
+    private Date datefin;
 
     public Inscription() {}
 
@@ -25,6 +28,9 @@ public class Inscription {
     public Adherant getAdherant() { return adherant; }
     public void setAdherant(Adherant adherant) { this.adherant = adherant; }
 
-    public Date getDateInscription() { return dateInscription; }
-    public void setDateInscription(Date dateInscription) { this.dateInscription = dateInscription; }
+    public Date getDateDebut() { return datedebut; }
+    public void setDateDebut(Date datedebut) { this.datedebut = datedebut; }
+
+    public Date getDatefin() { return datefin; }
+    public void setDatefin(Date datefin) { this.datefin = datefin; }
 }

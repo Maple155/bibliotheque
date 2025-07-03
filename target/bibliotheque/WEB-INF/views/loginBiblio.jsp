@@ -101,7 +101,7 @@
         <form action="checkbiblio" method="post">
             <h2>Log in Bibliothecaire</h2>
             <% 
-                String error = request.getParameter("error"); 
+                String error = (String) request.getAttribute("error"); 
                 if (error != null) { 
             %>
                 <div style="color:red;"><%= error %></div>
@@ -110,9 +110,9 @@
             %>
             <br>
             <label for="nom">Nom :</label>
-            <input type="text" name="nom" id="nom" value="ranto" required>
+            <input type="text" name="nom" id="nom" value="Petit" required>
             <label for="prenom">Prenom :</label>
-            <input type="text" name="prenom" id="prenom" value="ranto" required>
+            <input type="text" name="prenom" id="prenom" value="Sophie" required>
             <input type="submit" value="Valider">
         </form>
     </div>

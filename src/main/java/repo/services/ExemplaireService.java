@@ -42,4 +42,8 @@ public class ExemplaireService {
     public void delete(int id) {
         repo.deleteById(id);
     }
+
+    public List<Exemplaire> findAllWithLivre() {
+        return repo.findAllWithLivre();
+    }
 }

@@ -2,8 +2,8 @@
 setlocal
 
 :: === CONFIGURATION ===
-set TOMCAT_DIR=C:\Program Files\Apache Software Foundation\Tomcat 10.1
-@REM set TOMCAT_DIR=C:\Program Files\Apache Software Foundation\apache-tomcat-10.1.28
+@REM set TOMCAT_DIR=C:\Program Files\Apache Software Foundation\Tomcat 10.1
+set TOMCAT_DIR=C:\Program Files\Apache Software Foundation\apache-tomcat-10.1.28
 set PROJECT_NAME=bibliotheque
 set WAR_NAME=%PROJECT_NAME%.war
 

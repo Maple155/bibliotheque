@@ -1,3 +1,7 @@
+CREATE DATABASE bibliotheque;
+
+USE bibliotheque;
+
 CREATE TABLE admin (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(100),
@@ -81,7 +85,8 @@ CREATE TABLE BlacklistLivres (
 CREATE TABLE Inscription (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_adherant INT NOT NULL,
-    date_inscription DATE,
+    date_debut DATE,
+    date_fin Date,
     FOREIGN KEY (id_adherant) REFERENCES Adherant(id)
 );
 
@@ -176,6 +181,7 @@ CREATE TABLE Penalite (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_pret INT NOT NULL,
     date DATE,
+    nbJour INT,
     FOREIGN KEY (id_pret) REFERENCES Pret(id)
 );
 
@@ -318,3 +324,103 @@ FROM
         GROUP BY
             id_pret
     ) dernier_status ON dernier_status.id_pret = sp.id_pret AND dernier_status.id_status_pret = sp.id;
+
+-----------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW penalite_adherant AS
+SELECT 
+    a.id AS id_adherant,
+    a.nom,
+    a.prenom,
+    p.id AS id_pret,
+    p.date_debut,
+    penalite.date AS date_penalite,
+    penalite.nbJour
+FROM 
+    Penalite penalite
+JOIN 
+    Pret p ON penalite.id_pret = p.id
+JOIN 
+    Adherant a ON p.id_adherant = a.id;
+
+------------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW v_reservations_avec_status_actuel AS
+SELECT
+    r.id AS id_reservation,
+    r.id_adherant,
+    r.id_exemplaire,
+    r.date_reservation,
+    tsp.type AS statut_actuel
+FROM
+    Reservation r
+    JOIN status_reservation sr ON sr.id_reservation = r.id
+    JOIN type_status_pret tsp ON tsp.id = sr.id_status
+    JOIN (
+        SELECT
+            id_reservation,
+            MAX(id) AS id_status_reservation
+        FROM
+            status_reservation
+        GROUP BY
+            id_reservation
+    ) dernier_status
+    ON dernier_status.id_reservation = sr.id_reservation
+    AND dernier_status.id_status_reservation = sr.id;
+
+--------------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW v_prolongements_avec_status_actuel AS
+SELECT
+    pp.id AS id_prolongement,
+    pp.id_pret,
+    pp.date_prolongement,
+    tsp.type AS statut_actuel,
+    a.nom AS nom_adherant,
+    a.prenom AS prenom_adherant,
+    l.titre AS titre_livre,
+    e.numero_exemplaire
+FROM
+    Prolongement_pret pp
+    JOIN status_prolongement sp ON sp.id_prolongement = pp.id
+    JOIN type_status_pret tsp ON tsp.id = sp.id_status
+    JOIN (
+        SELECT
+            id_prolongement,
+            MAX(id) AS id_status_prolongement
+        FROM
+            status_prolongement
+        GROUP BY
+            id_prolongement
+    ) dernier_status
+      ON dernier_status.id_prolongement = sp.id_prolongement
+     AND dernier_status.id_status_prolongement = sp.id
+    JOIN Pret p            ON pp.id_pret = p.id
+    JOIN Adherant a        ON p.id_adherant = a.id
+    JOIN Exemplaire e      ON p.id_exemplaire = e.id
+    JOIN Livre l           ON e.id_livre = l.id;
+
+----------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW v_inscriptions_avec_status_actuel AS
+SELECT
+    i.id AS id_inscription,
+    i.id_adherant,
+    i.date_debut,
+    i.date_fin,
+    tsi.type AS statut_actuel
+FROM
+    Inscription i
+    JOIN status_inscription si ON si.id_inscription = i.id
+    JOIN type_status_inscription tsi ON tsi.id = si.id_status
+    JOIN (
+        SELECT
+            id_inscription,
+            MAX(id) AS id_status_inscription
+        FROM
+            status_inscription
+        GROUP BY
+            id_inscription
+    ) dernier_status
+    ON dernier_status.id_inscription = si.id_inscription
+    AND dernier_status.id_status_inscription = si.id;

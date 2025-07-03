@@ -42,4 +42,8 @@ public class RetourPretService {
     public void delete(int id) {
         repo.deleteById(id);
     }
+
+    public RetourPret readByPret (int id_pret) {
+        return repo.findByPretId(id_pret);
+    }
 }

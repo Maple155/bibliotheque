@@ -46,7 +46,7 @@
     <nav class="sidebar">
         <h2>Log in</h2>
         <ul>
-            <li class="active"><a href="bibliotheque">Adherant</a></li>
+            <li class="active"><a href="${pageContext.request.contextPath}">Adherant</a></li>
             <li><a href="bibliothecaire">Bibliothecaire</a></li>
             <li><a href="admin">Administrateur</a></li>
         </ul>

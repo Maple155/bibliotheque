@@ -111,7 +111,6 @@
                     <th>Date Début</th>
                     <th>Durée Max (jours)</th>
                     <th>Date Retour Prévue</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -129,18 +128,6 @@
                     <td><%= pret.getDateDebut() != null ? pret.getDateDebut() : "-" %></td>
                     <td><%= pret.getDureeMax() != null ? pret.getDureeMax() : "-" %></td>
                     <td><%= pret.getDateRetourPrevue() != null ? pret.getDateRetourPrevue() : "-" %></td>
-                    <td>
-                        <% if (pret.getStatusCourant() == "en cours") { %>
-                            <form action="rendreExemplaire" method="post">
-                                <input type="hidden" name="id_pret" value="<%= pret.getIdPret() %>">
-                                <br>
-                                <label for="date_retour">Date retour :</label>
-                                <input type="date" name="date_retour" required>
-                                <br><br>
-                                <input type="submit" value="Rendre" class="btn-submit">
-                            </form>
-                        <% } %>
-                    </td>
                 </tr>
                 <%
                         }

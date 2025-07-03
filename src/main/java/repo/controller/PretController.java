@@ -163,10 +163,12 @@ public class PretController {
     @PostMapping("/rendreExemplaire")
     public String rendreExemplaire(
             @RequestParam("id_pret") String id,
+            @RequestParam("id_adherant") String id_ad,
             @RequestParam("date_retour") String date,
             HttpSession session,
             Model model) {
 
+        int id_adherant = Integer.parseInt(id_ad);
         int id_pret = Integer.parseInt(id);
         Date date_retour = Date.valueOf(date);
 
@@ -196,9 +198,8 @@ public class PretController {
         statusPret.setTypeStatusPret(typeStatusPret);
 
         statusPret = statusPretService.create(statusPret);
-        
-        Adherant adherant = (Adherant) session.getAttribute("adherant");
-        List<V_pretsAvecDateRetour> allPrets = vPretsAvecDateRetourService.readByAdherant(adherant.getId());
+    
+        List<V_pretsAvecDateRetour> allPrets = vPretsAvecDateRetourService.readByAdherant(id_adherant);
 
         model.addAttribute("success", "Livre remis avec succes");
         model.addAttribute("allPrets", allPrets);

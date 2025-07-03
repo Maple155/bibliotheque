@@ -44,7 +44,7 @@ public class PretController {
     private ConditionPretService conditionPretService;
     @Autowired
     private PenaliteService penaliteService;
-    @Autowired 
+    @Autowired
     private RetourPretService retourPretService;
 
     @PostMapping("/preterLivre")
@@ -74,20 +74,19 @@ public class PretController {
         model.addAttribute("adherant", currAdherant);
         model.addAttribute("typesPret", typePrets);
 
-        // if (!blacklistLivres.isEmpty()) {
-        // for (int i = 0; i < blacklistLivres.size(); i++) {
-        // if (blacklistLivres.get(i).getLivre().getId() ==
-        // currExemplaire.getLivre().getId() &&
-        // blacklistLivres.get(i).getTypeAdherant().getId() ==
-        // currAdherant.getTypeAdherant().getId()) {
-        // model.addAttribute("error", "Les " +
-        // blacklistLivres.get(i).getTypeAdherant().getType() + " ne peuventpas
-        // emprunter ce livre");
+        if (!blacklistLivres.isEmpty()) {
+            for (int i = 0; i < blacklistLivres.size(); i++) {
+                if (blacklistLivres.get(i).getLivre().getId() ==
+                currExemplaire.getLivre().getId() &&
+                blacklistLivres.get(i).getTypeAdherant().getId() ==
+                currAdherant.getTypeAdherant().getId()) {
+                model.addAttribute("error", "Les " +
+                blacklistLivres.get(i).getTypeAdherant().getType() + " ne peuventpas emprunter ce livre");
 
-        // return "home";
-        // }
-        // }
-        // }
+                return "home";
+                }
+            }
+        }
         List<BlacklistAge> blacklistAges = blacklistAgeService.read();
         int age_adherant = AdherantService.calculerAge(currAdherant.getNaissance());
 
@@ -175,7 +174,7 @@ public class PretController {
         Pret pret = pretService.readById(id_pret).orElse(null);
         V_pretsAvecDateRetour currPret = vPretsAvecDateRetourService.readByPret(id_pret);
         int compare = currPret.getDateRetourPrevue().compareTo(date_retour);
-        
+
         if (compare == -1) {
             Penalite penalite = new Penalite();
             penalite.setDate(date_retour);
@@ -192,13 +191,13 @@ public class PretController {
         retourPret = retourPretService.create(retourPret);
 
         TypeStatusPret typeStatusPret = typeStatusPretService.readById(3).orElse(null);
-        
+
         StatusPret statusPret = new StatusPret();
         statusPret.setPret(pret);
         statusPret.setTypeStatusPret(typeStatusPret);
 
         statusPret = statusPretService.create(statusPret);
-    
+
         List<V_pretsAvecDateRetour> allPrets = vPretsAvecDateRetourService.readByAdherant(id_adherant);
 
         model.addAttribute("success", "Livre remis avec succes");

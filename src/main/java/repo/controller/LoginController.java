@@ -27,6 +27,12 @@ public class LoginController {
     @Autowired
     private TypePretService typePretService;
 
+    @Autowired 
+    private AdminService adminService;
+
+    @Autowired 
+    private BibliothecaireService bibliothecaireService;
+
     @GetMapping("/")
     public String getLogin(Model model) {
         return "login";
@@ -87,22 +93,39 @@ public class LoginController {
         HttpSession session,
         Model model) {
             
-        if (nom.equals("ranto") && prenom.equals("ranto")) {
-            List<V_exemplairesRestants> exemplairesRestants = exemplairesRestantsService.read();
-            List<TypePret> typePrets= typePretService.read();
-            Adherant adherant = (Adherant) session.getAttribute("adherant");
-
-            session.setAttribute("admin", "1");
-
-            model.addAttribute("liste_livre", exemplairesRestants);
-            model.addAttribute("adherant", adherant);
-            model.addAttribute("typesPret", typePrets);
-            model.addAttribute("success", "connecter en tant qu' admin reussi");
-            return "home";            
+        Admin admin = adminService.findAdmin(nom, prenom);
+            if (admin != null) {
+                session.setAttribute("admin", admin);
+            model.addAttribute("success", "connecter en tant qu'admin reussi");
+            return "homeAdmin";            
         }
 
         model.addAttribute("error", "Admin introuvable");
         return "redirect:/admin";
+    }
+
+    @GetMapping("/bibliothecaire")
+    public String loginBibliothecaire ()
+    {
+        return "loginBiblio";
+    }
+
+    @PostMapping("/checkbiblio") 
+    public String checkLoginBiblio (
+        @RequestParam("nom") String nom,
+        @RequestParam("prenom") String prenom,
+        HttpSession session,
+        Model model) {
+            
+        Bibliothecaire bibliothecaire = bibliothecaireService.findBibliothecaire(nom, prenom);
+        if (bibliothecaire != null) {
+            session.setAttribute("bibliothecaire", bibliothecaire);
+            model.addAttribute("success", "connecter en tant que bibliothecaire reussi");
+            return "homeBiblio";            
+        }
+
+        model.addAttribute("error", "bibliothecaire introuvable");
+        return "redirect:/bibliothecaire";
     }
 
 }

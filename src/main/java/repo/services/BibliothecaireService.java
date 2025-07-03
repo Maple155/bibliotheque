@@ -2,6 +2,8 @@ package repo.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import repo.models.Adherant;
 import repo.models.Bibliothecaire;
 import repo.repositories.BibliothecaireRepository;
 import java.util.List;
@@ -41,5 +43,9 @@ public class BibliothecaireService {
 
     public void delete(int id) {
         repo.deleteById(id);
+    }
+
+    public Bibliothecaire findBibliothecaire(String nom, String prenom) {
+        return repo.findbBibliothecaire(nom, prenom);
     }
 }

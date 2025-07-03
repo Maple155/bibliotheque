@@ -101,7 +101,7 @@
         <form action="checkAdmin" method="post">
             <h2>Log in Administrateur</h2>
             <% 
-                String error = request.getParameter("error"); 
+                String error = request.getAttribute("error"); 
                 if (error != null) { 
             %>
                 <div style="color:red;"><%= error %></div>

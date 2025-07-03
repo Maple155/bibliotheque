@@ -121,7 +121,7 @@ public class LoginController {
         if (bibliothecaire != null) {
             session.setAttribute("bibliothecaire", bibliothecaire);
             model.addAttribute("success", "connecter en tant que bibliothecaire reussi");
-            return "homeBiblio";            
+            return "redirect:/allPrets";            
         }
 
         model.addAttribute("error", "bibliothecaire introuvable");

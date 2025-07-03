@@ -1,20 +1,21 @@
--- Étape 1 : Supprimer les tables existantes dans l'ordre correct
+DROP DATABASE bibliotheque;
 
-DROP TABLE IF EXISTS Prolongement_pret;
-DROP TABLE IF EXISTS Reservation;
-DROP TABLE IF EXISTS Penalite;
-DROP TABLE IF EXISTS Pret;
-DROP TABLE IF EXISTS Condition_pret;
-DROP TABLE IF EXISTS Inscription;
-DROP TABLE IF EXISTS Adherant;
-DROP TABLE IF EXISTS Type_adherant;
-DROP TABLE IF EXISTS Exemplaire;
-DROP TABLE IF EXISTS Livre;
-DROP TABLE IF EXISTS Type_pret;
+CREATE DATABASE bibliotheque;
 
--- Étape 2 : Recréer les tables
+USE bibliotheque;
 
--- Rarete des livres
+CREATE TABLE admin (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(100),
+    prenom VARCHAR(100) 
+);
+
+CREATE TABLE bibliothecaire (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(100),
+    prenom VARCHAR(100)
+);
+
 CREATE TABLE Rarete (
     id INT AUTO_INCREMENT PRIMARY KEY,
     type VARCHAR(100)
@@ -62,7 +63,15 @@ CREATE TABLE Adherant (
     id_type_adherant INT NOT NULL,
     nom VARCHAR(100),
     prenom VARCHAR(100),
+    naissance DATE,
     FOREIGN KEY (id_type_adherant) REFERENCES Type_adherant(id)
+);
+
+CREATE TABLE BlacklistAge (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    age_min INT NOT NULL,
+    id_livre INT NOT NULL,
+    FOREIGN KEY (id_livre) REFERENCES Livre(id)
 );
 
 -- Blacklist pour certains types d'adhérants
@@ -78,7 +87,8 @@ CREATE TABLE BlacklistLivres (
 CREATE TABLE Inscription (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_adherant INT NOT NULL,
-    date_inscription DATE,
+    date_debut DATE,
+    date_fin Date,
     FOREIGN KEY (id_adherant) REFERENCES Adherant(id)
 );
 
@@ -173,6 +183,7 @@ CREATE TABLE Penalite (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_pret INT NOT NULL,
     date DATE,
+    nbJour INT,
     FOREIGN KEY (id_pret) REFERENCES Pret(id)
 );
 
@@ -212,7 +223,7 @@ CREATE TABLE status_prolongement (
     FOREIGN KEY (id_status) REFERENCES type_status_pret(id)
 );
 
-
+--------------------------------------------------------- 
 CREATE OR REPLACE VIEW v_exemplaires_restants AS
 SELECT 
     l.id AS id_livre,
@@ -232,29 +243,46 @@ JOIN
     Exemplaire e ON l.id = e.id_livre
 LEFT JOIN 
     Pret p ON e.id = p.id_exemplaire
+LEFT JOIN (
+    -- Récupère le dernier status pour chaque prêt
+    SELECT sp.id_pret, tsp.type
+    FROM status_pret sp
+    JOIN type_status_pret tsp ON sp.id_status = tsp.id
+    WHERE sp.id IN (
+        SELECT MAX(id) FROM status_pret GROUP BY id_pret
+    )
+) statut_actuel ON statut_actuel.id_pret = p.id
 WHERE 
-    p.id IS NULL;
+    p.id IS NULL
+    OR (statut_actuel.type NOT IN ('en attente', 'en cours'));
+
+------------------------------------------------------------- 
 
 CREATE OR REPLACE VIEW v_prets_avec_date_retour AS
 SELECT
     p.id AS id_pret,
     p.date_debut,
+    
     p.id_adherant,
     a.nom AS adherant_nom,
     a.prenom AS adherant_prenom,
     a.id_type_adherant,
     ta.type AS type_adherant,
-    
+
     p.id_exemplaire,
     e.numero_exemplaire,
     e.id_livre,
     l.titre AS livre_titre,
-    
+
     p.type_pret AS id_type_pret,
     tp.type AS type_pret,
-    
+
+    c.exemplaire_max,
     c.duree_max,
-    DATE_ADD(p.date_debut, INTERVAL c.duree_max DAY) AS date_retour_prevue
+    DATE_ADD(p.date_debut, INTERVAL c.duree_max DAY) AS date_retour_prevue,
+
+    sp_courant.id_status AS id_status_courant,
+    ts.type AS status_courant
 
 FROM
     Pret p
@@ -262,7 +290,139 @@ FROM
     JOIN Type_adherant ta ON a.id_type_adherant = ta.id
     JOIN Condition_pret c 
         ON c.id_type_adherant = a.id_type_adherant 
-        AND c.id_type_pret = p.type_pret
+       AND c.id_type_pret = p.type_pret
     JOIN Type_pret tp ON p.type_pret = tp.id
     JOIN Exemplaire e ON p.id_exemplaire = e.id
-    JOIN Livre l ON e.id_livre = l.id;
+    JOIN Livre l ON e.id_livre = l.id
+
+    LEFT JOIN status_pret sp_courant
+      ON sp_courant.id = (
+           SELECT MAX(sp2.id)
+           FROM status_pret sp2
+           WHERE sp2.id_pret = p.id
+       )
+    LEFT JOIN type_status_pret ts ON sp_courant.id_status = ts.id;
+
+----------------------------------------------------------------
+
+CREATE OR REPLACE VIEW v_prets_avec_status_actuel AS
+SELECT
+    p.id AS id_pret,
+    p.id_adherant,
+    p.id_exemplaire,
+    p.type_pret,
+    p.date_debut,
+    tsp.type AS statut_actuel
+FROM
+    Pret p
+    JOIN status_pret sp ON sp.id_pret = p.id
+    JOIN type_status_pret tsp ON tsp.id = sp.id_status
+    JOIN (
+        SELECT
+            id_pret,
+            MAX(id) AS id_status_pret
+        FROM
+            status_pret
+        GROUP BY
+            id_pret
+    ) dernier_status ON dernier_status.id_pret = sp.id_pret AND dernier_status.id_status_pret = sp.id;
+
+-----------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW penalite_adherant AS
+SELECT 
+    a.id AS id_adherant,
+    a.nom,
+    a.prenom,
+    p.id AS id_pret,
+    p.date_debut,
+    penalite.date AS date_penalite,
+    penalite.nbJour
+FROM 
+    Penalite penalite
+JOIN 
+    Pret p ON penalite.id_pret = p.id
+JOIN 
+    Adherant a ON p.id_adherant = a.id;
+
+------------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW v_reservations_avec_status_actuel AS
+SELECT
+    r.id AS id_reservation,
+    r.id_adherant,
+    r.id_exemplaire,
+    r.date_reservation,
+    tsp.type AS statut_actuel
+FROM
+    Reservation r
+    JOIN status_reservation sr ON sr.id_reservation = r.id
+    JOIN type_status_pret tsp ON tsp.id = sr.id_status
+    JOIN (
+        SELECT
+            id_reservation,
+            MAX(id) AS id_status_reservation
+        FROM
+            status_reservation
+        GROUP BY
+            id_reservation
+    ) dernier_status
+    ON dernier_status.id_reservation = sr.id_reservation
+    AND dernier_status.id_status_reservation = sr.id;
+
+--------------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW v_prolongements_avec_status_actuel AS
+SELECT
+    pp.id AS id_prolongement,
+    pp.id_pret,
+    pp.date_prolongement,
+    tsp.type AS statut_actuel,
+    a.nom AS nom_adherant,
+    a.prenom AS prenom_adherant,
+    l.titre AS titre_livre,
+    e.numero_exemplaire
+FROM
+    Prolongement_pret pp
+    JOIN status_prolongement sp ON sp.id_prolongement = pp.id
+    JOIN type_status_pret tsp ON tsp.id = sp.id_status
+    JOIN (
+        SELECT
+            id_prolongement,
+            MAX(id) AS id_status_prolongement
+        FROM
+            status_prolongement
+        GROUP BY
+            id_prolongement
+    ) dernier_status
+      ON dernier_status.id_prolongement = sp.id_prolongement
+     AND dernier_status.id_status_prolongement = sp.id
+    JOIN Pret p            ON pp.id_pret = p.id
+    JOIN Adherant a        ON p.id_adherant = a.id
+    JOIN Exemplaire e      ON p.id_exemplaire = e.id
+    JOIN Livre l           ON e.id_livre = l.id;
+
+----------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW v_inscriptions_avec_status_actuel AS
+SELECT
+    i.id AS id_inscription,
+    i.id_adherant,
+    i.date_debut,
+    i.date_fin,
+    tsi.type AS statut_actuel
+FROM
+    Inscription i
+    JOIN status_inscription si ON si.id_inscription = i.id
+    JOIN type_status_inscription tsi ON tsi.id = si.id_status
+    JOIN (
+        SELECT
+            id_inscription,
+            MAX(id) AS id_status_inscription
+        FROM
+            status_inscription
+        GROUP BY
+            id_inscription
+    ) dernier_status
+    ON dernier_status.id_inscription = si.id_inscription
+    AND dernier_status.id_status_inscription = si.id;

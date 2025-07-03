@@ -18,7 +18,7 @@ public class Reservation {
     @JoinColumn(name = "id_exemplaire", nullable = false)
     private Exemplaire exemplaire;
 
-    @Temporal(TemporalType.DATE)
+    @Column(name = "date_reservation")
     private Date dateReservation;
 
     public Reservation() {}

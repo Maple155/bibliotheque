@@ -2,6 +2,8 @@ package repo.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import repo.models.Exemplaire;
 import repo.models.V_exemplairesRestants;
 import repo.repositories.ExemplairesRestantsRepository;
 import java.util.List;

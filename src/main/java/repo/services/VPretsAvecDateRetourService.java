@@ -36,4 +36,12 @@ public class VPretsAvecDateRetourService {
     public int comparerDates(Date d1, Date d2) {
         return d1.compareTo(d2);
     }
+
+    public V_pretsAvecDateRetour readByPretEtAdherant (int id_pret, int id_adherant) {
+        return repo.findByPretEtAdherant(id_pret, id_adherant);
+    }
+
+    public List<V_pretsAvecDateRetour> readByExemplaire (int idExemplaire) {
+        return repo.findByExemplaire(idExemplaire);
+    }
 }

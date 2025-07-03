@@ -31,6 +31,7 @@ repo\repositories\ReservationRepository.class
 repo\models\BlacklistAge.class
 repo\models\DureeInscription.class
 repo\repositories\V_pretsAvecStatusActuelRepository.class
+repo\controller\ReservationController.class
 repo\repositories\DureeInscriptionRepository.class
 repo\services\ProlongementPretService.class
 repo\services\ConditionPretService.class

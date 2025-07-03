@@ -48,8 +48,7 @@
         <ul>
             <li class="active"><a href="home">Livres disponibles</a></li>
             <li><a href="#">Reinscription</a></li>
-            <li><a href="reservation">Reservation</a></li>
-            <li><a href="allPrets">Liste des prets</a></li>
+            <li><a href="reserver">Reservation</a></li>
             <li><a href="mesPrets">Mes prets</a></li>
         </ul>
     </nav>

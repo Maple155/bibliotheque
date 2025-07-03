@@ -17,6 +17,9 @@ public class Penalite {
     @Column(name = "date")
     private Date date;
 
+    @Column(name = "nbJour")
+    private int nbJour;
+    
     public Penalite() {}
 
     public int getId() { return id; }
@@ -27,4 +30,7 @@ public class Penalite {
 
     public Date getDate() { return date; }
     public void setDate(Date date) { this.date = date; }
+
+    public int getNbJour() { return nbJour; }
+    public void setNbJour(int nbJour) { this.nbJour = nbJour; }
 }

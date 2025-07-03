@@ -62,7 +62,8 @@ Table BlacklistLivres {
 Table Inscription {
   id int [pk, increment]
   id_adherant int [not null]
-  date_inscription date
+  date_debut date
+  date_fin date
 }
 
 Table type_status_inscription {
@@ -124,6 +125,7 @@ Table Penalite {
   id int [pk, increment]
   id_pret int [not null]
   date date
+  nbJour int
 }
 
 Table Reservation {

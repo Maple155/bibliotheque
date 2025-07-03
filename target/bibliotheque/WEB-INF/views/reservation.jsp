@@ -1,15 +1,15 @@
-<%-- <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="repo.models.*" %>
 <%
-    List<V_exemplairesRestants> liste = (List<V_exemplairesRestants>) request.getAttribute("liste_livre");
-    Adherant adherant = (Adherant) request.getAttribute("adherant"); 
-    List<TypePret> typesPret = (List<TypePret>) request.getAttribute("typesPret");
+    List<Exemplaire> exemplaires = (List<Exemplaire>) request.getAttribute("exemplaires");
+    String error = (String) request.getAttribute("error"); 
+    String success = (String) request.getAttribute("success");
 %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Liste des Livres Disponibles</title>
+    <title>Réserver un Exemplaire</title>
     <meta charset="UTF-8">
     <style>
         body {
@@ -33,7 +33,7 @@
             gap: 12px;
             flex-wrap: wrap;
         }
-        .filter-bar input, .filter-bar select {
+        .filter-bar input {
             padding: 8px 12px;
             border: 1px solid #cfd8dc;
             border-radius: 4px;
@@ -84,26 +84,34 @@
     </style>
 </head>
 <body>
-    <!-- Sidebar include -->
-    <jsp:include page="sideBar.jsp" />
-
+    <jsp:include page="sideBarBiblio.jsp" />
     <div class="main-content">
-        <h1>Liste des Exemplaires Disponibles</h1>
+        <h1>Réservation d'un Exemplaire</h1>
 
         <div class="filter-bar">
             <input type="text" id="filter-titre" placeholder="Filtrer par titre" onkeyup="filterTable()">
-            <input type="text" id="filter-nbPages" placeholder="Filtrer par nb pages" onkeyup="filterTable()">
             <input type="text" id="filter-auteur" placeholder="Filtrer par auteur" onkeyup="filterTable()">
             <input type="text" id="filter-datePub" placeholder="Filtrer par date publication" onkeyup="filterTable()">
             <input type="text" id="filter-genre" placeholder="Filtrer par genre" onkeyup="filterTable()">
             <input type="text" id="filter-numero" placeholder="Filtrer par numéro exemplaire" onkeyup="filterTable()">
         </div>
         <br>
-        <table id="livres-table" border="1">
+        <%  
+            if (error != null) { 
+        %>
+            <div style="color:red;"><%= error %></div>
+        <% 
+            } else if (success != null){
+        %>
+            <div style="color:green;"><%= success %></div>
+        <% 
+            }
+        %>
+        <br>
+        <table id="exemplaires-table" border="1">
             <thead>
                 <tr>
                     <th>Titre</th>
-                    <th>Nb Pages</th>
                     <th>Auteur</th>
                     <th>Date Publication</th>
                     <th>Genre</th>
@@ -112,78 +120,62 @@
                 </tr>
             </thead>
             <tbody>
-                <%
-                    if (liste != null && !liste.isEmpty()) {
-                        for (V_exemplairesRestants livre : liste) {
+                <% 
+                    if (exemplaires != null && !exemplaires.isEmpty()) {
+                        for (Exemplaire exemplaire : exemplaires) {
+                            if (exemplaire != null) { 
+                                Livre livre = exemplaire.getLivre();
                 %>
                     <tr>
-                        <td><%= livre.getTitre() %></td>
-                        <td><%= livre.getNbPage() %></td>
-                        <td><%= livre.getAuteur() %></td>
-                        <td><%= livre.getDatePublication() %></td>
-                        <td><%= livre.getGenre() %></td>
-                        <td><%= livre.getNumeroExemplaire() %></td>
+                        <td><%= (livre != null && livre.getTitre()!=null) ? livre.getTitre() : "-" %></td>
+                        <td><%= (livre != null && livre.getAuteur()!=null) ? livre.getAuteur() : "-" %></td>
+                        <td><%= (livre != null && livre.getDatePublication()!=null) ? livre.getDatePublication() : "-" %></td>
+                        <td><%= (livre != null && livre.getGenre()!=null) ? livre.getGenre() : "-" %></td>
+                        <td><%= exemplaire.getNumeroExemplaire() != null ? exemplaire.getNumeroExemplaire() : "-" %></td>
                         <td>
-                            <form action="preterLivre" method="post">
-                                <input type="hidden" name="id_adherant" value="<%= adherant.getId() %>">
-                                <input type="hidden" name="id_exemplaire" value="<%= livre.getIdExemplaire() %>">
-
-                                <select name="type_pret" required>
-                                    <option value="#">Sélectionnez</option>
-                                    <%  
-                                        if (typesPret != null) {
-                                            for(TypePret typePret : typesPret ) { 
-                                    %>
-                                        <option value="<%= typePret.getId() %>"><%= typePret.getType() %></option>
-                                    <%
-                                            }  
-                                        } 
-                                    %>
-                                </select>
+                            <form action="reserverExemplaire" method="post">
+                                <input type="hidden" name="id_exemplaire" value="<%= exemplaire.getId() %>">
+                                <label for="date_res">Date de réservation</label>
+                                <input type="date" name="date_res" id="date_res" required>
                                 <br><br>
-                                <label for="date_pret">Date du prêt :</label>
-                                <input type="date" name="date_pret" required>
-                                <br><br>
-                                <input type="submit" value="Faire un prêt" class="btn-submit">
+                                <input type="submit" value="Réserver" class="btn-submit">
                             </form>
                         </td>
                     </tr>
                 <%
+                            }
                         }
                     } else {
                 %>
-                    <tr><td colspan="7">Aucun exemplaire disponible</td></tr>
+                    <tr><td colspan="6">Aucun exemplaire disponible</td></tr>
                 <%
                     }
                 %>
             </tbody>
+
         </table>
     </div>
     <script>
         function filterTable() {
             const filters = {
                 titre: document.getElementById('filter-titre').value.toLowerCase(),
-                nbPages: document.getElementById('filter-nbPages').value.toLowerCase(),
                 auteur: document.getElementById('filter-auteur').value.toLowerCase(),
                 datePub: document.getElementById('filter-datePub').value.toLowerCase(),
                 genre: document.getElementById('filter-genre').value.toLowerCase(),
                 numero: document.getElementById('filter-numero').value.toLowerCase()
             };
-
-            const rows = document.querySelectorAll('#livres-table tbody tr');
+            const rows = document.querySelectorAll('#exemplaires-table tbody tr');
             rows.forEach(row => {
                 const cells = row.children;
                 const show = 
                     (filters.titre === '' || cells[0].textContent.toLowerCase().includes(filters.titre)) &&
-                    (filters.nbPages === '' || cells[1].textContent.toLowerCase().includes(filters.nbPages)) &&
-                    (filters.auteur === '' || cells[2].textContent.toLowerCase().includes(filters.auteur)) &&
-                    (filters.datePub === '' || cells[3].textContent.toLowerCase().includes(filters.datePub)) &&
-                    (filters.genre === '' || cells[4].textContent.toLowerCase().includes(filters.genre)) &&
-                    (filters.numero === '' || cells[5].textContent.toLowerCase().includes(filters.numero));
-                
+                    (filters.auteur === '' || cells[1].textContent.toLowerCase().includes(filters.auteur)) &&
+                    (filters.datePub === '' || cells[2].textContent.toLowerCase().includes(filters.datePub)) &&
+                    (filters.genre === '' || cells[3].textContent.toLowerCase().includes(filters.genre)) &&
+                    (filters.numero === '' || cells[4].textContent.toLowerCase().includes(filters.numero));
                 row.style.display = show ? '' : 'none';
             });
         }
     </script>
 </body>
-</html> --%>
+</html>

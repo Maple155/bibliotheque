@@ -68,7 +68,7 @@
     </style>
 </head>
 <body>
-    <jsp:include page="sideBar.jsp" />
+    <jsp:include page="sideBarBiblio.jsp" />
 
     <div class="main-content">
         <h1>Liste de tous les prêts</h1>

@@ -2,6 +2,7 @@ package repo.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import repo.models.Admin;
 import repo.repositories.AdminRepository;
 import java.util.List;
@@ -41,5 +42,9 @@ public class AdminService {
 
     public void delete(int id) {
         repo.deleteById(id);
+    }
+
+        public Admin findAdmin(String nom, String prenom) {
+        return repo.findAdmin(nom, prenom);
     }
 }

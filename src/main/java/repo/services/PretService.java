@@ -1,5 +1,6 @@
 package repo.services;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repo.models.Pret;
@@ -21,11 +22,25 @@ public class PretService {
     }
 
     public List<Pret> read() {
-        return repo.findAll();
+        List<Pret> temp = repo.findAll();
+        if (temp != null) {
+            for (Pret pret : temp) {
+                Hibernate.initialize(pret.getAdherant());
+                Hibernate.initialize(pret.getExemplaire());
+                Hibernate.initialize(pret.getTypePret());
+            }
+        }
+        return temp;
     }
 
     public Optional<Pret> readById(int id) {
-        return repo.findById(id);
+        Optional<Pret> pret = repo.findById(id);
+        if (pret != null) {
+            Hibernate.initialize(pret.get().getAdherant());
+            Hibernate.initialize(pret.get().getExemplaire());
+            Hibernate.initialize(pret.get().getTypePret());
+        }
+        return pret;
     }
 
     public Pret update(int id, Pret object) {

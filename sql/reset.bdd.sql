@@ -351,11 +351,16 @@ CREATE OR REPLACE VIEW v_reservations_avec_status_actuel AS
 SELECT
     r.id AS id_reservation,
     r.id_adherant,
+    a.nom AS nom_adherant,
+    a.prenom AS prenom_adherant,
     r.id_exemplaire,
+    e.numero_exemplaire,
     r.date_reservation,
     tsp.type AS statut_actuel
 FROM
     Reservation r
+    JOIN Adherant a ON r.id_adherant = a.id
+    JOIN Exemplaire e ON r.id_exemplaire = e.id
     JOIN status_reservation sr ON sr.id_reservation = r.id
     JOIN type_status_pret tsp ON tsp.id = sr.id_status
     JOIN (

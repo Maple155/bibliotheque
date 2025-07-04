@@ -74,7 +74,7 @@ public class PrologementController {
         List<V_pretsAvecDateRetour> allPrets = vPretsAvecDateRetourService.readByAdherant(adherant.getId());
 
         model.addAttribute("allPrets", allPrets);
-        return "prologenementAd";
+        return "prolongementAd";
     }
 
     @PostMapping("prolonger")
@@ -96,18 +96,38 @@ public class PrologementController {
         
         model.addAttribute("allPrets", allPrets);
         V_pretsAvecDateRetour pret = vPretsAvecDateRetourService.readByPret(id_pret); 
+        
         // condition 4
+        // Nahazo penalite ve ilay olona ? 
+        List<PenaliteAdherant> penalites = penaliteAdherantService.findByAdherant(adherant.getId());
+        if (!penalites.isEmpty()) {
+            int nbJour = penaliteAdherantService.totalPenalite(adherant.getId());
+            Date dateDebut = penaliteAdherantService.dateDebutPenalite(adherant.getId());
+            Date dateFin = penaliteAdherantService.ajouterJours(dateDebut, nbJour);
+        
+            if (dateDebut.before(pret.getDateRetourPrevue()) &&
+                    dateFin.after(pret.getDateRetourPrevue())) {
+                    model.addAttribute("error", "Vous ne pouvez pas encore réserver à cause d'une penalisation"); 
+                    return "home";   
+            }
+        }
+
+        // condition 1
         // A jour ve ny inscription any ?
         Inscription currInscription = inscriptionService.getCurrentInscription(adherant.getId());
         if (currInscription != null) {
-            if (currInscription.getDateDebut().compareTo(pret.getDateRetourPrevue()) <= 0 &&
-                    currInscription.getDatefin().compareTo(pret.getDateRetourPrevue()) >= 0) {
-                    model.addAttribute("error", "Vous devez vous reinscrire"); 
-                    return "reservation";   
+            if (currInscription.getDateDebut().after(pret.getDateRetourPrevue()) ||
+                    currInscription.getDatefin().before(pret.getDateRetourPrevue())) {
+                    model.addAttribute("error",
+                        "Vous devez vous réinscrire. " +
+                        "Période actuelle : " +
+                        "Début : " + currInscription.getDateDebut() + ", Fin : " + currInscription.getDatefin()  +
+                        "Date de prolongement : " + pret.getDateRetourPrevue());
+                    return "prologementAd";   
             }
         } else if (currInscription == null){
             model.addAttribute("error", "Vous devez vous reinscrire"); 
-            return "reservation";   
+            return "prolongementAd";   
         }
 
         ProlongementPret pp = new ProlongementPret();
@@ -122,8 +142,13 @@ public class PrologementController {
         sp.setTypeStatusPret(typeStatusPret);
         sp = statusProlongementService.create(sp);
         
-        model.addAttribute("success", "En attente de validation d'un bibliothecaire");
-        return "prologenementAd";
+        model.addAttribute("success",
+            "En attente de validation d'un bibliothécaire. " +
+            "Période d'inscription : " +
+            "Début : " + currInscription.getDateDebut() +
+            ", Fin : " + currInscription.getDatefin() +
+            ". Date de prolongement : " + pret.getDateRetourPrevue());
+        return "prolongementAd";
     }
 
     @GetMapping("listeProlongement")
@@ -133,7 +158,7 @@ public class PrologementController {
         List<VProlongementsAvecStatusActuel> prolongements = PSA.findAll();
 
         model.addAttribute("prolongements", prolongements);
-        return "listeProlongement";
+        return "ListeProlongement";
     }
 
     @PostMapping("validerPro")
@@ -150,11 +175,15 @@ public class PrologementController {
         
         if (str_action.equals("valider")) { 
             TypeStatusPret typeStatusPret = typeStatusPretService.readById(3).orElse(null);
-        
             StatusProlongement sp = new StatusProlongement();
             sp.setProlongementPret(prolongement);
             sp.setTypeStatusPret(typeStatusPret);
             sp = statusProlongementService.create(sp);
+
+            StatusPret sp1 = new StatusPret();
+            sp1.setPret(prolongement.getPret());
+            sp1.setTypeStatusPret(typeStatusPret);
+            sp1 = statusPretService.create(sp1);
 
             Pret pret = new Pret(prolongement.getPret().getAdherant(), prolongement.getPret().getExemplaire(), prolongement.getPret().getTypePret(), p.getDateRetourPrevue());
             pret = pretService.create(pret);
@@ -177,6 +206,6 @@ public class PrologementController {
         List<VProlongementsAvecStatusActuel> prolongements = PSA.findAll();
 
         model.addAttribute("prolongements", prolongements);
-        return "listeProlongement";
+        return "ListeProlongement";
     }
 }

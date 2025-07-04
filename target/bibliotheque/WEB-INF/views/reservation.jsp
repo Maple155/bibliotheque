@@ -84,7 +84,7 @@
     </style>
 </head>
 <body>
-    <jsp:include page="sideBarBiblio.jsp" />
+    <jsp:include page="sideBar.jsp" />
     <div class="main-content">
         <h1>Réservation d'un Exemplaire</h1>
 

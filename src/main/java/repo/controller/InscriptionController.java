@@ -42,8 +42,8 @@ public class InscriptionController {
 
     @PostMapping("/inscription") 
     public String doInscription (
-        @Param("date_debut") String str_debut,
-        @Param("date_fin") String str_fin,
+        @RequestParam("date_debut") String str_debut,
+        @RequestParam("date_fin") String str_fin,
         HttpSession session,
         Model model
     ) {
@@ -63,7 +63,9 @@ public class InscriptionController {
             inscription.setAdherant(adherant);
             inscription.setDateDebut(date_debut);
             inscription.setDatefin(date_fin);
-    
+            
+            inscription = inscriptionService.create(inscription);
+
             TypeStatusInscription typeStatusInscription = typeStatusInscriptionService.readById(1).orElse(null);
             
             StatusInscription SI = new StatusInscription();
@@ -72,8 +74,8 @@ public class InscriptionController {
     
             SI = statusInscriptionService.create(SI);
     
-    
-            model.addAttribute("success", "inscription reussi");
+
+            model.addAttribute("success", "Inscription reussi");
         } catch (Exception e) {
             model.addAttribute("error", "Erreur lors de l'inscription : " + e.getMessage());
         }

@@ -1,7 +1,10 @@
 package repo.services;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import repo.models.BlacklistAge;
 import repo.repositories.BlacklistAgeRepository;
 import java.util.List;
@@ -20,8 +23,13 @@ public class BlacklistAgeService {
         return repo.save(object);
     }
 
+    @Transactional
     public List<BlacklistAge> read() {
-        return repo.findAll();
+        List<BlacklistAge> list = repo.findAll();
+        for (BlacklistAge b : list) {
+            Hibernate.initialize(b.getLivre());
+        }
+    return list;
     }
 
     public Optional<BlacklistAge> readById(int id) {

@@ -1,7 +1,10 @@
 package repo.services;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import repo.models.ConditionPret;
 import repo.repositories.ConditionPretRepository;
 import java.util.List;
@@ -20,8 +23,14 @@ public class ConditionPretService {
         return repo.save(object);
     }
 
+    @Transactional
     public List<ConditionPret> read() {
-        return repo.findAll();
+        List<ConditionPret> list = repo.findAll();
+        for (ConditionPret cp : list) {
+            Hibernate.initialize(cp.getTypePret());
+            Hibernate.initialize(cp.getTypeAdherant());
+        }
+        return list;
     }
 
     public Optional<ConditionPret> readById(int id) {

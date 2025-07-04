@@ -1,10 +1,11 @@
 package repo.services;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repo.models.Adherant;
 import repo.repositories.AdherantRepository;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
@@ -28,10 +29,15 @@ public class AdherantService {
         return repo.findAll();
     }
 
+    @Transactional
     public Optional<Adherant> readById(int id) {
-        return repo.findById(id);
+        Optional<Adherant> tempOpt = repo.findById(id);
+        if (tempOpt.isPresent()) {
+            Hibernate.initialize(tempOpt.get().getTypeAdherant());
+        }
+        return tempOpt;
     }
-
+    
     public Adherant update(int id, Adherant object) {
         Optional<Adherant> optional = repo.findById(id);
         if (optional.isPresent()) {

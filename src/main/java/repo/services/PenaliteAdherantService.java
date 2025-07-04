@@ -17,12 +17,12 @@ public class PenaliteAdherantService {
         return penaliteAdherantRepository.findAll();
     }
 
-    public List<PenaliteAdherant> findByAdherants(int idAdherant) {
+    public List<PenaliteAdherant> findByAdherant(int idAdherant) {
         return penaliteAdherantRepository.findByAdherant(idAdherant);
     }
 
     public int totalPenalite(int idAdherant) {
-        List<PenaliteAdherant> penalites = findByAdherants(idAdherant);
+        List<PenaliteAdherant> penalites = findByAdherant(idAdherant);
         int somme = 0;
 
         for (PenaliteAdherant penaliteAdherant : penalites) {
@@ -33,7 +33,7 @@ public class PenaliteAdherantService {
     } 
 
     public Date dateDebutPenalite(int idAdherant) {
-        List<PenaliteAdherant> penalites = findByAdherants(idAdherant);
+        List<PenaliteAdherant> penalites = findByAdherant(idAdherant);
     
         if (penalites == null || penalites.isEmpty()) {
             return null; 

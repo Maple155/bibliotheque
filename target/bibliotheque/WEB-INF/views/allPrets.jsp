@@ -154,7 +154,7 @@
                         }
                     } else {
                 %>
-                <tr><td colspan="11">Aucun prêt enregistré</td></tr>
+                <tr><td colspan="12">Aucun prêt enregistré</td></tr>
                 <%
                     }
                 %>

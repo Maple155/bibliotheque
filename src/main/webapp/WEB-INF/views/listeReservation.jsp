@@ -140,7 +140,7 @@
                     }
                 } else {
                 %>
-                <tr><td colspan="7">Aucune réservation enregistrée</td></tr>
+                <tr><td colspan="9">Aucune réservation enregistrée</td></tr>
                 <%
                 }
                 %>

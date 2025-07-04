@@ -140,7 +140,7 @@
                     }
                 } else {
                 %>
-                <tr><td colspan="7">Aucun prolongement enregistré</td></tr>
+                <tr><td colspan="9">Aucun prolongement enregistré</td></tr>
                 <%
                 }
                 %>

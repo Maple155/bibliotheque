@@ -1,7 +1,10 @@
 package repo.services;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import repo.models.Inscription;
 import repo.repositories.InscriptionRepository;
 import java.util.List;
@@ -20,12 +23,24 @@ public class InscriptionService {
         return repo.save(object);
     }
 
+    @Transactional
     public List<Inscription> read() {
-        return repo.findAll();
+        List<Inscription> inscriptions = repo.findAll();
+        if (!inscriptions.isEmpty()) {
+            for (Inscription inscription : inscriptions) {
+                Hibernate.initialize(inscription.getAdherant());
+            }
+        }
+        return inscriptions;
     }
 
+    @Transactional
     public Optional<Inscription> readById(int id) {
-        return repo.findById(id);
+        Optional<Inscription> inscriptionOpti = repo.findById(id);
+        if (inscriptionOpti != null) {
+            Hibernate.initialize(inscriptionOpti.get().getAdherant());
+        }
+        return inscriptionOpti;
     }
 
     public Inscription update(int id, Inscription object) {
@@ -43,7 +58,7 @@ public class InscriptionService {
     public void delete(int id) {
         repo.deleteById(id);
     }
-
+    
     public Inscription getCurrentInscription (int idAdherant) {
         return repo.getCurrentInscription(idAdherant);
     }

@@ -130,7 +130,7 @@
                     <td><%= pret.getDureeMax() != null ? pret.getDureeMax() : "-" %></td>
                     <td><%= pret.getDateRetourPrevue() != null ? pret.getDateRetourPrevue() : "-" %></td>
                     <td>
-                        <% if (pret.getStatusCourant() == "en cours") { %>
+                        <% if ("en cours".equals(pret.getStatusCourant())) { %>
                             <form action="prolonger" method="post">
                                 <input type="hidden" name="id_pret" value="<%= pret.getIdPret() %>">
                                 <input type="hidden" name="id_adherant" value="<%= pret.getIdAdherant()%>">

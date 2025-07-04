@@ -88,7 +88,7 @@ public class PrologementController {
         int id_pret = Integer.parseInt(str_pret);
         int id_adherant = Integer.parseInt(str_adherant);
 
-        Adherant adherant = (Adherant) session.getAttribute("adherant");
+        Adherant adherant = adherantService.readById(id_adherant).get();
         Pret p = pretService.readById(id_pret).orElse(null);
         V_pretsAvecDateRetour p2 = vPretsAvecDateRetourService.readByPret(id_pret);
 
@@ -123,7 +123,7 @@ public class PrologementController {
                         "Période actuelle : " +
                         "Début : " + currInscription.getDateDebut() + ", Fin : " + currInscription.getDatefin()  +
                         "Date de prolongement : " + pret.getDateRetourPrevue());
-                    return "prologementAd";   
+                    return "prolongementAd";   
             }
         } else if (currInscription == null){
             model.addAttribute("error", "Vous devez vous reinscrire"); 

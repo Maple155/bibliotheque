@@ -118,7 +118,7 @@
                     <td><%= p.getDateProlongement() != null ? p.getDateProlongement() : "-" %></td>
                     <td><%= p.getStatutActuel() != null ? p.getStatutActuel() : "-" %></td>
                     <td>
-                        <% if ("en attente".equals(p.getStatutActuel())) {  %>
+                        <% if ("en attene".equals(p.getStatutActuel())) {  %>
                                 <form method="post" action="validerPro">
                                 <input type="hidden" name="id_prolongement" value="<%= p.getIdProlongement() %>">
                                 <input type="hidden" name="action" value="Accepter">

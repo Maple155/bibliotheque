@@ -64,7 +64,10 @@ public class ReservationController {
             HttpSession session,
             Model model) {
         List<Exemplaire> exemplaires = exemplaireService.findAllWithLivre();
+        List<TypePret> typePrets = typePretService.read();
+
         model.addAttribute("exemplaires", exemplaires);
+        model.addAttribute("typesPret", typePrets);
         return "reservation";
     }
 
@@ -83,6 +86,9 @@ public class ReservationController {
         Adherant adherant = (Adherant) session.getAttribute("adherant");
 
         List<Exemplaire> exemplaires = exemplaireService.findAllWithLivre();
+        List<TypePret> typePrets = typePretService.read();
+
+        model.addAttribute("typesPret", typePrets);
         model.addAttribute("exemplaires", exemplaires);
 
         // condition 1

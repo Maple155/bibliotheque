@@ -3,6 +3,8 @@ package repo.services;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import repo.models.Pret;
 import repo.repositories.PretRepository;
 import java.util.List;
@@ -21,6 +23,7 @@ public class PretService {
         return repo.save(object);
     }
 
+    @Transactional
     public List<Pret> read() {
         List<Pret> temp = repo.findAll();
         if (temp != null) {
@@ -33,6 +36,7 @@ public class PretService {
         return temp;
     }
 
+    @Transactional
     public Optional<Pret> readById(int id) {
         Optional<Pret> pret = repo.findById(id);
         if (pret != null) {

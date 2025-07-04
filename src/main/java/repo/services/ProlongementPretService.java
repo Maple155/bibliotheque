@@ -34,6 +34,7 @@ public class ProlongementPretService {
             return prolongement;
     }
 
+    @Transactional
     public Optional<ProlongementPret> readById(int id) {
         Optional<ProlongementPret> prolongementOpt = repo.findById(id);
         if (prolongementOpt != null) {

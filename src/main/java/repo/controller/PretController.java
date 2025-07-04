@@ -132,16 +132,15 @@ public class PretController {
 
         // condition 4
         // Nahazo penalite ve ilay olona ? 
-        List<PenaliteAdherant> penalites = penaliteAdherantService.findByAdherant(currAdherant.getId());
-        if (!penalites.isEmpty()) {
-            int nbJour = penaliteAdherantService.totalPenalite(currAdherant.getId());
+        int nbJour = penaliteAdherantService.totalPenalite(currAdherant.getId());
+        if (Integer.valueOf(nbJour) != null) {
             Date dateDebut = penaliteAdherantService.dateDebutPenalite(currAdherant.getId());
             Date dateFin = penaliteAdherantService.ajouterJours(dateDebut, nbJour);
         
             if (dateDebut.before(date_pret) &&
                     dateFin.after(date_pret)) {
-                    model.addAttribute("error", "Vous ne pouvez pas encore réserver à cause d'une penalisation"); 
-                    return "home";   
+                model.addAttribute("error", "Vous ne pouvez pas encore réserver à cause de votre penalisation"); 
+                return "home";   
             }
         }
         
@@ -214,9 +213,21 @@ public class PretController {
         Pret pret = pretService.readById(id_pret).orElse(null);
         V_pretsAvecDateRetour currPret = vPretsAvecDateRetourService.readByPret(id_pret);
         int compare = currPret.getDateRetourPrevue().compareTo(date_retour);
-
+    
         // Tara ilay boky vô naverina
         if (date_retour.after(currPret.getDateRetourPrevue())) {
+
+            List<Penalite> p = penaliteService.read();
+            int nbJour = penaliteAdherantService.totalPenalite(id_adherant);
+            Date dateDebut = penaliteAdherantService.dateDebutPenalite(id_adherant);
+            Date dateFin = penaliteAdherantService.ajouterJours(dateDebut, nbJour);
+
+            if (dateFin.before(date_retour)) {
+                for (Penalite penalite : p) {
+                    penaliteService.delete(penalite.getId());
+                }    
+            }
+
             LocalDate prevue = currPret.getDateRetourPrevue().toLocalDate();
             LocalDate reel = date_retour.toLocalDate();
             long joursDiff = ChronoUnit.DAYS.between(prevue, reel);

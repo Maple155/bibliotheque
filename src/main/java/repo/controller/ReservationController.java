@@ -1,5 +1,6 @@
 package repo.controller;
 
+import java.lang.reflect.Type;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,16 +76,18 @@ public class ReservationController {
     public String getReservation(
             @RequestParam("id_exemplaire") String str_id,
             @RequestParam("date_res") String str_date,
+            @RequestParam("type_pret") String str_id_type,
             HttpSession session,
             Model model) {
 
+        int id_type_pret = Integer.parseInt(str_id_type);
         int id_exemplaire = Integer.parseInt(str_id);
         Exemplaire exemplaire = exemplaireService.readById(id_exemplaire).orElse(null);
 
         Date date_res = Date.valueOf(str_date);
 
         Adherant adherant = (Adherant) session.getAttribute("adherant");
-
+        TypePret tp = typePretService.readById(id_type_pret).get();
         List<Exemplaire> exemplaires = exemplaireService.findAllWithLivre();
         List<TypePret> typePrets = typePretService.read();
 
@@ -166,6 +169,7 @@ public class ReservationController {
         reservation.setAdherant(adherant);
         reservation.setDateReservation(date_res);
         reservation.setExemplaire(exemplaire);
+        reservation.setTypePret(tp);
         reservation = reservationService.create(reservation);
 
         TypeStatusPret typeStatusPret = typeStatusPretService.readById(1).orElse(null);
@@ -207,7 +211,7 @@ public class ReservationController {
 
         Adherant adherant = adherantService.readById(res.getAdherant().getId()).orElse(null);
         Exemplaire exemplaire = exemplaireService.readById(res.getExemplaire().getId()).orElse(null);
-        TypePret tp = typePretService.readById(1).orElse(null);
+        TypePret tp = typePretService.readById(res.getTypePret().getId()).orElse(null);
 
         if (str_action.equals("valider")) {
             TypeStatusPret typeStatusPret = typeStatusPretService.readById(3).orElse(null);

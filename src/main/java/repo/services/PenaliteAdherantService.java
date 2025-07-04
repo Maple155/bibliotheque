@@ -43,7 +43,7 @@ public class PenaliteAdherantService {
     
         for (PenaliteAdherant penaliteAdherant : penalites) {
             Date temp = penaliteAdherant.getDatePenalite();
-            if (temp.compareTo(result) > 0) {
+            if (temp.compareTo(result) < 0) {
                 result = temp; 
             }
         }

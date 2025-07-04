@@ -133,9 +133,10 @@
                         <% if ("en cours".equals(pret.getStatusCourant())) { %>
                             <form action="prolonger" method="post">
                                 <input type="hidden" name="id_pret" value="<%= pret.getIdPret() %>">
-                                <input type="hidden" name="id_adherant" value="<%= pret.getIdAdherant()%>">
-                                <br><br>
-                                <input type="submit" value="Demander" class="btn-submit">
+                                <input type="hidden" name="id_adherant" value="<%= pret.getIdAdherant()%>">                                
+                                <br>
+                                    <input type="submit" value="Demander" class="btn-submit">
+                                <br>
                             </form>
                         <% } %>
                     </td>

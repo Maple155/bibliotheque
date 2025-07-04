@@ -5,6 +5,7 @@
     List<Exemplaire> exemplaires = (List<Exemplaire>) request.getAttribute("exemplaires");
     String error = (String) request.getAttribute("error"); 
     String success = (String) request.getAttribute("success");
+    List<TypePret> typesPret = (List<TypePret>) request.getAttribute("typesPret");
 %>
 <!DOCTYPE html>
 <html>
@@ -137,6 +138,20 @@
                                 <input type="hidden" name="id_exemplaire" value="<%= exemplaire.getId() %>">
                                 <label for="date_res">Date de réservation</label>
                                 <input type="date" name="date_res" id="date_res" required>
+                                <br><br>
+                                <label for="type_label">Type de pret : </label>
+                                <select name="type_pret" id="type_pret" required>
+                                    <option value="#">Sélectionnez</option>
+                                    <%  
+                                        if (typesPret != null) {
+                                            for(TypePret typePret : typesPret ) { 
+                                    %>
+                                        <option value="<%= typePret.getId() %>"><%= typePret.getType() %></option>
+                                    <%
+                                            }  
+                                        } 
+                                    %>
+                                </select>
                                 <br><br>
                                 <input type="submit" value="Réserver" class="btn-submit">
                             </form>

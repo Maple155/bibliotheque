@@ -192,9 +192,11 @@ CREATE TABLE Reservation (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_adherant INT NOT NULL,
     id_exemplaire INT NOT NULL,
+    id_type_pret INT NOT NULL,
     date_reservation DATE NOT NULL,
     FOREIGN KEY (id_adherant) REFERENCES Adherant(id),
-    FOREIGN KEY (id_exemplaire) REFERENCES Exemplaire(id)
+    FOREIGN KEY (id_exemplaire) REFERENCES Exemplaire(id),
+    FOREIGN KEY (id_type_pret) REFERENCES Type_pret(id)
 );
 
 -- Statut de réservation
@@ -224,6 +226,7 @@ CREATE TABLE status_prolongement (
 );
 
 --------------------------------------------------------- 
+
 CREATE OR REPLACE VIEW v_exemplaires_restants AS
 SELECT 
     l.id AS id_livre,

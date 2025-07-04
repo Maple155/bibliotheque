@@ -47,6 +47,12 @@ INSERT INTO BlacklistLivres (id_type_adherant, id_livre) VALUES
 (4, 2), -- Anonyme ne peut pas emprunter '1984'
 (1, 3); -- Etudiant ne peut pas emprunter 'Le Rouge et le Noir'
 
+-- BlacklistAge : interdictions d'âge pour certains livres
+
+INSERT INTO BlacklistAge (age_min, id_livre) VALUES
+(16, 2), -- '1984' interdit aux moins de 16 ans
+(18, 3); -- 'Le Rouge et le Noir' interdit aux moins de 18 ans
+
 -- Type_status_inscription
 INSERT INTO type_status_inscription (type) VALUES
 ('active'),

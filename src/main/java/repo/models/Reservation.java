@@ -18,6 +18,10 @@ public class Reservation {
     @JoinColumn(name = "id_exemplaire", nullable = false)
     private Exemplaire exemplaire;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_type_pret", nullable = false)
+    private TypePret typePret;
+
     @Column(name = "date_reservation")
     private Date dateReservation;
 
@@ -34,4 +38,7 @@ public class Reservation {
 
     public Date getDateReservation() { return dateReservation; }
     public void setDateReservation(Date dateReservation) { this.dateReservation = dateReservation; }
+
+    public TypePret getTypePret() { return typePret; }
+    public void setTypePret(TypePret typePret) { this.typePret = typePret; }
 }

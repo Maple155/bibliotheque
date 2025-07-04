@@ -137,10 +137,12 @@ public class PretController {
             Date dateDebut = penaliteAdherantService.dateDebutPenalite(currAdherant.getId());
             Date dateFin = penaliteAdherantService.ajouterJours(dateDebut, nbJour);
         
-            if (dateDebut.before(date_pret) &&
-                    dateFin.after(date_pret)) {
-                model.addAttribute("error", "Vous ne pouvez pas encore réserver à cause de votre penalisation"); 
-                return "home";   
+            if (dateDebut.before(date_pret) && dateFin.after(date_pret)) {
+                model.addAttribute("error",
+                    "Prêt impossible en raison d'une pénalisation — période : " 
+                    + dateDebut + " au " + dateFin
+                    + " — date de prêt : " + date_pret);
+                return "home";
             }
         }
         
@@ -222,7 +224,7 @@ public class PretController {
             Date dateDebut = penaliteAdherantService.dateDebutPenalite(id_adherant);
             Date dateFin = penaliteAdherantService.ajouterJours(dateDebut, nbJour);
 
-            if (dateFin.before(date_retour)) {
+            if (dateFin.before(currPret.getDateDebut())) {
                 for (Penalite penalite : p) {
                     penaliteService.delete(penalite.getId());
                 }    

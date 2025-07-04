@@ -3,6 +3,8 @@
 <%@ page import="repo.models.V_pretsAvecDateRetour" %>
 <%
     List<V_pretsAvecDateRetour> allPrets = (List<V_pretsAvecDateRetour>) request.getAttribute("allPrets");
+    String error = (String) request.getAttribute("error"); 
+    String success = (String) request.getAttribute("success");
 %>
 <!DOCTYPE html>
 <html>
@@ -87,6 +89,19 @@
             <input type="text" id="filter-statusCourant" placeholder="Filtrer par statut courant" onkeyup="filterTable()">
         </div>
 
+        <%  
+            if (error != null) { 
+        %>
+            <div style="color:red;"><%= error %></div>
+        <% 
+            } else if (success != null){
+
+        %>
+            <div style="color:green;"><%= success %></div>
+        <% 
+            }
+        %>
+        <br><br>
         <table id="prets-table" border="1">
             <thead>
                 <tr>
@@ -122,7 +137,7 @@
                     <td><%= pret.getDateRetourPrevue() != null ? pret.getDateRetourPrevue() : "-" %></td>
                     <td><%= pret.getStatusCourant() != null ? pret.getStatusCourant() : "-" %></td>
                     <td>
-                        <% if (pret.getStatusCourant() == "en cours") { %>
+                        <% if ("en cours".equals(pret.getStatusCourant())) { %>
                             <form action="rendreExemplaire" method="post">
                                 <input type="hidden" name="id_pret" value="<%= pret.getIdPret() %>">
                                 <input type="hidden" name="id_adherant" value="<%= pret.getIdAdherant()%>">

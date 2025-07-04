@@ -88,10 +88,10 @@ public class PretController {
                 currExemplaire.getLivre().getId() &&
                 blacklistLivres.get(i).getTypeAdherant().getId() ==
                 currAdherant.getTypeAdherant().getId()) {
-                model.addAttribute("error", "Les " +
-                blacklistLivres.get(i).getTypeAdherant().getType() + " ne peuvent pas emprunter ce livre");
+                    model.addAttribute("error", "Les " +
+                    blacklistLivres.get(i).getTypeAdherant().getType() + " ne peuvent pas emprunter ce livre");
 
-                return "home";
+                    return "home";
                 }
             }
         }
@@ -109,7 +109,7 @@ public class PretController {
                     if (conditionPrets.get(i).getTypePret() == currPret && !currPret.getType().equals("sur place")) {
                         if (prets.size() >= conditionPrets.get(i).getExemplaireMax()) {
                             model.addAttribute("error",
-                                    "Vous n'avez pas atteint le nombre maximum de pret que vous pouvez faire");
+                                    "Vous avez atteint le nombre maximum de pret que vous pouvez faire");
                             return "home";
                         }
                     }
@@ -132,14 +132,14 @@ public class PretController {
 
         // condition 4
         // Nahazo penalite ve ilay olona ? 
-        List<PenaliteAdherant> penalites = penaliteAdherantService.findByAdherants(currAdherant.getId());
+        List<PenaliteAdherant> penalites = penaliteAdherantService.findByAdherant(currAdherant.getId());
         if (!penalites.isEmpty()) {
             int nbJour = penaliteAdherantService.totalPenalite(currAdherant.getId());
             Date dateDebut = penaliteAdherantService.dateDebutPenalite(currAdherant.getId());
             Date dateFin = penaliteAdherantService.ajouterJours(dateDebut, nbJour);
         
-            if (dateDebut.compareTo(date_pret) <= 0 &&
-                    dateFin.compareTo(date_pret) >= 0) {
+            if (dateDebut.before(date_pret) &&
+                    dateFin.after(date_pret)) {
                     model.addAttribute("error", "Vous ne pouvez pas encore réserver à cause d'une penalisation"); 
                     return "home";   
             }
@@ -149,10 +149,13 @@ public class PretController {
         // A jour ve ny inscription any ?
         Inscription currInscription = inscriptionService.getCurrentInscription(currAdherant.getId());
         if (currInscription != null) {
-            if (currInscription.getDateDebut().compareTo(date_pret) <= 0 &&
-                    currInscription.getDatefin().compareTo(date_pret) >= 0) {
-                    model.addAttribute("error", "Vous devez vous reinscrire"); 
-                    return "home";   
+            if (currInscription.getDateDebut().after(date_pret) ||
+                currInscription.getDatefin().before(date_pret)) {
+                model.addAttribute("error",
+                    "Vous devez vous reinscrire - période valide : " 
+                    + currInscription.getDateDebut() + " au " + currInscription.getDatefin()
+                    + " — date de prêt : " + date_pret);
+                return "home";
             }
         } else if (currInscription == null){
             model.addAttribute("error", "Vous devez vous reinscrire"); 
@@ -162,14 +165,14 @@ public class PretController {
         Pret pret = new Pret(currAdherant, currExemplaire, currPret, date_pret);
         pret = pretService.create(pret);
 
-        TypeStatusPret type_StatusPret = typeStatusPretService.readById(1).orElse(null);
+        TypeStatusPret type_StatusPret = typeStatusPretService.readById(2).orElse(null);
 
         StatusPret status = new StatusPret();
         status.setPret(pret);
         status.setTypeStatusPret(type_StatusPret);
         status = statusPretService.create(status);
 
-        model.addAttribute("success", "Emprunter avec succes");
+        model.addAttribute("success", "Emprunter avec succes - période valide : " + currInscription.getDateDebut() + " au " + currInscription.getDatefin() + "— date de prêt : " + date_pret);
         return "home";
     }
 
@@ -213,7 +216,7 @@ public class PretController {
         int compare = currPret.getDateRetourPrevue().compareTo(date_retour);
 
         // Tara ilay boky vô naverina
-        if (compare == -1) {
+        if (date_retour.after(currPret.getDateRetourPrevue())) {
             LocalDate prevue = currPret.getDateRetourPrevue().toLocalDate();
             LocalDate reel = date_retour.toLocalDate();
             long joursDiff = ChronoUnit.DAYS.between(prevue, reel);
@@ -225,7 +228,17 @@ public class PretController {
             penalite.setNbJour(diff.intValue());
             
             penalite = penaliteService.create(penalite);
-            model.addAttribute("error", "Penalite : Livre rendu en retard");
+            model.addAttribute("error",
+            "Pénalité : Livre rendu en retard. " +
+            "Date début : " + currPret.getDateDebut() +
+            ", Date retour prévue : " + currPret.getDateRetourPrevue() +
+            ", Date retour réelle : " + date_retour);
+        } else {
+            model.addAttribute("success",
+            "Livre remis avec succès. " +
+            "Date début : " + currPret.getDateDebut() +
+            ", Date retour prévue : " + currPret.getDateRetourPrevue() +
+            ", Date retour réelle : " + date_retour);
         }
 
         RetourPret retourPret = new RetourPret();
@@ -244,7 +257,6 @@ public class PretController {
 
         List<V_pretsAvecDateRetour> allPrets = vPretsAvecDateRetourService.readByAdherant(id_adherant);
 
-        model.addAttribute("success", "Livre remis avec succes");
         model.addAttribute("allPrets", allPrets);
         return "mesPrets";
     }

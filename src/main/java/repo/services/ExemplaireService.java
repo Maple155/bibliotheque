@@ -1,7 +1,11 @@
 package repo.services;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import repo.models.Adherant;
 import repo.models.Exemplaire;
 import repo.repositories.ExemplaireRepository;
 import java.util.List;
@@ -24,8 +28,13 @@ public class ExemplaireService {
         return repo.findAll();
     }
 
+    @Transactional
     public Optional<Exemplaire> readById(int id) {
-        return repo.findById(id);
+        Optional<Exemplaire> exemplaireOpt = repo.findById(id);
+        if (exemplaireOpt != null) {
+            Hibernate.initialize(exemplaireOpt.get().getLivre());
+        }
+        return exemplaireOpt;
     }
 
     public Exemplaire update(int id, Exemplaire object) {

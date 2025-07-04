@@ -11,5 +11,4 @@ public interface InscriptionRepository extends JpaRepository<Inscription, Intege
 
     @Query("SELECT i FROM Inscription i WHERE adherant.id = :idAdherant ORDER BY id DESC LIMIT 1")
     Inscription getCurrentInscription(@Param("idAdherant") int idAdherant);
-
 }   

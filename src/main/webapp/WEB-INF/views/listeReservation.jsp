@@ -2,7 +2,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="repo.models.VReservationsAvecStatusActuel" %>
 <%
-    List<VReservationsAvecStatusActuel> allReservations = (List<VReservationsAvecStatusActuel>) request.getAttribute("allReservations");
+    List<VReservationsAvecStatusActuel> reservations = (List<VReservationsAvecStatusActuel>) request.getAttribute("reservations");
     String error = (String) request.getAttribute("error");
     String success = (String) request.getAttribute("success");
 %>
@@ -106,8 +106,8 @@
             </thead>
             <tbody>
                 <%
-                if (allReservations != null && !allReservations.isEmpty()) {
-                    for (VReservationsAvecStatusActuel res : allReservations) {
+                if (reservations != null && !reservations.isEmpty()) {
+                    for (VReservationsAvecStatusActuel res : reservations) {
                 %>
                 <tr>
                     <td><%= res.getIdReservation() != null ? res.getIdReservation() : "-" %></td>
@@ -118,8 +118,8 @@
                     <td><%= res.getDateReservation() != null ? res.getDateReservation() : "-" %></td>
                     <td><%= res.getStatutActuel() != null ? res.getStatutActuel() : "-" %></td>
                     <td>
-                        <% if (res.getStatutActuel() == "en attente") { %>
-                            <form metod="post" action="validerRes">
+                        <% if ("en attente".equals(res.getStatutActuel())) { %>
+                            <form method="post" action="validerRes">
                                 <input type="hidden" name="id_reservation" value="<%= res.getIdReservation() %>">
                                 <input type="hidden" name="action" value="valider">
                                 <input type="submit" value="Accepter">
@@ -127,8 +127,8 @@
                         <% } %>
                     </td>
                     <td>
-                        <% if (res.getStatutActuel() == "en attente") { %>
-                            <form metod="post" action="validerRes">
+                        <% if ("en attente".equals(res.getStatutActuel())) { %>
+                            <form method="post" action="validerRes">
                                 <input type="hidden" name="id_reservation" value="<%= res.getIdReservation() %>">
                                 <input type="hidden" name="action" value="refuser">
                                 <input type="submit" value="Refuser">

@@ -70,7 +70,7 @@
     </style>
 </head>
 <body>
-    <jsp:include page="sideBar.jsp" />
+    <jsp:include page="sideBarBiblio.jsp" />
 
     <div class="main-content">
         <h1>Liste des prolongements</h1>
@@ -118,8 +118,8 @@
                     <td><%= p.getDateProlongement() != null ? p.getDateProlongement() : "-" %></td>
                     <td><%= p.getStatutActuel() != null ? p.getStatutActuel() : "-" %></td>
                     <td>
-                        <% if (p.getStatutActuel() == "en attente") {  %>
-                                <form metod="post" action="validerPro">
+                        <% if ("en attente".equals(p.getStatutActuel())) {  %>
+                                <form method="post" action="validerPro">
                                 <input type="hidden" name="id_prolongement" value="<%= p.getIdProlongement() %>">
                                 <input type="hidden" name="action" value="Accepter">
                                 <input type="submit" value="Accepter">
@@ -127,8 +127,8 @@
                         <% } %>
                     </td>
                     <td>
-                        <% if (p.getStatutActuel() == "en attente") {  %>
-                            <form metod="post" action="validerPro">
+                        <% if ("en attente".equals(p.getStatutActuel())) {  %>
+                            <form method="post" action="validerPro">
                                 <input type="hidden" name="id_prolongement" value="<%= p.getIdProlongement() %>">
                                 <input type="hidden" name="action" value="refuser">
                                 <input type="submit" value="Refuser">

@@ -47,8 +47,8 @@
         <h2>Menu</h2>
         <ul>
             <li class="active"><a href="allPrets">Rendre livre</a></li>
-            <li><a href="#">Reservation</a></li>
-            <li><a href="#">Prolongement</a></li>
+            <li><a href="listeReservation">Reservation</a></li>
+            <li><a href="listeProlongement">Prolongement</a></li>
         </ul>
     </nav>
 </body>

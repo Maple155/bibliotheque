@@ -111,8 +111,10 @@
             <br>
             <label for="date_debut">Date debut :</label>
             <input type="date" name="date_debut" id="date_debut"required>
+            <br><br>
             <label for="date_fin">Date fin :</label>
             <input type="date" name="date_fin" id="date_fin" required>
+            <br><br>
             <input type="submit" value="S'inscrire">
         </form>
     </div>

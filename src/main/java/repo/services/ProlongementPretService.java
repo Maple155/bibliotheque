@@ -1,7 +1,10 @@
 package repo.services;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import repo.models.Exemplaire;
 import repo.models.ProlongementPret;
 import repo.repositories.ProlongementPretRepository;
 import java.util.List;
@@ -20,12 +23,23 @@ public class ProlongementPretService {
         return repo.save(object);
     }
 
+    @Transactional
     public List<ProlongementPret> read() {
-        return repo.findAll();
+        List<ProlongementPret> prolongement = repo.findAll();
+            if (prolongement != null) {
+                for (ProlongementPret prolongementPret : prolongement) {
+                    Hibernate.initialize(prolongementPret.getPret());   
+                }
+            }
+            return prolongement;
     }
 
     public Optional<ProlongementPret> readById(int id) {
-        return repo.findById(id);
+        Optional<ProlongementPret> prolongementOpt = repo.findById(id);
+        if (prolongementOpt != null) {
+            Hibernate.initialize(prolongementOpt.get().getPret());
+        }
+        return prolongementOpt;
     }
 
     public ProlongementPret update(int id, ProlongementPret object) {

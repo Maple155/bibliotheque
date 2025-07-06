@@ -14,7 +14,7 @@ public class ProlongementPret {
     @JoinColumn(name = "id_pret", nullable = false)
     private Pret pret;
 
-    @Temporal(TemporalType.DATE)
+    @Column(name = "date_prolongement")
     private Date dateProlongement;
 
     public ProlongementPret() {}

@@ -23,6 +23,9 @@ public class ConditionPret {
     @Column(name = "duree_max")
     private Integer dureeMax;
 
+    @Column(name = "prolongement_max")
+    private Integer prolongementMax;
+    
     public ConditionPret() {}
 
     public int getId() { return id; }
@@ -39,4 +42,7 @@ public class ConditionPret {
 
     public Integer getDureeMax() { return dureeMax; }
     public void setDureeMax(Integer dureeMax) { this.dureeMax = dureeMax; }
+
+    public Integer getProlongementMax() { return prolongementMax; }
+    public void setProlongementMax(Integer prolongementMax) { this.prolongementMax = prolongementMax; }
 }

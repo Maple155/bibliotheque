@@ -15,4 +15,8 @@ public class VProlongementsAvecStatusActuelService {
     public List<VProlongementsAvecStatusActuel> findAll() {
         return vProlongementsAvecStatusActuelRepository.findAll();
     }
+
+    public List<VProlongementsAvecStatusActuel> readByAdherantStatut (int idAdherant, String status) {
+        return vProlongementsAvecStatusActuelRepository.readByAdherantStatut(idAdherant, status);
+    }
 }

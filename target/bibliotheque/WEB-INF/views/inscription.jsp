@@ -82,7 +82,7 @@
         }
         input[type="submit"] {
             width: 100%;
-            background-color: #4CAF50;
+            background-color: #233554;
             color: white;
             padding: 10px;
             border: none;

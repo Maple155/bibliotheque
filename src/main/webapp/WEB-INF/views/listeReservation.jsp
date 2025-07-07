@@ -117,24 +117,22 @@
                     <td><%= res.getNumeroExemplaire() != null ? res.getNumeroExemplaire() : "-" %></td>
                     <td><%= res.getDateReservation() != null ? res.getDateReservation() : "-" %></td>
                     <td><%= res.getStatutActuel() != null ? res.getStatutActuel() : "-" %></td>
-                    <td>
-                        <% if ("en attente".equals(res.getStatutActuel())) { %>
-                            <form method="post" action="validerRes">
-                                <input type="hidden" name="id_reservation" value="<%= res.getIdReservation() %>">
-                                <input type="hidden" name="action" value="valider">
-                                <input type="submit" value="Accepter">
-                            </form>
-                        <% } %>
-                    </td>
-                    <td>
-                        <% if ("en attente".equals(res.getStatutActuel())) { %>
-                            <form method="post" action="validerRes">
-                                <input type="hidden" name="id_reservation" value="<%= res.getIdReservation() %>">
-                                <input type="hidden" name="action" value="refuser">
-                                <input type="submit" value="Refuser">
-                            </form>
-                        <% } %>
-                    </td>
+                    <% if ("en attente".equals(res.getStatutActuel())) { %>
+                        <td>
+                                <form method="post" action="validerRes">
+                                    <input type="hidden" name="id_reservation" value="<%= res.getIdReservation() %>">
+                                    <input type="hidden" name="action" value="valider">
+                                    <input type="submit" value="Accepter">
+                                </form>
+                        </td>
+                        <td>
+                                <form method="post" action="validerRes">
+                                    <input type="hidden" name="id_reservation" value="<%= res.getIdReservation() %>">
+                                    <input type="hidden" name="action" value="refuser">
+                                    <input type="submit" value="Refuser">
+                                </form>
+                        </td>
+                    <% } %>
                 </tr>
                 <%
                     }

@@ -25,6 +25,9 @@ public class VProlongementsAvecStatusActuel {
     @Column(name = "statut_actuel")
     private String statutActuel;
 
+    @Column(name = "id_Adherant")
+    private int idAdherant;
+
     @Column(name = "nom_adherant")
     private String nomAdherant;
 
@@ -104,5 +107,13 @@ public class VProlongementsAvecStatusActuel {
 
     public void setNumeroExemplaire(Integer numeroExemplaire) {
         this.numeroExemplaire = numeroExemplaire;
+    }
+
+    public int getIdAdherant() {
+        return idAdherant;
+    }
+
+    public void setIdAdherant(int idAdherant) {
+        this.idAdherant = idAdherant;
     }
 }

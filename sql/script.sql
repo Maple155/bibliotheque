@@ -131,6 +131,7 @@ CREATE TABLE Condition_pret (
     id_type_pret INT NOT NULL,
     exemplaire_max INT,
     duree_max INT, -- durée maximale en jours
+    prolongement_max INT,
     FOREIGN KEY (id_type_adherant) REFERENCES Type_adherant(id),
     FOREIGN KEY (id_type_pret) REFERENCES Type_pret(id)
 );
@@ -383,6 +384,7 @@ SELECT
     pp.id_pret,
     pp.date_prolongement,
     tsp.type AS statut_actuel,
+    a.id AS id_adherant,
     a.nom AS nom_adherant,
     a.prenom AS prenom_adherant,
     l.titre AS titre_livre,

@@ -68,13 +68,24 @@
             content: "-";
             color: #999;
         }
+        .btn-submit {
+            background: #233554;
+            color: #fff;
+            border: none;
+            padding: 7px 13px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn-submit:hover {
+            background: #304a74;
+        }
     </style>
 </head>
 <body>
     <jsp:include page="sideBar.jsp" />
 
     <div class="main-content">
-        <h1>Liste de tous les prêts</h1>
+        <h1>Prolongement des prêts</h1>
 
         <div class="filter-bar">
             <input type="text" id="filter-adherantNom" placeholder="Filtrer par nom adhérant" onkeyup="filterTable()">

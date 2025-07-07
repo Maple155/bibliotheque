@@ -97,7 +97,22 @@ public class PrologementController {
         model.addAttribute("allPrets", allPrets);
         V_pretsAvecDateRetour pret = vPretsAvecDateRetourService.readByPret(id_pret); 
         
-        // condition 4
+        // condition 1
+        // Efa ampy ve ny cota any ? 
+        List<ConditionPret> conditionPrets = conditionPretService.read();
+        List<VProlongementsAvecStatusActuel> PAS = PSA.readByAdherantStatut(adherant.getId(), "en attente");
+        if (!conditionPrets.isEmpty()) {
+            for (int i = 0; i < conditionPrets.size(); i++) {
+                if (conditionPrets.get(i).getTypeAdherant().getId() == adherant.getTypeAdherant().getId()) {
+                    if (conditionPrets.get(i).getProlongementMax() <= PAS.size()) {
+                        model.addAttribute("error", "Vous avez atteint le nombre maximum de prolongement que vous pouvez faire"); 
+                        return "home";   
+                    }
+                }
+            }
+        }
+
+        // condition 2
         // Nahazo penalite ve ilay olona ? 
         List<PenaliteAdherant> penalites = penaliteAdherantService.findByAdherant(adherant.getId());
         if (!penalites.isEmpty()) {
@@ -112,7 +127,7 @@ public class PrologementController {
             }
         }
 
-        // condition 1
+        // condition 3
         // A jour ve ny inscription any ?
         Inscription currInscription = inscriptionService.getCurrentInscription(adherant.getId());
         if (currInscription != null) {

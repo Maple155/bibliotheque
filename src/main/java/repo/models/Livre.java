@@ -3,6 +3,8 @@ package repo.models;
 import jakarta.persistence.*;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "Livre")
 public class Livre {
@@ -10,20 +12,33 @@ public class Livre {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "titre")
     private String titre;
+
+    @Column(name = "nbPage")
     private Integer nbPage;
+
+    @Column(name = "auteur")
     private String auteur;
 
-    @Temporal(TemporalType.DATE)
+    @Column(name = "datePublication")
     private Date datePublication;
 
+    @Column(name = "nbChapitre")
     private Integer nbChapitre;
+
+    @Column(name = "langue")
     private String langue;
+
+    @Column(name = "editeur")
     private String editeur;
+
+    @Column(name = "genre")
     private String genre;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_rarete")
+    @JsonIgnore
     private Rarete rarete;
 
     public Livre() {}

@@ -60,4 +60,8 @@ public class ExemplairesRestantsService {
     public V_exemplairesRestants findByExemplaire(int id_exemplaire) {
         return repo.findByExemplaire(id_exemplaire);
     }
+
+    public List<V_exemplairesRestants> findByLivre(int id_livre) {
+        return repo.findByLivre(id_livre);
+    }
 }

@@ -1,5 +1,7 @@
 package repo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -11,6 +13,7 @@ public class Exemplaire {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_livre", nullable = false)
+    @JsonIgnore
     private Livre livre;
 
     @Column(name = "numero_exemplaire")

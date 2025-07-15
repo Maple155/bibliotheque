@@ -49,6 +49,7 @@
             <li class="active"><a href="allPrets">Rendre livre</a></li>
             <li><a href="listeReservation">Reservation</a></li>
             <li><a href="listeProlongement">Prolongement</a></li>
+            <li><a href="livre_exemplaire">Exemplaires</a></li>
         </ul>
     </nav>
 </body>

@@ -68,7 +68,7 @@ INSERT INTO Type_pret (type) VALUES
 -- Condition_pret : Chaque adhérent a une règle pour chaque type de prêt
 INSERT INTO Condition_pret (id_type_adherant, id_type_pret, exemplaire_max, duree_max, prolongement_max) VALUES
 -- Etudiant
-(1, 1, 3, 30, 1), -- domicile
+(1, 1, 3, 30, 2), -- domicile
 (1, 2, 2, 1, 0),  -- sur place
 
 -- Professeur
@@ -76,11 +76,11 @@ INSERT INTO Condition_pret (id_type_adherant, id_type_pret, exemplaire_max, dure
 (2, 2, 3, 1, 0),  -- sur place
 
 -- Professionnel
-(3, 1, 2, 20, 1), -- domicile
+(3, 1, 2, 30, 2), -- domicile
 (3, 2, 1, 1, 0),  -- sur place
 
 -- Anonyme
-(4, 1, 1, 20, 0),  -- domicile interdit
+(4, 1, 1, 20, 5),  -- domicile interdit
 (4, 2, 1, 1, 0);  -- sur place autorisé mais limité
 
 

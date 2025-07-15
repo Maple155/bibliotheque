@@ -1,7 +1,10 @@
 package repo.services;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import repo.models.Livre;
 import repo.repositories.LivreRepository;
 import java.util.List;
@@ -20,12 +23,28 @@ public class LivreService {
         return repo.save(object);
     }
 
+    @Transactional(readOnly = true)
     public List<Livre> read() {
-        return repo.findAll();
+        List<Livre> livres = repo.findAll();
+
+        if (livres != null) {
+            for (Livre livre : livres) {
+                Hibernate.initialize(livre.getRarete());
+            }
+        }
+
+        return livres;
     }
 
+    @Transactional(readOnly = true)
     public Optional<Livre> readById(int id) {
-        return repo.findById(id);
+        Optional<Livre> livre = repo.findById(id);
+
+        if (livre != null) {
+            Hibernate.initialize(livre.get().getRarete());
+        }
+
+        return livre;
     }
 
     public Livre update(int id, Livre object) {

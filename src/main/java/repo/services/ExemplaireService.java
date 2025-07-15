@@ -28,7 +28,7 @@ public class ExemplaireService {
         return repo.findAll();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Optional<Exemplaire> readById(int id) {
         Optional<Exemplaire> exemplaireOpt = repo.findById(id);
         if (exemplaireOpt != null) {
@@ -54,5 +54,18 @@ public class ExemplaireService {
 
     public List<Exemplaire> findAllWithLivre() {
         return repo.findAllWithLivre();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Exemplaire> findByLivre(int idLivre) {
+        List<Exemplaire> exemplaires = repo.findByLivre(idLivre);
+        
+        if (exemplaires != null) {
+            for (Exemplaire exemplaire : exemplaires) {
+                Hibernate.initialize(exemplaire.getLivre());
+                Hibernate.initialize(exemplaire.getLivre().getRarete());
+            }
+        }
+        return exemplaires;
     }
 }

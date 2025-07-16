@@ -173,6 +173,11 @@ CREATE TABLE status_pret (
     FOREIGN KEY (id_status) REFERENCES type_status_pret(id)
 );
 
+CREATE TABLE ferie (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    date_ferie DATE
+);
+
 -- Retour du prêt
 CREATE TABLE retour_pret (
     id INT AUTO_INCREMENT PRIMARY KEY,

@@ -80,6 +80,11 @@ public class PretController {
         model.addAttribute("adherant", currAdherant);
         model.addAttribute("typesPret", typePrets);
 
+        if (conditionPretService.isFerie(date_pret.toLocalDate())) {
+            model.addAttribute("error", date_pret.toString() + " est un jour ferie");
+            return "home";
+        }
+
         // condition 1
         // Misy type d'adherant tsy afaka maka boky specifique
         if (!blacklistLivres.isEmpty()) {
@@ -219,6 +224,7 @@ public class PretController {
         Adherant adherant = adherantService.readById(id_adherant).orElse(null);
         List<ConditionPret> conditions = conditionPretService.read();
         int nbJourPenalite = 0;
+        
         if (conditions != null) {
             for (ConditionPret conditionPret : conditions) {
                 if (conditionPret.getTypeAdherant().getType().equals(adherant.getTypeAdherant().getType())) {
@@ -227,8 +233,14 @@ public class PretController {
             }
         }
 
+        Date retourPrevue = currPret.getDateRetourPrevue();
+        if (conditionPretService.isFerie(currPret.getDateRetourPrevue().toLocalDate())) {
+            LocalDate temp = ConditionPretService.calculerNouvelleDate(retourPrevue.toLocalDate(), 1);
+            retourPrevue = Date.valueOf(temp);
+        }
+
         // Tara ilay boky vô naverina
-        if (date_retour.after(currPret.getDateRetourPrevue())) {
+        if (date_retour.after(retourPrevue)) {
 
             List<Penalite> p = penaliteService.read();
             int nbJour = penaliteAdherantService.totalPenalite(id_adherant);
@@ -241,6 +253,7 @@ public class PretController {
                 }
             }
 
+            
             LocalDate prevue = currPret.getDateRetourPrevue().toLocalDate();
             LocalDate reel = date_retour.toLocalDate();
             long joursDiff = ChronoUnit.DAYS.between(prevue, reel);
@@ -256,8 +269,9 @@ public class PretController {
             model.addAttribute("error",
                     "Pénalité : Livre rendu en retard. " +
                             "Date début : " + currPret.getDateDebut() +
-                            ", Date retour prévue : " + currPret.getDateRetourPrevue() +
-                            ", Date retour réelle : " + date_retour);
+                            ", Date retour prévue : " + retourPrevue +
+                            ", Date retour réelle : " + date_retour);   
+        
         } else {
             model.addAttribute("success",
                     "Livre remis avec succès. " +

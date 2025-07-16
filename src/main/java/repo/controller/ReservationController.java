@@ -96,15 +96,20 @@ public class ReservationController {
         model.addAttribute("typesPret", typePrets);
         model.addAttribute("exemplaires", exemplaires);
 
-        if (conditions != null) {
-            for (ConditionPret condition : conditions) {
-                if (adherant.getTypeAdherant().getType().equals(condition.getTypeAdherant().getType())) {
-                    if (condition.getReservationMax() <= reservations.size()) {
-                        model.addAttribute("error", "Vous avez fait trop de reservation");
-                        return "reservation";
-                    }
-                }
-            }
+        // if (conditions != null) {
+        //     for (ConditionPret condition : conditions) {
+        //         if (adherant.getTypeAdherant().getType().equals(condition.getTypeAdherant().getType())) {
+        //             if (condition.getReservationMax() <= reservations.size()) {
+        //                 model.addAttribute("error", "Vous avez fait trop de reservation");
+        //                 return "reservation";
+        //             }
+        //         }
+        //     }
+        // }
+
+        if (conditionPretService.isFerie(date_res.toLocalDate())) {
+            model.addAttribute("error", date_res.toString() + " est un jour ferie");
+            return "home";
         }
 
         // condition 1

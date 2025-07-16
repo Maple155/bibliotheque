@@ -37,6 +37,7 @@ repo\services\TypePretService.class
 repo\models\Bibliothecaire.class
 repo\controller\PrologementController.class
 repo\models\TypeStatusPret.class
+repo\services\FerieService.class
 repo\repositories\BlacklistLivresRepository.class
 repo\services\TypeStatusPretService.class
 repo\models\StatusPret.class
@@ -74,6 +75,7 @@ repo\services\ExemplaireService.class
 repo\services\VInscriptionsAvecStatusActuelService.class
 repo\models\Exemplaire.class
 repo\repositories\ConditionPretRepository.class
+repo\models\Ferie.class
 repo\repositories\ProlongementPretRepository.class
 repo\models\Rarete.class
 repo\models\StatusInscription.class
@@ -88,6 +90,7 @@ repo\repositories\ExemplairesRestantsRepository.class
 repo\models\V_exemplairesRestants.class
 repo\models\Reservation.class
 repo\models\RetourPret.class
+repo\repositories\FerieRepository.class
 repo\services\BibliothecaireService.class
 repo\models\V_pretsAvecDateRetour.class
 repo\services\LivreService.class

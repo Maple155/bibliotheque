@@ -16,6 +16,7 @@ repo\models\Livre.class
 repo\models\Admin.class
 repo\repositories\VInscriptionsAvecStatusActuelRepository.class
 repo\models\Inscription.class
+repo\controller\AdherantController.class
 repo\models\BlacklistAge.class
 repo\models\DureeInscription.class
 repo\repositories\VReservationsAvecStatusActuelRepository.class

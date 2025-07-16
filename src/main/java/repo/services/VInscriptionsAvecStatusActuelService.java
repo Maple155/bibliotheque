@@ -15,4 +15,8 @@ public class VInscriptionsAvecStatusActuelService {
     public List<VInscriptionsAvecStatusActuel> findAll() {
         return vInscriptionsAvecStatusActuelRepository.findAll();
     }
+
+    public List<VInscriptionsAvecStatusActuel> findByAdherant(int idAdherant) {
+        return vInscriptionsAvecStatusActuelRepository.findByAdherant(idAdherant);
+    }
 }

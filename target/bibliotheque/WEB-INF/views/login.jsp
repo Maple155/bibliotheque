@@ -110,7 +110,7 @@
             %>
             <br>
             <label for="nom">Nom :</label>
-            <input type="text" name="nom" id="nom" value="Dupont" required>
+            <input type="text" name="nom" id="nom" value="Amine Bensaïd" required>
             <label for="prenom">Prenom :</label>
             <input type="text" name="prenom" id="prenom" value="Alice" required>
             <input type="submit" value="Valider">

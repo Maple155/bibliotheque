@@ -62,4 +62,17 @@ public class InscriptionService {
     public Inscription getCurrentInscription (int idAdherant) {
         return repo.getCurrentInscription(idAdherant);
     }
+
+    @Transactional(readOnly = true)
+    public List<Inscription> getInscriptionsByAdherant (int idAdherant) {
+        List<Inscription> inscriptions = repo.getInscriptionsByAdherant(idAdherant);
+
+        if (inscriptions != null) {
+            for (Inscription inscription : inscriptions) {
+                Hibernate.initialize(inscription.getAdherant());
+            }
+        }
+
+        return inscriptions;
+    }
 }

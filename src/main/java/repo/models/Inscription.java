@@ -3,6 +3,8 @@ package repo.models;
 import jakarta.persistence.*;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "Inscription")
 public class Inscription {
@@ -12,6 +14,7 @@ public class Inscription {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_adherant", nullable = false)
+    @JsonIgnore
     private Adherant adherant;
 
     @Column(name = "date_debut")

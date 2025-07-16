@@ -26,6 +26,7 @@
     <jsp:include page="sideBarBiblio.jsp" />
 
     <div class="container">
+        <h2>Sélectionner une livre</h2>
         <form id="id_livre">
             <div class="livre">
                 <select id="livre" name="livre">

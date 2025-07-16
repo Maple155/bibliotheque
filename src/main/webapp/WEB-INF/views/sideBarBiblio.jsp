@@ -50,6 +50,7 @@
             <li><a href="listeReservation">Reservation</a></li>
             <li><a href="listeProlongement">Prolongement</a></li>
             <li><a href="livre_exemplaire">Exemplaires</a></li>
+            <li><a href="adherant">Adherants</a></li>
         </ul>
     </nav>
 </body>

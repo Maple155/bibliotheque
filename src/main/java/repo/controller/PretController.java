@@ -216,6 +216,16 @@ public class PretController {
         Pret pret = pretService.readById(id_pret).orElse(null);
         V_pretsAvecDateRetour currPret = vPretsAvecDateRetourService.readByPret(id_pret);
         int compare = currPret.getDateRetourPrevue().compareTo(date_retour);
+        Adherant adherant = adherantService.readById(id_adherant).orElse(null);
+        List<ConditionPret> conditions = conditionPretService.read();
+        int nbJourPenalite = 0;
+        if (conditions != null) {
+            for (ConditionPret conditionPret : conditions) {
+                if (conditionPret.getTypeAdherant().getType().equals(adherant.getTypeAdherant().getType())) {
+                    nbJourPenalite = conditionPret.getPenalite();
+                }
+            }
+        }
 
         // Tara ilay boky vô naverina
         if (date_retour.after(currPret.getDateRetourPrevue())) {
@@ -239,8 +249,9 @@ public class PretController {
             Penalite penalite = new Penalite();
             penalite.setDate(date_retour);
             penalite.setPret(pret);
-            penalite.setNbJour(diff.intValue());
-
+            // penalite.setNbJour(diff.intValue());
+            penalite.setNbJour(nbJourPenalite);
+            
             penalite = penaliteService.create(penalite);
             model.addAttribute("error",
                     "Pénalité : Livre rendu en retard. " +

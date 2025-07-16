@@ -44,4 +44,8 @@ public class VPretsAvecDateRetourService {
     public List<V_pretsAvecDateRetour> readByExemplaire (int idExemplaire) {
         return repo.findByExemplaire(idExemplaire);
     }
+
+    public List<V_pretsAvecDateRetour> readByStatusByAdherant (int idAdherant, String status) {
+        return repo.findByStatusByAdherant(idAdherant, status);
+    }
 }

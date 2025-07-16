@@ -23,7 +23,7 @@ public class ConditionPretService {
         return repo.save(object);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<ConditionPret> read() {
         List<ConditionPret> list = repo.findAll();
         for (ConditionPret cp : list) {

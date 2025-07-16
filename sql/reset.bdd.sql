@@ -134,6 +134,8 @@ CREATE TABLE Condition_pret (
     exemplaire_max INT,
     duree_max INT, -- durée maximale en jours
     prolongement_max INT,
+    reservation_max INT,
+    penalite INT,
     FOREIGN KEY (id_type_adherant) REFERENCES Type_adherant(id),
     FOREIGN KEY (id_type_pret) REFERENCES Type_pret(id)
 );

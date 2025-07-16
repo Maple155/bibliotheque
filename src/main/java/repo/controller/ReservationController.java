@@ -90,9 +90,22 @@ public class ReservationController {
         TypePret tp = typePretService.readById(id_type_pret).get();
         List<Exemplaire> exemplaires = exemplaireService.findAllWithLivre();
         List<TypePret> typePrets = typePretService.read();
+        List<ConditionPret> conditions = conditionPretService.read();
+        List<VReservationsAvecStatusActuel> reservations = RSA.findByAdherantByStatus(adherant.getId(), "en attente");
 
         model.addAttribute("typesPret", typePrets);
         model.addAttribute("exemplaires", exemplaires);
+
+        if (conditions != null) {
+            for (ConditionPret condition : conditions) {
+                if (adherant.getTypeAdherant().getType().equals(condition.getTypeAdherant().getType())) {
+                    if (condition.getReservationMax() <= reservations.size()) {
+                        model.addAttribute("error", "Vous avez fait trop de reservation");
+                        return "reservation";
+                    }
+                }
+            }
+        }
 
         // condition 1
         // Mbola any aminazy ve le boky ?

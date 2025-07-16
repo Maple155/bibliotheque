@@ -25,11 +25,20 @@ public class AdherantService {
         return repo.save(object);
     }
 
+    @Transactional(readOnly = true)
     public List<Adherant> read() {
-        return repo.findAll();
+        List<Adherant> adherants = repo.findAll();
+        
+        if (adherants != null) {
+            for (Adherant adherant : adherants) {
+                Hibernate.initialize(adherant.getTypeAdherant());
+            }    
+        }
+
+        return adherants;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Optional<Adherant> readById(int id) {
         Optional<Adherant> tempOpt = repo.findById(id);
         if (tempOpt.isPresent()) {
@@ -54,8 +63,15 @@ public class AdherantService {
         repo.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     public Adherant findAdherant(String nom, String prenom) {
-        return repo.findAdherant(nom, prenom);
+        Adherant adherant = repo.findAdherant(nom, prenom);
+
+        if (adherant != null) {
+            Hibernate.initialize(adherant.getTypeAdherant());
+        }
+
+        return adherant;
     }
 
     public static int calculerAge(Date dateNaissance) {

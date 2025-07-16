@@ -2,6 +2,8 @@ package repo.models;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -13,6 +15,7 @@ public class Adherant {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_type_adherant", nullable = false)
+    @JsonIgnore
     private TypeAdherant typeAdherant;
 
     private String nom;

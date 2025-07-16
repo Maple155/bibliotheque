@@ -16,4 +16,7 @@ public class VReservationsAvecStatusActuelService {
         return vReservationsAvecStatusActuelRepository.findAll();
     }
 
+    public List<VReservationsAvecStatusActuel> findByAdherantByStatus(int idAdherant, String status) {
+        return vReservationsAvecStatusActuelRepository.readByAdherantStatut(idAdherant, status);
+    }
 }

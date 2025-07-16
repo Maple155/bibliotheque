@@ -1,5 +1,8 @@
 package repo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -11,10 +14,12 @@ public class ConditionPret {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_type_adherant", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private TypeAdherant typeAdherant;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_type_pret", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private TypePret typePret;
 
     @Column(name = "exemplaire_max")
@@ -26,6 +31,12 @@ public class ConditionPret {
     @Column(name = "prolongement_max")
     private Integer prolongementMax;
     
+    @Column(name = "reservation_max")
+    private Integer reservationMax;
+
+    @Column(name = "penalite")
+    private Integer penalite;
+
     public ConditionPret() {}
 
     public int getId() { return id; }
@@ -45,4 +56,10 @@ public class ConditionPret {
 
     public Integer getProlongementMax() { return prolongementMax; }
     public void setProlongementMax(Integer prolongementMax) { this.prolongementMax = prolongementMax; }
+
+    public Integer getReservationMax() { return reservationMax; }
+    public void setReservationMax(Integer reservationMax) { this.reservationMax = reservationMax; }
+
+    public Integer getPenalite() { return penalite; }
+    public void setPenalite(Integer penalite) { this.penalite = penalite; }
 }

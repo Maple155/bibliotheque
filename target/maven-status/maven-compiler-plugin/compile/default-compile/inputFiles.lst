@@ -71,9 +71,11 @@ D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\models\VInscriptionsAvecStatusActuel.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\repositories\TypeStatusInscriptionRepository.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\models\Livre.java
+D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\models\Ferie.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\models\TypeAdherant.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\controller\PretController.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\services\ExemplairesRestantsService.java
+D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\repositories\FerieRepository.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\repositories\StatusInscriptionRepository.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\repositories\DureeInscriptionRepository.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\models\TypeStatusPret.java
@@ -82,6 +84,7 @@ D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\controller\AdherantController.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\repositories\BibliothecaireRepository.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\controller\ReservationController.java
+D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\services\FerieService.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\models\TypePret.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\services\StatusReservationService.java
 D:\IT.University\S4\Mr Naina\Maven\bibliotheque\bibliotheque\src\main\java\repo\services\ProlongementPretService.java

@@ -55,20 +55,18 @@ INSERT INTO type_status_inscription (type) VALUES
 
 -- Type_pret
 INSERT INTO Type_pret (type) VALUES
-('a domicile'),
-('sur place');
+('a domicile');
 
 -- Condition_pret
--- Condition_pret : Chaque adhérent a une règle pour chaque type de prêt
 INSERT INTO Condition_pret (id_type_adherant, id_type_pret, exemplaire_max, duree_max, prolongement_max, reservation_max, penalite) VALUES
 -- Etudiant
-(1, 1, 2, 7, 3, 1, 10), -- domicile
+(1, 1, 2, 7, 3, 1, 10), 
 
 -- Professeur
-(2, 1, 3, 9, 5, 2, 9), -- domicile
+(2, 1, 3, 9, 5, 2, 9), 
 
 -- Professionnel
-(3, 1, 4, 12, 7, 3, 8); -- domicile
+(3, 1, 4, 12, 7, 3, 8);
 
 
 -- Type_status_pret
@@ -84,3 +82,13 @@ INSERT INTO inscription (id_adherant, date_debut, date_fin) VALUES
 (4, '2025-07-01', '2026-07-01'),
 (6, '2025-07-01', '2026-06-01'),
 (7, '2025-06-01', '2025-12-01');
+
+INSERT INTO ferie (date_ferie) VALUES
+('2025-07-13'),
+('2025-07-26'),
+('2025-07-20'),
+('2025-07-19'),
+('2025-07-27'),
+('2025-08-03'),
+('2025-08-10'),
+('2025-08-17');

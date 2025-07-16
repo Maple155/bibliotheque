@@ -6,17 +6,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import repo.models.ConditionPret;
+import repo.models.Ferie;
 import repo.repositories.ConditionPretRepository;
+import repo.repositories.FerieRepository;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-
 @Service
 public class ConditionPretService {
     private final ConditionPretRepository repo;
+    private final FerieService ferieService;
 
     @Autowired
-    public ConditionPretService(ConditionPretRepository repo) {
+    public ConditionPretService(ConditionPretRepository repo, FerieService ferieService) {
         this.repo = repo;
+        this.ferieService = ferieService;
     }
 
     public ConditionPret create(ConditionPret object) {
@@ -53,4 +59,41 @@ public class ConditionPretService {
     public void delete(int id) {
         repo.deleteById(id);
     }
+
+    public static LocalDate calculerNouvelleDate(LocalDate dateInitiale, int nombreDeJours) {
+        return dateInitiale.plusDays(nombreDeJours);
+    }
+
+    public boolean isFerie(LocalDate date) {
+    // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    // String[] feries = {
+    //     "13/07/2025",
+    //     "26/07/2025",
+    //     "20/07/2025",
+    //     "19/07/2025",
+    //     "27/07/2025",
+    //     "03/08/2025",
+    //     "10/08/2025",
+    //     "17/08/2025"
+    // };
+
+    List<Ferie> jourFerie = ferieService.read();
+
+    for (Ferie ferie : jourFerie) {
+        LocalDate ferieDate = ferie.getDate_ferie().toLocalDate();
+        if (date.equals(ferieDate)) {
+            return true;
+        }
+    }
+    
+    // for (String ferieStr : feries) {
+    //     LocalDate ferieDate = LocalDate.parse(ferieStr, formatter);
+    //     if (date.equals(ferieDate)) {
+    //         return true;
+    //     }
+    // }
+
+    return false;
+}
 }
